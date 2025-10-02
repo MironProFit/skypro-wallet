@@ -1,12 +1,14 @@
-import { GlobalStyle } from '../styles/GlobalStyle'
+import { Wrapper } from '../styles/GlobalStyled'
+import { GlobalStyle } from '../styles/GlobalStyles'
 import AppRoutes from './AppRoutes'
 
 function App() {
     return (
         <>
             <GlobalStyle />
-            {/* <Wrapper /> */}
-            <AppRoutes />
+            <Wrapper>
+                <AppRoutes />
+            </Wrapper>
         </>
     )
 }

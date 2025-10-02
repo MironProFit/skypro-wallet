@@ -1,19 +1,23 @@
-import { HeaderContainer, HeaderNav } from './Header.styles'
+import { Link } from 'react-router-dom'
+import { StyledLink, Wrapper } from '../../styles/GlobalStyled'
+
+import { HeaderContainer, HeaderLogo, HeaderNav, NavLinkButton, StyledLinkGroup } from './Header.styles'
 
 function Header() {
     return (
-        <HeaderContainer>
-            <HeaderNav>
-                <HeaderLogo>
-                    <StyledLink>
-                        <img src="/public/Wallet_logo.png" alt="Logo" />
-                    </StyledLink>
-                </HeaderLogo>
-                <StyledLink>Мои расходы</StyledLink>
-                <StyledLink>Анализ расходов</StyledLink>
-                <StyledLink>Выйти</StyledLink>
-            </HeaderNav>
-        </HeaderContainer>
+            <HeaderContainer>
+                <HeaderNav>
+                    <HeaderLogo>
+                        <img src="/image/Wallet_logo.png" alt="Logo" />
+                    </HeaderLogo>
+                    <StyledLinkGroup>
+                        <NavLinkButton to={'/expenses'}>Мои расходы</NavLinkButton>
+                        <NavLinkButton to={'/analysis'}>Анализ расходов</NavLinkButton>
+                    </StyledLinkGroup>
+
+                    <NavLinkButton to={'/logout'}>Выйти</NavLinkButton>
+                </HeaderNav>
+            </HeaderContainer>
     )
 }
 

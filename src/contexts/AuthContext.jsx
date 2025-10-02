@@ -5,7 +5,7 @@ const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
     // const [isAuth, setIsAuth] = useState(() => localStorage.setItem('isAuth') === 'true')
-    const [isAuth, setIsAuth] = useState(false)
+    const [isAuth, setIsAuth] = useState(true)
     // const [isNum, setIsNum] = useState(2)
 
     return (
