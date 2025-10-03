@@ -1,4 +1,4 @@
-import { NavLinkButton } from '../../components/Header/Header.styles'
+import { NavLinkButton } from '../Header/Header.styles'
 
 function NotFound() {
     return (

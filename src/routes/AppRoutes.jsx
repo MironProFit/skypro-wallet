@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Layout from '../components/Layout/Layout'
 import PrivatRoutes from './PrivatRoutes'
-import Expenses from '../pages/Expenses/Expenses'
-import Analysis from '../pages/Analysis/Analysis'
-import AuthModal from '../pages/Auth/AuthModal'
-import NotFound from '../pages/NotFound/NotFound'
+import Layout from '../pages/Layout/Layout'
+import Analysis from '../components/Analysis/Analysis'
+import AuthModal from '../components/Auth/AuthModal'
+import NotFound from '../components/NotFound/NotFound'
+import Expenses from '../pages/Expenses/ExpensesPage'
 
 function AppRoutes() {
     const router = createBrowserRouter([

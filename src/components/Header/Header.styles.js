@@ -7,7 +7,8 @@ export const HeaderContainer = styled.header`
     width: 100%;
     display: flex;
     background-color: ${primaryColor};
-    padding: 20px;
+    padding: 20px 0;
+    margin: 0 auto;
 `
 
 export const HeaderLogo = styled(Link)`
@@ -19,7 +20,7 @@ export const HeaderNav = styled.nav`
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 `
 
 export const StyledLinkGroup = styled.div`
@@ -47,3 +48,5 @@ export const NavLinkButton = styled(Link)`
         width: 100%;
     }
 `
+
+export const LinkContainer = styled.div``

@@ -1,4 +1,4 @@
-function AuthModal() {
+function Analysis() {
     return (
         <div>
             
@@ -6,4 +6,4 @@ function AuthModal() {
     )
 }
 
-export default AuthModal
+export default Analysis
