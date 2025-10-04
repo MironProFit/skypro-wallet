@@ -8,6 +8,7 @@ body {
     height: 100%;
      font-family: "Inter", sans-serif;
      color: black;
+     overflow: hidden;
 }
 
      * {

@@ -1,0 +1,81 @@
+import styled from 'styled-components'
+import { Container, FormGroup, FormInput, PageText, PrimaryButton, Section, SectionTitle } from '../../styles/GlobalStyled'
+import { Link } from 'react-router-dom'
+import { NavLinkButton } from '../Header/Header.styles'
+import { accentColor, borderColor } from '../../styles/Mexins.style'
+
+export const AuthContainer = styled(Container)`
+    display: flex;
+    justify-content: center;
+`
+
+export const AuthSection = styled(Section)`
+    width: 379px;
+    /* height: 334px; */
+`
+
+export const ModalWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+export const AuthTitle = styled(SectionTitle)``
+
+export const AuthFormGroup = styled(FormGroup)`
+    /* margin-bottom: 24px; */
+`
+
+export const TextInput = styled(FormInput)`
+    width: 100%;
+    margin-bottom: 12px;
+    position: relative;
+`
+
+export const PasswordInput = styled(FormInput)`
+    width: 100%;
+`
+export const SubmitButton = styled(PrimaryButton)`
+    margin-bottom: 24px;
+`
+
+export const InputGroup = styled.div`
+    /* margin-bottom: 24px; */
+`
+export const PromtGroup = styled.div`
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+`
+export const PromtTitle = styled(PageText)`
+    color: ${borderColor};
+`
+
+export const PromtText = styled(PageText)``
+export const PromtLink = styled(NavLinkButton)`
+    color: ${borderColor};
+
+    &::before {
+        width: 100%;
+        bottom: 1px;
+        border-bottom: 1px solid ${borderColor};
+    }
+    &:hover {
+        color: ${accentColor};
+    }
+    &:hover::before {
+        border-bottom: 1px solid ${accentColor};
+    }
+`
+export const ErrorInfo = styled.div`
+    min-height: 24px;
+`
+export const ErrorText = styled(PageText)`
+    white-space: pre-wrap;
+    font-family: 'Arial';
+    color: #f84d4d;
+`

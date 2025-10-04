@@ -34,7 +34,7 @@ export const NavLinkButton = styled(Link)`
     &::before {
         transition: 0.3s;
         position: absolute;
-        bottom: 1px;
+        bottom: -3px;
         left: 50%;
         content: '';
         width: 0;

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { SectionTitle } from '../../styles/GlobalStyled'
+import { FormGroup, SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper } from '../../styles/GlobalStyled'
 import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
 import HousingSVG from '../SvgIcons/CategoryIcons/HousingSVG'
 import TransportSVG from '../SvgIcons/CategoryIcons/TransportSVG'
-import { AddButton, CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap, ExpensesSection, FormBtn, FormGroup, FormInput, FormLabel, FormWrapper } from './Expenses.styles'
+import { AddButton, CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap, ExpensesSection } from './Expenses.styles'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
 
 function NewExpense({ $flex }) {

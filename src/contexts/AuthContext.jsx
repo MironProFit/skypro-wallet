@@ -1,13 +1,14 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { createContext } from 'react'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    // const [isAuth, setIsAuth] = useState(() => localStorage.setItem('isAuth') === 'true')
-    const [isAuth, setIsAuth] = useState(true)
-    // const [isNum, setIsNum] = useState(2)
+    const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'true')
 
+    useEffect(() => {
+        setIsAuth(false)
+    }, [])
     return (
         <AuthContext.Provider
             value={{
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     )
 }
+export default AuthProvider
 
 export const useAuthContext = () => {
     return useContext(AuthContext)

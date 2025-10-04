@@ -66,46 +66,6 @@ export const ItemCellImg = styled.div`
         }
     }
 `
-export const FormWrapper = styled.div``
-export const FormGroup = styled.div`
-    margin-bottom: 24px;
-
-    display: flex;
-    flex-direction: column;
-`
-export const FormLabel = styled.label`
-    margin-bottom: 16px;
-`
-export const FormInput = styled.input`
-    position: relative;
-    color: ${textColor};
-    max-width: 313px;
-    height: 39px;
-    padding: 12px;
-    border-radius: 6px;
-    background: ${primaryColor};
-    border: 1px solid ${borderColor};
-    transition: 0.3s;
-
-    &:focus {
-        outline: none;
-        border: 1px solid ${accentColor};
-    }
-
-    &::placeholder {
-        color: ${textColor};
-    }
-    ${({ $before }) =>
-        $before &&
-        css`
-            -moz-appearance: textfield; /* Firefox */
-            &::-webkit-inner-spin-button,
-            &::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-        `}
-`
 
 export const CategoryButton = styled.div`
     /* background-color: green; */
@@ -143,5 +103,4 @@ export const CategoryDesc = styled.p`
     color: ${({ $active }) => $active};
 `
 
-export const FormBtn = styled.div``
 export const AddButton = styled(PrimaryButton)``

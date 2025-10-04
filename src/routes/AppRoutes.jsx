@@ -20,7 +20,7 @@ function AppRoutes() {
                         { path: 'analysis', element: <Analysis /> },
                     ],
                 },
-                { path: 'logout', element: <AuthModal /> },
+                { path: 'login', element: <AuthModal /> },
                 { path: 'register', element: <AuthModal /> },
                 { path: '*', element: <NotFound /> },
             ],
