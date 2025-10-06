@@ -5,7 +5,6 @@ import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
 
 function ExpensesTable({ $flex }) {
-    console.log($flex)
     const [color, setColor] = useState(true)
     return (
         <>

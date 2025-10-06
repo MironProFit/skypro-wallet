@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
-import { accentColor, borderColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
-import { PrimaryButton, Section } from '../../styles/GlobalStyled'
+import { accentColor, accentColorRgb, borderColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
+import { FormGroup, PrimaryButton, Section } from '../../styles/GlobalStyled'
 
 export const ExpensesSection = styled(Section)`
     flex-direction: column;
@@ -44,6 +44,10 @@ export const ExpensesItem = styled.li`
     /* flex-direction: row; */
 `
 
+export const ExpensesFormGroup = styled(FormGroup)`
+    margin-bottom: 24px;
+`
+
 export const ItemCell = styled.div`
     white-space: nowrap;
 
@@ -76,6 +80,7 @@ export const CategoryButton = styled.div`
     /* flex-direction: row; */
 `
 export const CategoryContainer = styled.div`
+    cursor: pointer;
     gap: 12px;
     height: 31px;
     border-radius: 30px;
@@ -86,6 +91,9 @@ export const CategoryContainer = styled.div`
     padding-left: 20px;
     padding-right: 20px;
     transition: 0.3s;
+    &:hover {
+        background: ${accentColorRgb};
+    }
 `
 export const CategoryImg = styled.div`
     display: flex;
@@ -93,13 +101,13 @@ export const CategoryImg = styled.div`
     height: 14px;
 `
 export const CategoryWrap = styled.div`
+    cursor: pointer;
     gap: 6px;
     display: flex;
     flex-wrap: wrap;
 `
 export const CategoryDesc = styled.p`
     transition: 0.3s;
-
     color: ${({ $active }) => $active};
 `
 

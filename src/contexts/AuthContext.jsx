@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'true')
 
     useEffect(() => {
-        setIsAuth(false)
+        setIsAuth(true)
     }, [])
     return (
         <AuthContext.Provider

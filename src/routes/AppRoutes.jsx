@@ -1,10 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import PrivatRoutes from './PrivatRoutes'
 import Layout from '../pages/Layout/Layout'
-import Analysis from '../components/Analysis/Analysis'
 import AuthModal from '../components/Auth/AuthModal'
 import NotFound from '../components/NotFound/NotFound'
 import Expenses from '../pages/Expenses/ExpensesPage'
+import Analysis from '../pages/AnalysisPage/AnalysisPage'
 
 function AppRoutes() {
     const router = createBrowserRouter([

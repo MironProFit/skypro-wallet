@@ -3,7 +3,7 @@ import { FormGroup, SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper } f
 import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
 import HousingSVG from '../SvgIcons/CategoryIcons/HousingSVG'
 import TransportSVG from '../SvgIcons/CategoryIcons/TransportSVG'
-import { AddButton, CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap, ExpensesSection } from './Expenses.styles'
+import { AddButton, CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap, ExpensesFormGroup, ExpensesSection } from './Expenses.styles'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
 
 function NewExpense({ $flex }) {
@@ -14,12 +14,12 @@ function NewExpense({ $flex }) {
             <SectionTitle style={{ marginBottom: '32px' }}>Новый расход</SectionTitle>
 
             <FormWrapper>
-                <FormGroup>
+                <ExpensesFormGroup>
                     <FormLabel htmlFor="formDesc">Описание</FormLabel>
                     <FormInput id="formDesc" type="text" placeholder="Введите что-то" />
-                </FormGroup>
+                </ExpensesFormGroup>
 
-                <FormGroup>
+                <ExpensesFormGroup>
                     <FormLabel>Категории</FormLabel>
                     <CategoryWrap>
                         <CategoryButton>
@@ -49,17 +49,17 @@ function NewExpense({ $flex }) {
                             </CategoryContainer>
                         </CategoryButton>
                     </CategoryWrap>
-                </FormGroup>
+                </ExpensesFormGroup>
 
-                <FormGroup>
+                <ExpensesFormGroup>
                     <FormLabel htmlFor="formDate">Дата</FormLabel>
                     <FormInput id="formDate" type="date" placeholder="Введите дату" />
-                </FormGroup>
+                </ExpensesFormGroup>
 
-                <FormGroup>
+                <ExpensesFormGroup>
                     <FormLabel htmlFor="formPrice">Сумма</FormLabel>
                     <FormInput $before id="formPrice" type="number" placeholder="Введите сумму" />
-                </FormGroup>
+                </ExpensesFormGroup>
                 <FormBtn>
                     <AddButton disabled={isDisabled}>Добавить новый расход</AddButton>
                 </FormBtn>
