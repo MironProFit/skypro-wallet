@@ -3,7 +3,10 @@ const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
     const [isWord, setIsWord] = useState('dfgdfg')
-    return <AppContext.Provider value={(isWord, setIsWord)}>{children}</AppContext.Provider>
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
+
+    return <AppContext.Provider value={{ isWord, setIsWord, startDate, setStartDate, endDate, setEndDate }}>{children}</AppContext.Provider>
 }
 
 export const useAppCoontext = () => {

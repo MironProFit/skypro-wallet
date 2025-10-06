@@ -1,5 +1,6 @@
 import CalendarComponent from '../../components/Calendar/Calendar'
 import NewExpense from '../../components/Expenses/NewExpense'
+import PeriodExpenses from '../../components/Expenses/PeriodExpenses'
 import { Container, ContainerGroup, PageTitle, Section, SectionTitle } from '../../styles/GlobalStyled'
 
 function Analysis() {
@@ -8,9 +9,8 @@ function Analysis() {
             <Container>
                 <PageTitle>Анализ расходов</PageTitle>
                 <ContainerGroup>
-                        <CalendarComponent />
-
-                    <NewExpense $flex={2} />
+                    <CalendarComponent />
+                    <PeriodExpenses />
                 </ContainerGroup>
             </Container>
         </>

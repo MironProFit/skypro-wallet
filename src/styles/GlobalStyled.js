@@ -69,6 +69,26 @@ export const SectionTitle = styled.h2`
     align-items: center;
     margin-bottom: 32px;
 `
+export const ContainerTitle = styled.h3`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  white-space: nowrap;
+  text-align: center;`
+
+
+export const SectionSubTitle = styled.h4`
+    display: flex;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    white-space: nowrap;
+    text-align: center;
+    align-items: center;
+    color: ${borderColor};
+`
 
 export const StyledLink = styled(Link)``
 

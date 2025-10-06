@@ -1,4 +1,4 @@
-import ExpensesTable from '../../components/Expenses/ExpensesTable'
+import ExpensesTable from '../../components/Expenses/TableExpenses'
 import NewExpense from '../../components/Expenses/NewExpense'
 import { Container, ContainerGroup, PageTitle } from '../../styles/GlobalStyled'
 function Expenses() {

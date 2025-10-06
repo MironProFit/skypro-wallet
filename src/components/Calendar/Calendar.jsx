@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { CalendarSection } from './Calendar.styles'
 import { SectionTitle } from '../../styles/GlobalStyled'
 import { accentColor, accentColorRgb, borderColor, primaryColor, secondaryColor, successColor, textColor, thumbColor } from '../../styles/Mexins.style'
+import { useAppCoontext } from '../../contexts/AppContext'
+import { formattedDate } from '../../utils/date-fns'
 
 const Container = styled.div`
     /* max-width: 380px; Максимальная ширина календаря */
@@ -12,36 +14,19 @@ const Container = styled.div`
     overflow-y: auto; /* Прокрутка по вертикали */
 
     box-sizing: border-box;
-    /* border: 1px solid #cccccc; */
-    /* border-radius: 8px; */
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+
     position: relative; /* Позволяет фиксировать элементы внутри */
 
     &::-webkit-scrollbar {
-        /* margin-left: 15px; */
         background-color: transparent;
         width: 10px;
     }
-    &::-webkit-scrollbar-track {
-        /* color: green; */
-        /* background-color: green; */
-    }
+
     &::-webkit-scrollbar-thumb {
         background-color: ${thumbColor};
         border-radius: 10px;
     }
 `
-// const ScrollContainer = styled.div`
-//     height: 100%; /* Заполняем весь контейнер */
-//     overflow-y: auto; /* Добавляем вертикальную полосу прокрутки */
-//     padding-right: 10px; /* Паддинг для отступа от полосы прокрутки */
-//     box-sizing: content-box; /* Учитываем ширину прокрутки */
-
-//     &::-webkit-scrollbar {
-//         background-color: red;
-//         width: 12px;
-//     }
-// `
 
 const DaysOfWeek = styled.div`
     display: flex;
@@ -67,7 +52,6 @@ const MonthContainer = styled.div`
 
 const MonthHeader = styled.h3`
     display: flex;
-
     text-align: center;
     margin: 10px 0;
     font-size: 1em; /* Адаптивный размер шрифта */
@@ -101,12 +85,14 @@ const getDaysInMonth = (month, year) => {
 }
 
 const CalendarComponent = () => {
+    const { startDate, setStartDate, endDate, setEndDate } = useAppCoontext()
     const currentDate = new Date()
     const [displayedYear, setDisplayedYear] = useState(currentDate.getFullYear())
     const [displayedMonth, setDisplayedMonth] = useState(currentDate.getMonth())
-    const [selectedDate, setSelectedDate] = useState(currentDate)
-
-    const calendarRef = useRef(null) // Ссылка на контейнер календаря
+    // const [startDate, setStartDate] = useState(null)
+    // const [endDate, setEndDate] = useState(null)
+    const calendarRef = useRef(null)
+    const [ today, setToday] = useState(new Date())
 
     const monthsToShow = []
     for (let i = -3; i <= 3; i++) {
@@ -114,12 +100,27 @@ const CalendarComponent = () => {
     }
 
     const handleDateClick = (day, month, year) => {
-        setSelectedDate(new Date(year, month, day))
+        const selectedDate = new Date(year, month, day)
+        if (!startDate || (startDate && endDate)) {
+            setStartDate(selectedDate)
+            setEndDate(null)
+        } else {
+            if (selectedDate >= startDate) {
+                setEndDate(selectedDate)
+            } else {
+                setEndDate(startDate)
+                setStartDate(selectedDate)
+            }
+        }
     }
 
-    // UseEffect для прокрутки к текущей дате
+    const isDateInRange = (day, month, year) => {
+        const currentDay = new Date(year, month, day)
+        return startDate && endDate ? currentDay >= startDate && currentDay <= endDate : startDate && currentDay.getTime() === startDate.getTime()
+    }
+    useEffect(() => {setStartDate(today), setEndDate(today)}, [])
+
     useEffect(() => {
-        const today = new Date()
         const todayMonth = today.getMonth()
         const todayYear = today.getFullYear()
 
@@ -135,7 +136,6 @@ const CalendarComponent = () => {
 
     return (
         <CalendarSection>
-            {/* <ScrollContainer> */}
             <SectionTitle>Период</SectionTitle>
 
             <Container ref={calendarRef}>
@@ -163,10 +163,14 @@ const CalendarComponent = () => {
                                 {Array.from({ length: daysInMonth }).map((_, day) => {
                                     const dateNum = day + 1
                                     const isToday = currentDate.getDate() === dateNum && currentDate.getMonth() === month && currentDate.getFullYear() === year
-                                    const isSelected = selectedDate.getDate() === dateNum && selectedDate.getMonth() === month && selectedDate.getFullYear() === year
+                                    const isInRange = isDateInRange(dateNum, month, year)
+                                    const isSelected =
+                                        (startDate && startDate.getDate() === dateNum && startDate.getMonth() === month && startDate.getFullYear() === year) ||
+                                        (endDate && endDate.getDate() === dateNum && endDate.getMonth() === month && endDate.getFullYear() === year)
+                                    const isActive = isInRange || isSelected || isToday
 
                                     return (
-                                        <DayCell key={day} data-date={`${year}-${month}-${dateNum}`} isToday={isToday} isSelected={isSelected} onClick={() => handleDateClick(dateNum, month, year)}>
+                                        <DayCell key={day} data-date={`${year}-${month}-${dateNum}`} isToday={isToday} isSelected={isActive} onClick={() => handleDateClick(dateNum, month, year)}>
                                             {dateNum}
                                         </DayCell>
                                     )
@@ -176,7 +180,6 @@ const CalendarComponent = () => {
                     )
                 })}
             </Container>
-            {/* </ScrollContainer> */}
         </CalendarSection>
     )
 }
