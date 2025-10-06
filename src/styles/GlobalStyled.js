@@ -54,9 +54,11 @@ export const Section = styled.section`
     background: #ffffff;
     box-shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
     padding: 32px;
+    flex: ${({ $flex }) => $flex};
 `
 
 export const SectionTitle = styled.h2`
+    display: flex;
     /* height: 30px; */
     font-style: normal;
     font-weight: 400;

@@ -1,4 +1,3 @@
-
 export const primaryColor = 'white'
 export const secondaryColor = '#F4F5F6'
 
@@ -12,3 +11,4 @@ export const warningColor = '#7334EA'
 export const errorColor = '#F84D4D'
 
 export const borderColor = '#999999'
+export const thumbColor = '#D9D9D9'
