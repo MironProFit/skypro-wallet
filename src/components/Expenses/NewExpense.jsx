@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { FormGroup, SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper } from '../../styles/GlobalStyled'
-import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
-import HousingSVG from '../SvgIcons/CategoryIcons/HousingSVG'
-import TransportSVG from '../SvgIcons/CategoryIcons/TransportSVG'
+
 import { AddButton, CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap, ExpensesFormGroup, ExpensesSection } from './Expenses.styles'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
+import { categoryList } from '../../data/CategoryList'
 
 function NewExpense({ $flex }) {
     const [active, setActive] = useState(false)
@@ -21,8 +20,23 @@ function NewExpense({ $flex }) {
 
                 <ExpensesFormGroup>
                     <FormLabel>Категории</FormLabel>
+
                     <CategoryWrap>
-                        <CategoryButton>
+                        {categoryList.map((category) => {
+                            const IconComponents = category.icon
+                            return (
+                                <CategoryButton>
+                                    <CategoryContainer active $active={active ? 'rgba(115, 52, 234, 0.1)' : secondaryColor}>
+                                        <CategoryImg>
+                                            <IconComponents $active={active ? accentColor : textColor} />
+                                        </CategoryImg>
+                                        <CategoryDesc $active={active ? accentColor : textColor}>{category.name}</CategoryDesc>
+                                    </CategoryContainer>
+                                </CategoryButton>
+                            )
+                        })}
+
+                        {/* <CategoryButton>
                             <CategoryContainer active $active={active ? 'rgba(115, 52, 234, 0.1)' : secondaryColor}>
                                 <CategoryImg>
                                     <CartSVG $active={active ? accentColor : textColor} />
@@ -48,12 +62,13 @@ function NewExpense({ $flex }) {
                                 <CategoryDesc $active={active ? accentColor : textColor}>Жилье</CategoryDesc>
                             </CategoryContainer>
                         </CategoryButton>
+                         */}
                     </CategoryWrap>
                 </ExpensesFormGroup>
 
                 <ExpensesFormGroup>
                     <FormLabel htmlFor="formDate">Дата</FormLabel>
-                    <FormInput id="formDate" type="date" placeholder="Введите дату" />
+                    <FormInput $icon id="formDate" type="date" placeholder="Введите дату" />
                 </ExpensesFormGroup>
 
                 <ExpensesFormGroup>

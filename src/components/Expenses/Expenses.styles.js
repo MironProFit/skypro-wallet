@@ -41,6 +41,15 @@ export const ExpensesList = styled.ul`
 export const ExpensesItem = styled.li`
     display: flex;
     gap: 14px;
+    background-color: transparent;
+    /* cursor: pointer; */
+    transition: 0.3s;
+    padding: 0 10px;
+    border-radius: 10px;
+
+    &:hover {
+        background-color: ${accentColorRgb};
+    }
     /* flex-direction: row; */
 `
 
@@ -58,6 +67,8 @@ export const ItemCellImg = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    cursor: default;
+
     & svg {
         path {
             fill: ${borderColor};
@@ -112,6 +123,3 @@ export const CategoryDesc = styled.p`
 `
 
 export const AddButton = styled(PrimaryButton)``
-
-
-

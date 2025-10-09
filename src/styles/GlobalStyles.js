@@ -29,4 +29,5 @@ a:hover {
 ul {
   list-style: none;
 }
+/* &:hover {hover} */
 `

@@ -70,13 +70,13 @@ export const SectionTitle = styled.h2`
     margin-bottom: 32px;
 `
 export const ContainerTitle = styled.h3`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 19px;
-  white-space: nowrap;
-  text-align: center;`
-
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    white-space: nowrap;
+    text-align: center;
+`
 
 export const SectionSubTitle = styled.h4`
     display: flex;
@@ -151,6 +151,16 @@ export const FormInput = styled.input`
             &::-webkit-outer-spin-button {
                 -webkit-appearance: none;
                 margin: 0;
+            }
+        `}
+    ${({ $icon }) =>
+        $icon &&
+        css`
+            &::-webkit-calendar-picker-indicator {
+                filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+            }
+            &::-moz-calendar-picker-indicator {
+                background-color: black;
             }
         `}
 `

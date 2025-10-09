@@ -9,8 +9,8 @@ function Analysis() {
             <Container>
                 <PageTitle>Анализ расходов</PageTitle>
                 <ContainerGroup>
-                    <CalendarComponent />
-                    <PeriodExpenses />
+                    <CalendarComponent $flex={1} />
+                    <PeriodExpenses $flex={2} />
                 </ContainerGroup>
             </Container>
         </>

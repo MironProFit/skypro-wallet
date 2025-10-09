@@ -15,7 +15,7 @@ function AppRoutes() {
                 {
                     element: <PrivatRoutes />,
                     children: [
-                        { index: true, element: null },
+                        { index: true, element: <Expenses /> },
                         { path: 'expenses', element: <Expenses /> },
                         { path: 'analysis', element: <Analysis /> },
                     ],

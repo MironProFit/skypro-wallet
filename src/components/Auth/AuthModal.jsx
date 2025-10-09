@@ -55,7 +55,7 @@ function AuthModal() {
                             )}
                         </InputGroup>
                         <ErrorInfo>
-                            <ErrorText>Упс! Введенные вами данные некорректны. Введите данные корректно и повторите попытку.</ErrorText>
+                            <ErrorText>{}</ErrorText>
                         </ErrorInfo>
                         <SubmitButton>Войти</SubmitButton>
                         <PromtGroup>

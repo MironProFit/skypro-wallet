@@ -1,27 +1,30 @@
 import { useEffect } from 'react'
 import { useAppCoontext } from '../../contexts/AppContext'
-import {ContainerTitle, FormWrapper, SectionSubTitle, SectionTitle } from '../../styles/GlobalStyled'
-import {  ExpensesSection } from './Expenses.styles'
+import { ContainerTitle, FormWrapper, SectionSubTitle, SectionTitle } from '../../styles/GlobalStyled'
+import { ExpensesSection } from './Expenses.styles'
 import { formattedDate } from '../../utils/date-fns'
-import { ChartColor, ChartContainer, ChartItem } from './PeriodExpenses.styles'
+import { ChartCategory, ChartColor, ChartContainer, ChartItem, PeriodSubTitle } from './PeriodExpenses.styles'
+import { categoryList } from '../../data/CategoryList'
 
-function PeriodExpenses() {
+function PeriodExpenses({ $flex }) {
     const { startDate, setStartDate, endDate, setEndDate } = useAppCoontext()
-    useEffect(() => {
-        console.log(startDate, endDate)
-    }, [startDate, endDate])
-    
+    useEffect(() => {}, [startDate, endDate])
+
     return (
-        <ExpensesSection>
+        <ExpensesSection $flex={$flex}>
             <SectionTitle style={{ marginBottom: '32px' }}>65 192 ₽</SectionTitle>
-            <SectionSubTitle>{startDate && endDate ? `Расходы за: ${formattedDate(startDate)} - ${formattedDate(endDate)}` : 'Выбирите период'}</SectionSubTitle>
-           <ChartContainer>
-            <ChartItem >
-                <ContainerTitle>21 990 ₽</ContainerTitle>
-                <ChartColor></ChartColor>
-                <ChartCategory></ChartCategory>
-            </ChartItem>
-           </ChartContainer>
+            <PeriodSubTitle>{startDate && endDate ? `Расходы за: ${formattedDate(startDate)} - ${formattedDate(endDate)}` : 'Выбирите период'}</PeriodSubTitle>
+            <ChartContainer>
+                {categoryList.map((item) => (
+                    <ChartItem>
+                        <ContainerTitle>21 990 ₽</ContainerTitle>
+                        <ChartColor $width={'200'} $color={item.color}></ChartColor>
+                        <div>
+                            <ChartCategory>Eda</ChartCategory>
+                        </div>
+                    </ChartItem>
+                ))}
+            </ChartContainer>
             <FormWrapper></FormWrapper>
         </ExpensesSection>
     )

@@ -26,7 +26,7 @@ function ExpensesTable({ $flex }) {
                         <ItemCell>02.10.2025</ItemCell>
                         <ItemCell>1500 &#8381;</ItemCell>
                         <ItemCellImg>
-                            <CartSVG $color={'green'} />
+                            <CartSVG />
                         </ItemCellImg>
                     </ExpensesItem>
                 </ExpensesList>

@@ -3,7 +3,7 @@ import { Container } from '../../styles/GlobalStyled'
 
 import { HeaderContainer, HeaderLogo, HeaderNav, LinkContainer, NavLinkButton, StyledLinkGroup } from './Header.styles'
 
-function Header() {
+function Header(onLogout) {
     const { isAuth } = useAuthContext()
     return (
         <HeaderContainer>
@@ -23,7 +23,7 @@ function Header() {
                                 </LinkContainer>
                             </StyledLinkGroup>
                             <LinkContainer>
-                                <NavLinkButton to={'/logout'}>Выйти</NavLinkButton>
+                                <NavLinkButton onClick={onLogout}>Выйти</NavLinkButton>
                             </LinkContainer>
                         </>
                     )}
