@@ -1,12 +1,26 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
-    const [isWord, setIsWord] = useState('dfgdfg')
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
+    const [isMobile, setIsMobile] = useState(false)
+    const [windowWidth, setWindowWidth] = useState(0)
 
-    return <AppContext.Provider value={{ isWord, setIsWord, startDate, setStartDate, endDate, setEndDate }}>{children}</AppContext.Provider>
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth)
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        if (windowWidth < 751) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
+    }, [windowWidth])
+
+    return <AppContext.Provider value={{ startDate, setStartDate, endDate, setEndDate, isMobile, setIsMobile, windowWidth, setWindowWidth }}>{children}</AppContext.Provider>
 }
 
 export const useAppCoontext = () => {

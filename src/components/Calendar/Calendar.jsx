@@ -1,88 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { CalendarSection } from './Calendar.styles'
-import { SectionTitle } from '../../styles/GlobalStyled'
-import { accentColor, accentColorRgb, borderColor, primaryColor, secondaryColor, textColor, thumbColor } from '../../styles/Mexins.style'
 import { useAppCoontext } from '../../contexts/AppContext'
-
-// Styled-components
-const Container = styled.div`
-    width: 100%;
-    height: 450px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    box-sizing: border-box;
-    position: relative;
-
-    &::-webkit-scrollbar {
-        background-color: transparent;
-        width: 10px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: ${thumbColor};
-        border-radius: 10px;
-    }
-`
-
-const DaysOfWeek = styled.div`
-    display: flex;
-    justify-content: space-between;
-    background-color: ${primaryColor};
-    padding: 5px 0;
-    border-bottom: 2px solid ${borderColor};
-    position: sticky;
-    top: 0;
-    z-index: 1;
-`
-
-const DayName = styled.div`
-    flex: 1;
-    text-align: center;
-    font-size: 0.9em;
-    color: ${borderColor};
-`
-
-const MonthContainer = styled.div`
-    padding: 10px;
-`
-
-const MonthHeader = styled.h3`
-    display: flex;
-    text-align: center;
-    margin: 10px 0;
-    font-size: 1em;
-`
-
-const CalendarGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(7, 40px);
-    grid-auto-rows: 40px;
-    gap: 6px;
-`
-
-const DayCell = styled.div`
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: ${({ isSelected, isToday, isInRange }) =>
-        isSelected
-            ? accentColorRgb
-            : isToday && isInRange
-            ? 'orange' // Цвет для сегодняшнего дня, если он в диапазоне
-            : isToday
-            ? thumbColor
-            : secondaryColor}; // Цвет для сегодняшнего дня, если он не в диапазоне
-    color: ${({ isToday }) => (isToday ? primaryColor : textColor)};
-    cursor: pointer;
-
-    &:hover {
-        background-color: ${accentColorRgb};
-    }
-`
+import { Container, SectionTitle } from '../../styles/GlobalStyled'
+import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell } from '../../components/Calendar/Calendar.styles'
 
 // Helper function to get days in a month
 const getDaysInMonth = (month, year) => {
@@ -146,9 +65,11 @@ const CalendarComponent = () => {
         }
     }, [displayedYear, displayedMonth, today])
 
+    const { isMobile } = useAppCoontext()
+
     return (
         <CalendarSection>
-            <SectionTitle>Период</SectionTitle>
+            <SectionTitle $isMobile={isMobile}>Период</SectionTitle>
             <Container ref={calendarRef}>
                 <DaysOfWeek>
                     {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (

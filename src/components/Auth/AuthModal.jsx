@@ -24,6 +24,10 @@ function AuthModal() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        console.log(location.pathname)
+    }, [location])
+
+    useEffect(() => {
         if (location.pathname === '/register') {
             setIsPage('register')
         } else {

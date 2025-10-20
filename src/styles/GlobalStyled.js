@@ -16,6 +16,14 @@ export const Container = styled.div`
     margin: 0 auto;
     padding: 0 30px;
     border-radius: 30px;
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            background-color: ${primaryColor};
+            border-radius: 0;
+            padding-bottom: 10px;
+        `}
 `
 export const ContainerGroup = styled.div`
     display: flex;
@@ -23,6 +31,9 @@ export const ContainerGroup = styled.div`
     gap: 34px;
     & > * {
         flex: 1;
+    }
+    @media (max-width: 750px) {
+        flex-direction: column;
     }
 `
 
@@ -37,8 +48,6 @@ export const PageText = styled.p`
 `
 
 export const PageTitle = styled.h1`
-    /* width: 269px;
-    height: 48px; */
     font-style: normal;
     font-weight: 400;
     font-size: 32px;
@@ -46,20 +55,47 @@ export const PageTitle = styled.h1`
     white-space: nowrap;
     margin-top: 36px;
     margin-bottom: 32px;
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            font-size: 24px;
+            padding: 0;
+            margin: 0;
+        `}
+    ${({ $isExpensesPage }) =>
+        !$isExpensesPage &&
+        css`
+            order: 2;
+        `}
 `
 
 export const Section = styled.section`
-    overflow: hidden;
+    /* overflow: hidden; */
     border-radius: 30px;
     background: #ffffff;
     box-shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
     padding: 32px;
     flex: ${({ $flex }) => $flex};
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            background: inherit;
+            box-shadow: none;
+            padding: 0;
+            border-radius: 0;
+        `};
+
+    @media (max-width: 751px) {
+        box-shadow: none;
+        padding: 0;
+        border-radius: 0;
+    }
 `
 
 export const SectionTitle = styled.h2`
     display: flex;
-    /* height: 30px; */
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
@@ -68,6 +104,12 @@ export const SectionTitle = styled.h2`
     text-align: center;
     align-items: center;
     margin-bottom: 32px;
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            font-size: 20px;
+        `}
 `
 export const ContainerTitle = styled.h3`
     font-style: normal;
@@ -76,6 +118,15 @@ export const ContainerTitle = styled.h3`
     line-height: 19px;
     white-space: nowrap;
     text-align: center;
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            font-weight: 400;
+            font-size: 10px;
+            line-height: 12px;
+            white-space: nowrap;
+            text-align: center;
+        `}
 `
 
 export const SectionSubTitle = styled.h4`
@@ -103,11 +154,13 @@ export const PrimaryButton = styled.button`
     border: 1px solid ${accentColor};
     border-radius: 6px;
     color: #ffffff;
+
     &:disabled {
         cursor: unset;
         background-color: ${borderColor};
         border: 1px solid ${borderColor};
     }
+
     &:active {
         background-color: ${accentColor};
         opacity: 0.8;
@@ -163,5 +216,21 @@ export const FormInput = styled.input`
                 background-color: black;
             }
         `}
+   
+        ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            max-width: none;
+        `}
 `
 export const FormBtn = styled.div``
+
+export const FlexContainer = styled.div`
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: ${primaryColor};
+    padding: 24px 16px;
+`

@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import { ContainerTitle, SectionSubTitle } from '../../styles/GlobalStyled'
+import styled, { css } from 'styled-components'
+import { ContainerTitle, PrimaryButton, SectionSubTitle } from '../../styles/GlobalStyled'
+import { primaryColor } from '../../styles/Mexins.style'
 
 export const ChartContainer = styled.div`
     display: flex;
@@ -7,6 +8,12 @@ export const ChartContainer = styled.div`
     justify-content: center;
     gap: clamp(10px, 2vw, 32px);
     height: 100%;
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            gap: 6px;
+        `}
 `
 
 export const ChartItem = styled.div`
@@ -24,6 +31,15 @@ export const ChartColor = styled.div`
     border-radius: 12px;
     height: 300px;
     width: clamp(20px, 6vw, 94px);
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            width: 52px;
+        `}
 `
 
 export const ChartCategory = styled(ContainerTitle)``
+
+export const AddPeriod = styled(PrimaryButton)``
+

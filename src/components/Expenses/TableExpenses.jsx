@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import { SectionTitle } from '../../styles/GlobalStyled'
+import { useEffect, useState } from 'react'
+import { FlexContainer, PrimaryButton, Section, SectionTitle } from '../../styles/GlobalStyled'
 import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
 
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
+import { useAppCoontext } from '../../contexts/AppContext'
 
 function ExpensesTable({ $flex }) {
+    const { isMobile } = useAppCoontext()
     const [color, setColor] = useState(true)
+    const [isVisible, setIsVisible] = useState()
+
+    useEffect(() => {
+        setIsVisible(isMobile ? true : false)
+    }, [isMobile])
     return (
         <>
-            <ExpensesSection $flex={$flex}>
+            <ExpensesSection $isMobile={isMobile} $flex={$flex}>
                 <SectionTitle>Таблица расходов</SectionTitle>
 
-                <ExpensesHeader>
-                    <HeaderCell>Описание</HeaderCell>
-                    <HeaderCell>Категория</HeaderCell>
-                    <HeaderCell>Дата</HeaderCell>
-                    <HeaderCell>Сумма</HeaderCell>
-                    <HeaderCell></HeaderCell>
+                <ExpensesHeader $isMobile={isMobile}>
+                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
+                        Описание
+                    </HeaderCell>
+                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
+                        Категория
+                    </HeaderCell>
+                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
+                        Дата
+                    </HeaderCell>
+                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
+                        Сумма
+                    </HeaderCell>
+                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}></HeaderCell>
                 </ExpensesHeader>
 
                 <ExpensesList>
-                    <ExpensesItem>
-                        <ItemCell>Магазин</ItemCell>
-                        <ItemCell>Продукты</ItemCell>
-                        <ItemCell>02.10.2025</ItemCell>
-                        <ItemCell>1500 &#8381;</ItemCell>
-                        <ItemCellImg>
+                    <ExpensesItem $isMobile={isMobile}>
+                        <ItemCell $isVisible={isVisible}>Магазин</ItemCell>
+                        <ItemCell $isVisible={isVisible}>Продукты</ItemCell>
+                        <ItemCell $isVisible={isVisible}>02.10.2025</ItemCell>
+                        <ItemCell $isVisible={isVisible}>1500 &#8381;</ItemCell>
+                        <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
                             <CartSVG />
                         </ItemCellImg>
                     </ExpensesItem>
                 </ExpensesList>
+
+                <ExpensesList>
+                    <ExpensesItem $isMobile={isMobile}>
+                        <ItemCell $isVisible={isVisible}>Магазин</ItemCell>
+                        <ItemCell $isVisible={isVisible}>Продукты</ItemCell>
+                        <ItemCell $isVisible={isVisible}>02.10.2025</ItemCell>
+                        <ItemCell $isVisible={isVisible}>1500 &#8381;</ItemCell>
+                        <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
+                            <CartSVG />
+                        </ItemCellImg>
+                    </ExpensesItem>
+                </ExpensesList>
+
+                {isMobile && (
+                    <FlexContainer>
+                        <PrimaryButton>Удалить расход</PrimaryButton>
+                    </FlexContainer>
+                )}
             </ExpensesSection>
         </>
     )

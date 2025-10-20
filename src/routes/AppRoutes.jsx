@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
 import PrivatRoutes from './PrivatRoutes'
 import Layout from '../pages/Layout/Layout'
 import AuthModal from '../components/Auth/AuthModal'
@@ -17,6 +17,7 @@ function AppRoutes() {
                     children: [
                         { index: true, element: <Expenses /> },
                         { path: 'expenses', element: <Expenses /> },
+                        { path: 'newexpenses', element: <Expenses /> },
                         { path: 'analysis', element: <Analysis /> },
                     ],
                 },
