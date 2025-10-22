@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FormGroup, SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper, FlexContainer } from '../../styles/GlobalStyled'
+import { SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper, FlexContainer } from '../../styles/GlobalStyled'
 
 import {
     AddButton,

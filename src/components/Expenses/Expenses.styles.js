@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 import { accentColor, accentColorRgb, borderColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
 import { FormGroup, FormInput, PrimaryButton, Section } from '../../styles/GlobalStyled'
+import { Link } from 'react-router-dom'
 
 export const ExpensesSection = styled(Section)`
     flex-direction: column;
@@ -61,7 +62,7 @@ export const ExpensesHeaderTitle = styled.div`
             align-items: inherit;
         `}
 `
-export const ExpensesHeaderLink = styled.div`
+export const ExpensesHeaderLink = styled(Link)`
     cursor: pointer;
     position: relative;
 

@@ -21,7 +21,7 @@ function Header(onLogout) {
             case '/expenses':
                 newName = 'Мои расходы'
                 break
-            case '/newexpenses':
+            case 'expenses/new':
                 newName = 'Новый расход'
                 break
             case '/analysis':
@@ -41,7 +41,7 @@ function Header(onLogout) {
     const isLinkActive = (path) => {
         return location.pathname === path
     }
-    
+
     return (
         <HeaderContainer $isMobile={isMobile}>
             <Container>
@@ -75,11 +75,11 @@ function Header(onLogout) {
                                             Мои расходы
                                         </NavLinkModal>
                                         <NavLinkModal
-                                            to={'/newexpenses'}
+                                            to={'expenses/new'}
                                             state={{ isModal: false }}
                                             $isModal={isModal}
                                             $isMobile={isMobile}
-                                            $isLinkActive={isLinkActive('/newexpenses')}
+                                            $isLinkActive={isLinkActive('expenses/new')}
                                             onClick={() => setIsmodal(false)}
                                         >
                                             Новый расход

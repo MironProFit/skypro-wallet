@@ -1,9 +1,9 @@
-import CartSVG from '../components/SvgIcons/CategoryIcons/CartSVG'
-import EducationSVG from '../components/SvgIcons/CategoryIcons/EducationSVG'
-import HousingSVG from '../components/SvgIcons/CategoryIcons/HousingSVG'
-import JoySVG from '../components/SvgIcons/CategoryIcons/JoySVG'
-import OtherSVG from '../components/SvgIcons/CategoryIcons/OtherSVG'
-import TransportSVG from '../components/SvgIcons/CategoryIcons/TransportSVG'
+import CartSVG from '../components/icons/CategoryIcons/CartSVG'
+import EducationSVG from '../components/icons/CategoryIcons/EducationSVG'
+import HousingSVG from '../components/icons/CategoryIcons/HousingSVG'
+import JoySVG from '../components/icons/CategoryIcons/JoySVG'
+import OtherSVG from '../components/icons/CategoryIcons/OtherSVG'
+import TransportSVG from '../components/icons/CategoryIcons/TransportSVG'
 
 export const categoryList = [
     { category: 'food', color: '#d9b6ff', name: 'Еда', icon: CartSVG },

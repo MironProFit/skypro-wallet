@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FlexContainer, PrimaryButton, Section, SectionTitle } from '../../styles/GlobalStyled'
-import CartSVG from '../SvgIcons/CategoryIcons/CartSVG'
+import CartSVG from '../icons/CategoryIcons/CartSVG'
 
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
 import { useAppCoontext } from '../../contexts/AppContext'
@@ -44,9 +44,7 @@ function ExpensesTable({ $flex }) {
                             <CartSVG />
                         </ItemCellImg>
                     </ExpensesItem>
-                </ExpensesList>
 
-                <ExpensesList>
                     <ExpensesItem $isMobile={isMobile}>
                         <ItemCell $isVisible={isVisible}>Магазин</ItemCell>
                         <ItemCell $isVisible={isVisible}>Продукты</ItemCell>

@@ -1,30 +1,39 @@
+import { Container, ContainerGroup, PageTitle } from '../../styles/GlobalStyled'
 import ExpensesTable from '../../components/Expenses/TableExpenses'
 import NewExpense from '../../components/Expenses/NewExpense'
-import { Container, ContainerGroup, PageTitle } from '../../styles/GlobalStyled'
 import { useAppCoontext } from '../../contexts/AppContext'
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import { ExpensesHeaderLink, ExpensesHeaderTitle } from '../../components/Expenses/Expenses.styles'
+import { useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
-function Expenses() {
+function ExpensesPage() {
     const { isMobile } = useAppCoontext()
-    const [isExpensesPage, setIsExpensesPage] = useState(true)
     const location = useLocation()
+    const [isExpensesPage, setIsExpensesPage] = useState()
 
     useEffect(() => {
-        if (location.pathname === '/newexpenses') {
-            setIsExpensesPage(false)
-        } else {
-            setIsExpensesPage(true)
-        }
-    }, [location])
+        location.pathname === '/expenses' && isMobile ? setIsExpensesPage(true) : setIsExpensesPage(false)
+        console.log(location.pathname === '/expenses' && isMobile)
+    }, [location, isMobile])
 
-    const handleExpenses = () => {
-        setIsExpensesPage(isExpensesPage ? false : true)
-    }
-
-    return !isMobile ? (
-        <>
+    if (isMobile) {
+        // --- Мобильная версия ---
+        return (
+            <Container $isMobile={isMobile}>
+                <ExpensesHeaderTitle $isMobile={isMobile} $isExpensesPage={isExpensesPage}>
+                    <PageTitle style={{ order: 1 }} $isMobile={isMobile}>
+                        Мои расходы
+                    </PageTitle>
+                    <ExpensesHeaderLink to={'/expenses/new'} style={{ order: 2 }} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                        Новый расход
+                    </ExpensesHeaderLink>
+                </ExpensesHeaderTitle>
+                <ExpensesTable />
+            </Container>
+        )
+    } else {
+        // --- ПК версия ---
+        return (
             <Container $isMobile={isMobile}>
                 <PageTitle $isMobile={isMobile}>Мои расходы</PageTitle>
                 <ContainerGroup>
@@ -32,23 +41,8 @@ function Expenses() {
                     <NewExpense $flex={1} />
                 </ContainerGroup>
             </Container>
-        </>
-    ) : (
-        <>
-            <Container $isMobile={isMobile}>
-                <ExpensesHeaderTitle $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                    <PageTitle $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                        {isExpensesPage ? 'Мои расходы' : 'Новый расход'}
-                    </PageTitle>
-                    <ExpensesHeaderLink $isExpensesPage={isExpensesPage} onClick={handleExpenses}>
-                        {isExpensesPage ? 'Новый расход' : 'Мои расходы'}
-                    </ExpensesHeaderLink>
-                </ExpensesHeaderTitle>
-
-                {isExpensesPage ? <ExpensesTable /> : <NewExpense />}
-            </Container>
-        </>
-    )
+        )
+    }
 }
 
-export default Expenses
+export default ExpensesPage
