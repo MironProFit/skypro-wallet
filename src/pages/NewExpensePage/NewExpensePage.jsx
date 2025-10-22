@@ -2,7 +2,7 @@ import { useAppCoontext } from '../../contexts/AppContext'
 import { Container, PageTitle } from '../../styles/GlobalStyled'
 import NewExpense from '../../components/Expenses/NewExpense'
 import { Navigate, useLocation } from 'react-router-dom' // Для перенаправления с ПК
-import { ExpensesHeaderLink } from '../../components/Expenses/Expenses.styles'
+import { ExpensesHeaderLink, ExpensesHeaderTitle } from '../../components/Expenses/Expenses.styles'
 import { useEffect, useState } from 'react'
 
 function NewExpensePage() {
@@ -22,10 +22,12 @@ function NewExpensePage() {
     // --- Мобильная версия ---
     return (
         <Container $isMobile={isMobile}>
-            <ExpensesHeaderLink to={'/expenses'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                Мои расходы
-            </ExpensesHeaderLink>
-            <PageTitle $isMobile={isMobile}>Новый расход</PageTitle>
+            <ExpensesHeaderTitle $isMobile={isMobile} $isExpensesPage={isExpensesPage}>
+                <ExpensesHeaderLink to={'/expenses'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                    Мои расходы
+                </ExpensesHeaderLink>
+                <PageTitle $isMobile={isMobile}>Новый расход</PageTitle>
+            </ExpensesHeaderTitle>
 
             <NewExpense $flex={1} />
         </Container>

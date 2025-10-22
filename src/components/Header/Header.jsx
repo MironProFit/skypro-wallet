@@ -75,11 +75,11 @@ function Header(onLogout) {
                                             Мои расходы
                                         </NavLinkModal>
                                         <NavLinkModal
-                                            to={'expenses/new'}
+                                            to={'/expenses/new'}
                                             state={{ isModal: false }}
                                             $isModal={isModal}
                                             $isMobile={isMobile}
-                                            $isLinkActive={isLinkActive('expenses/new')}
+                                            $isLinkActive={isLinkActive('/expenses/new')}
                                             onClick={() => setIsmodal(false)}
                                         >
                                             Новый расход

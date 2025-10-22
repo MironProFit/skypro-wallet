@@ -16,7 +16,7 @@ function ExpensesTable({ $flex }) {
     return (
         <>
             <ExpensesSection $isMobile={isMobile} $flex={$flex}>
-                <SectionTitle>Таблица расходов</SectionTitle>
+                {!isMobile && <SectionTitle>Таблица расходов</SectionTitle>}
 
                 <ExpensesHeader $isMobile={isMobile}>
                     <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>

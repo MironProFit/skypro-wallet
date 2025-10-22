@@ -23,7 +23,7 @@ export const Container = styled.div`
             background-color: ${primaryColor};
             border-radius: 0;
             padding-bottom: 10px;
-            padding-top: 24px;
+            /* padding-top: 24px; */
         `}
 `
 export const ContainerGroup = styled.div`
