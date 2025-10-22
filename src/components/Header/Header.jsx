@@ -21,7 +21,7 @@ function Header(onLogout) {
             case '/expenses':
                 newName = 'Мои расходы'
                 break
-            case 'expenses/new':
+            case '/expenses/new':
                 newName = 'Новый расход'
                 break
             case '/analysis':
