@@ -5,6 +5,7 @@ import { ExpensesSection } from './Expenses.styles'
 import { formattedDate } from '../../utils/date-fns'
 import { AddPeriod, ChartCategory, ChartColor, ChartContainer, ChartItem, PeriodSubTitle } from './PeriodExpenses.styles'
 import { categoryList } from '../../data/CategoryList'
+import { Link } from 'react-router-dom'
 
 function PeriodExpenses({ $flex }) {
     const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppCoontext()
@@ -23,7 +24,13 @@ function PeriodExpenses({ $flex }) {
                 ))}
             </ChartContainer>
             <FlexContainer>
-                <AddPeriod>Выбрать другой период</AddPeriod>
+                {isMobile ? (
+                    <Link to={'/analysis/period'}>
+                        <AddPeriod>Выбрать другой период</AddPeriod>
+                    </Link>
+                ) : (
+                    <AddPeriod>Выбрать другой период</AddPeriod>
+                )}
             </FlexContainer>
         </ExpensesSection>
     )

@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
 import { useAppCoontext } from '../../contexts/AppContext'
-import { Container, SectionTitle } from '../../styles/GlobalStyled'
-import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell } from '../../components/Calendar/Calendar.styles'
+import { Container, PageTitle, SectionTitle } from '../../styles/GlobalStyled'
+import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle } from '../../components/Calendar/Calendar.styles'
+import { ExpensesHeaderLink } from '../Expenses/Expenses.styles'
 
 // Helper function to get days in a month
 const getDaysInMonth = (month, year) => {
@@ -66,11 +67,22 @@ const CalendarComponent = () => {
     }, [displayedYear, displayedMonth, today])
 
     const { isMobile } = useAppCoontext()
+    const [isExpensesPage, setIsExpensesPage] = useState()
+
+    useEffect(() => {
+        location.pathname === '/expenses' ? setIsExpensesPage(true) : setIsExpensesPage(false)
+    }, [location])
 
     return (
         <CalendarSection>
-            <SectionTitle $isMobile={isMobile}>Период</SectionTitle>
-            <Container ref={calendarRef}>
+            <CalendarTitle>
+                <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                    Мои расходы
+                </ExpensesHeaderLink>
+                {isMobile ? <PageTitle $isMobile={isMobile}>Выбор периода</PageTitle> : <PageTitle $isMobile={isMobile}>Период</PageTitle>}
+            </CalendarTitle>
+
+            <CalendarWrapper ref={calendarRef}>
                 <DaysOfWeek>
                     {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (
                         <DayName key={day}>{day}</DayName>
@@ -117,7 +129,7 @@ const CalendarComponent = () => {
                         </MonthContainer>
                     )
                 })}
-            </Container>
+            </CalendarWrapper>
         </CalendarSection>
     )
 }

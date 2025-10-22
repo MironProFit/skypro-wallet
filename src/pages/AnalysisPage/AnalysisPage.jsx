@@ -10,7 +10,9 @@ function AnalysisPage() {
         // --- Мобильная версия ---
         return (
             <Container $isMobile={isMobile}>
-                <PageTitle $isMobile={isMobile}>Анализ расходов</PageTitle>
+                <PageTitle style={{ paddingTop: '24px' }} $isMobile={isMobile}>
+                    Анализ расходов
+                </PageTitle>
                 <PeriodExpenses />
             </Container>
         )

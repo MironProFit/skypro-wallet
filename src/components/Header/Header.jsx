@@ -27,6 +27,9 @@ function Header(onLogout) {
             case '/analysis':
                 newName = 'Анализ расходов'
                 break
+            case '/analysis/period':
+                newName = 'Анализ расходов'
+                break
             default:
                 newName = 'Мои расходы'
         }
@@ -89,7 +92,7 @@ function Header(onLogout) {
                                             state={{ isModal: false }}
                                             $isModal={isModal}
                                             $isMobile={isMobile}
-                                            $isLinkActive={isLinkActive('/analysis')}
+                                            $isLinkActive={isLinkActive('/analysis') || isLinkActive('/analysis/period')}
                                             onClick={() => setIsmodal(false)}
                                         >
                                             Анализ расходов

@@ -1,13 +1,14 @@
 import styled from 'styled-components'
-import {  accentColorRgb, borderColor, primaryColor, secondaryColor, textColor, thumbColor } from '../../styles/Mexins.style'
+import { accentColorRgb, borderColor, primaryColor, secondaryColor, textColor, thumbColor } from '../../styles/Mexins.style'
 import { Section } from '../../styles/GlobalStyled'
 
 export const CalendarSection = styled(Section)`
-    min-width: 380px;
+    /* min-width: 380px; */
     flex: 1;
 `
+
 // Styled-components
-export const Container = styled.div`
+export const CalendarWrapper = styled.div`
     width: 100%;
     height: 450px;
     overflow-x: hidden;
@@ -24,6 +25,12 @@ export const Container = styled.div`
         background-color: ${thumbColor};
         border-radius: 10px;
     }
+`
+
+export const CalendarTitle = styled.div`
+
+padding-bottom: 16px;
+padding-top: 24px;
 `
 
 export const DaysOfWeek = styled.div`
