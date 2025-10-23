@@ -1,13 +1,13 @@
 import { Container, ContainerGroup, PageTitle } from '../../styles/GlobalStyled'
 import ExpensesTable from '../../components/Expenses/TableExpenses'
 import NewExpense from '../../components/Expenses/NewExpense'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 import { ExpensesHeaderLink, ExpensesHeaderTitle } from '../../components/Expenses/Expenses.styles'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 function ExpensesPage() {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const location = useLocation()
     const [isExpensesPage, setIsExpensesPage] = useState()
 

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     width: 100vw;
     min-height: 100vh;
     overflow: auto;
-    background-color: ${secondaryColor};
+    background-color: ${primaryColor};
 `
 
 export const Container = styled.div`
@@ -24,7 +24,6 @@ export const Container = styled.div`
             border-radius: 0;
             padding: 0 16px;
             padding-bottom: 10px;
-            /* padding-top: 24px; */
         `}
 `
 export const ContainerGroup = styled.div`
@@ -238,4 +237,5 @@ export const FlexContainer = styled.div`
     transform: translateX(-50%);
     background-color: ${primaryColor};
     padding: 24px 16px;
+    box-shadow: 0px -20px 20px 20px #f5f2f2c9;
 `

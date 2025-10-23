@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { useLocation, useNavigate } from 'react-router-dom' // useNavigate уже импортирован
 import { HeaderContainer, HeaderLogo, HeaderNav, HeaderWrapper, LinkContainer, ModalLinks, NavLinkButton, NavLinkModal, StyledLinkGroup } from './Header.styles'
@@ -8,7 +8,7 @@ import logoDark from '../../assets/image/logo/logo-dark.svg'
 
 function Header(onLogout) {
     const { isAuth } = useAuthContext()
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const [isModal, setIsModal] = useState(false)
     const location = useLocation()
     const [linkName, setLinkName] = useState('Мои расходы') // Начальное значение

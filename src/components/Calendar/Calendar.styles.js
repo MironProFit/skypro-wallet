@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { accentColorRgb, borderColor, primaryColor, secondaryColor, textColor, thumbColor } from '../../styles/Mexins.style'
 import { Section } from '../../styles/GlobalStyled'
 
@@ -24,6 +24,12 @@ export const CalendarWrapper = styled.div`
         background-color: ${thumbColor};
         border-radius: 10px;
     }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            width: 450px;
+        `}
 `
 
 export const CalendarTitle = styled.div`
@@ -40,6 +46,13 @@ export const DaysOfWeek = styled.div`
     position: sticky;
     top: 0;
     z-index: 1;
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            display: grid;
+            justify-content: center;
+            grid-template-columns: repeat(7, clamp(10px, 11vw, 46px));
+        `}
 `
 
 export const DayName = styled.div`
@@ -60,12 +73,22 @@ export const MonthHeader = styled.h3`
     font-size: 1em;
 `
 
+export const MonthWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
 export const CalendarGrid = styled.div`
     display: grid;
     grid-template-columns: repeat(7, clamp(10px, 4vw, 40px));
     grid-auto-rows: 40px;
     gap: clamp(1px, 4.5vw, 6px);
     /* gap: 6px; */
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            grid-template-columns: repeat(7, clamp(10px, 9vw, 40px));
+        `}
 `
 
 export const DayCell = styled.div`
@@ -75,18 +98,19 @@ export const DayCell = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: ${({ $isSelected, $isToday, $isInRange }) =>
-        $isSelected
-            ? accentColorRgb
-            : $isToday && $isInRange
-            ? 'orange' // Цвет для сегодняшнего дня, если он в диапазоне
-            : $isToday
-            ? thumbColor
-            : secondaryColor}; // Цвет для сегодняшнего дня, если он не в диапазоне
+    background-color: ${({ $isSelected, $isToday, $isInRange, $isMobile }) =>
+        $isSelected ? accentColorRgb : $isToday && $isInRange ? 'orange' : $isToday ? thumbColor : secondaryColor}; // Цвет для сегодняшнего дня, если он не в диапазоне
     color: ${({ $isToday }) => ($isToday ? primaryColor : textColor)};
     cursor: pointer;
 
     &:hover {
         background-color: ${accentColorRgb};
     }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            width: clamp(10px, 9vw, 40px);
+            height: clamp(10px, 9vw, 40px);
+        `}
 `

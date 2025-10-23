@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 import { ContainerTitle, FlexContainer, SectionTitle } from '../../styles/GlobalStyled'
 import { ExpensesSection } from './Expenses.styles'
 import { formattedDate } from '../../utils/date-fns'
@@ -8,7 +8,7 @@ import { categoryList } from '../../data/CategoryList'
 import { Link } from 'react-router-dom'
 
 function PeriodExpenses({ $flex }) {
-    const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppCoontext()
+    const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()
 
     return (
         <ExpensesSection $flex={$flex}>

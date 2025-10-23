@@ -23,6 +23,6 @@ export const AppProvider = ({ children }) => {
     return <AppContext.Provider value={{ startDate, setStartDate, endDate, setEndDate, isMobile, setIsMobile, windowWidth, setWindowWidth }}>{children}</AppContext.Provider>
 }
 
-export const useAppCoontext = () => {
+export const useAppContext = () => {
     return useContext(AppContext)
 }

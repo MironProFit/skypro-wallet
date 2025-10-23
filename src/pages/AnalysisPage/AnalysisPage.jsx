@@ -1,10 +1,10 @@
 import CalendarComponent from '../../components/Calendar/Calendar'
 import PeriodExpenses from '../../components/Expenses/PeriodExpenses'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 import { Container, ContainerGroup, PageTitle } from '../../styles/GlobalStyled'
 
 function AnalysisPage() {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
 
     if (isMobile) {
         // --- Мобильная версия ---

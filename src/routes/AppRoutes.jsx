@@ -4,14 +4,14 @@ import Layout from '../pages/Layout/Layout'
 import AuthModal from '../components/Auth/AuthModal'
 
 import NotFound from '../components/NotFound/NotFound'
-import { useAppCoontext } from '../contexts/AppContext'
+import { useAppContext } from '../contexts/AppContext'
 import ExpensesPage from '../pages/Expenses/ExpensesPage'
 import PeriodPage from '../pages/PeriodPage/PeriodPage'
 import NewExpensePage from '../pages/NewExpensePage/NewExpensePage'
 import AnalysisPage from '../pages/AnalysisPage/AnalysisPage'
 
 function AppRoutes() {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const router = createBrowserRouter([
         {
             path: '/',

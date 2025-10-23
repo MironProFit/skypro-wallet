@@ -3,10 +3,10 @@ import { FlexContainer, PrimaryButton, Section, SectionTitle } from '../../style
 import CartSVG from '../icons/CategoryIcons/CartSVG'
 
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 
 function ExpensesTable({ $flex }) {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
     const [isHidden, setIsHidden] = useState(true)

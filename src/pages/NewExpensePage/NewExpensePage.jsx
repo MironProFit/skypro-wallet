@@ -1,4 +1,4 @@
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 import { Container, PageTitle } from '../../styles/GlobalStyled'
 import NewExpense from '../../components/Expenses/NewExpense'
 import { Navigate, useLocation } from 'react-router-dom' // Для перенаправления с ПК
@@ -6,7 +6,7 @@ import { ExpensesHeaderLink, ExpensesHeaderTitle } from '../../components/Expens
 import { useEffect, useState } from 'react'
 
 function NewExpensePage() {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const location = useLocation()
     const [isExpensesPage, setIsExpensesPage] = useState()
 

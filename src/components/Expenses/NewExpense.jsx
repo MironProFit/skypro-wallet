@@ -16,10 +16,10 @@ import {
 } from './Expenses.styles'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
 import { categoryList } from '../../data/CategoryList'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 
 function NewExpense({ $flex }) {
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const [active, setActive] = useState(false)
     const [isDisabled, setIsDisabled] = useState(true)
 

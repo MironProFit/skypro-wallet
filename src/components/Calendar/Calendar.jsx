@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from 'react'
-import { useAppCoontext } from '../../contexts/AppContext'
-import { Container, PageTitle, SectionTitle } from '../../styles/GlobalStyled'
-import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle } from '../../components/Calendar/Calendar.styles'
+import { useAppContext } from '../../contexts/AppContext'
+import { SectionTitle } from '../../styles/GlobalStyled'
+import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle, MonthWrapper } from '../../components/Calendar/Calendar.styles'
 import { ExpensesHeaderLink } from '../Expenses/Expenses.styles'
+import { useLocation } from 'react-router-dom'
 
 // Helper function to get days in a month
 const getDaysInMonth = (month, year) => {
@@ -11,12 +12,13 @@ const getDaysInMonth = (month, year) => {
 
 // Main Calendar Component
 const CalendarComponent = () => {
-    const { startDate, setStartDate, endDate, setEndDate } = useAppCoontext()
+    const { startDate, setStartDate, endDate, setEndDate } = useAppContext()
     const currentDate = new Date()
     const [displayedYear, setDisplayedYear] = useState(currentDate.getFullYear())
     const [displayedMonth, setDisplayedMonth] = useState(currentDate.getMonth())
     const calendarRef = useRef(null)
-    const [today, setToday] = useState(currentDate) 
+    const [today, setToday] = useState(currentDate)
+    const location = useLocation()
 
     const monthsToShow = []
     for (let i = -3; i <= 3; i++) {
@@ -47,9 +49,10 @@ const CalendarComponent = () => {
 
     // Set the default period to today on initial render
     useEffect(() => {
-        setStartDate(today)
-        setEndDate(today)
-    }, [today])
+        const now = new Date()
+        setStartDate(now)
+        setEndDate(now)
+    }, [])
 
     // Scroll to today in the calendar view
     useEffect(() => {
@@ -66,7 +69,7 @@ const CalendarComponent = () => {
         }
     }, [displayedYear, displayedMonth, today])
 
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
     const [isExpensesPage, setIsExpensesPage] = useState()
 
     useEffect(() => {
@@ -74,20 +77,19 @@ const CalendarComponent = () => {
     }, [location])
 
     return (
-        <CalendarSection>
-            {isMobile && (
-                <CalendarTitle>
-                    {isMobile && (
-                        <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                            Мои расходы
-                        </ExpensesHeaderLink>
-                    )}
-                </CalendarTitle>
-            )}
+        <CalendarSection $isMobile={isMobile}>
+            <CalendarTitle>
+                {isMobile && (
+                    <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                        Мои расходы
+                    </ExpensesHeaderLink>
+                )}
+            </CalendarTitle>
+
             {isMobile ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : <SectionTitle $isMobile={isMobile}>Период</SectionTitle>}
 
             <CalendarWrapper ref={calendarRef}>
-                <DaysOfWeek>
+                <DaysOfWeek $isMobile={isMobile}>
                     {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (
                         <DayName key={day}>{day}</DayName>
                     ))}
@@ -100,37 +102,40 @@ const CalendarComponent = () => {
                     const effectiveFirstDay = firstDay < 0 ? 6 : firstDay
 
                     return (
-                        <MonthContainer key={`${month}-${year}`}>
-                            <MonthHeader>
-                                {date.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + date.toLocaleString('default', { month: 'long' }).slice(1)} {year}
-                            </MonthHeader>
-                            <CalendarGrid>
-                                {Array.from({ length: effectiveFirstDay }).map((_, i) => (
-                                    <div key={i} style={{ width: '40px', height: '40px' }}></div>
-                                ))}
-                                {Array.from({ length: daysInMonth }).map((_, day) => {
-                                    const dateNum = day + 1
-                                    const isToday = currentDate.getDate() === dateNum && currentDate.getMonth() === month && currentDate.getFullYear() === year
-                                    const isInRange = isDateInRange(dateNum, month, year)
-                                    const isSelected =
-                                        (startDate && startDate.getDate() === dateNum && startDate.getMonth() === month && startDate.getFullYear() === year) ||
-                                        (endDate && endDate.getDate() === dateNum && endDate.getMonth() === month && endDate.getFullYear() === year)
+                        <MonthWrapper key={`${month}-${year}`}>
+                            <MonthContainer>
+                                <MonthHeader>
+                                    {date.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + date.toLocaleString('default', { month: 'long' }).slice(1)} {year}
+                                </MonthHeader>
+                                <CalendarGrid $isMobile={isMobile}>
+                                    {Array.from({ length: effectiveFirstDay }).map((_, i) => (
+                                        <div key={i} style={{ width: '40px', height: '40px' }}></div>
+                                    ))}
+                                    {Array.from({ length: daysInMonth }).map((_, day) => {
+                                        const dateNum = day + 1
+                                        const isToday = currentDate.getDate() === dateNum && currentDate.getMonth() === month && currentDate.getFullYear() === year
+                                        const isInRange = isDateInRange(dateNum, month, year)
+                                        const isSelected =
+                                            (startDate && startDate.getDate() === dateNum && startDate.getMonth() === month && startDate.getFullYear() === year) ||
+                                            (endDate && endDate.getDate() === dateNum && endDate.getMonth() === month && endDate.getFullYear() === year)
 
-                                    return (
-                                        <DayCell
-                                            key={day}
-                                            data-date={`${year}-${month}-${dateNum}`}
-                                            $isToday={isToday}
-                                            $isInRange={isInRange} // Передаем isInRange
-                                            $isSelected={isSelected || isInRange}
-                                            onClick={() => handleDateClick(dateNum, month, year)}
-                                        >
-                                            {dateNum}
-                                        </DayCell>
-                                    )
-                                })}
-                            </CalendarGrid>
-                        </MonthContainer>
+                                        return (
+                                            <DayCell
+                                                $isMobile={isMobile}
+                                                key={`${year}-${month}-${dateNum}`}
+                                                data-date={`${year}-${month}-${dateNum}`}
+                                                $isToday={isToday}
+                                                // $isInRange={isInRange} // Передаем isInRange
+                                                $isSelected={isSelected || isInRange}
+                                                onClick={() => handleDateClick(dateNum, month, year)}
+                                            >
+                                                {dateNum}
+                                            </DayCell>
+                                        )
+                                    })}
+                                </CalendarGrid>
+                            </MonthContainer>
+                        </MonthWrapper>
                     )
                 })}
             </CalendarWrapper>

@@ -17,13 +17,13 @@ import {
     TextInput,
 } from './AuthModal.styles'
 import { useEffect, useState } from 'react'
-import { useAppCoontext } from '../../contexts/AppContext'
+import { useAppContext } from '../../contexts/AppContext'
 
 function AuthModal() {
     const [isPage, setIsPage] = useState('login')
     const location = useLocation()
     const navigate = useNavigate()
-    const { isMobile } = useAppCoontext()
+    const { isMobile } = useAppContext()
 
     useEffect(() => {
         console.log(location.pathname)
