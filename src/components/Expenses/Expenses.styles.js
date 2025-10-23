@@ -69,13 +69,14 @@ export const ExpensesHeaderLink = styled(Link)`
     &::before {
         position: absolute;
         content: '';
-        background-image: url(${({ $isExpensesPage }) => ($isExpensesPage ? '../../../public/image/icon/vuesaxboldadd-circle.svg' : '../../../public/image/icon/vuesaxboldarrow-left.svg')});
+        background-image: url(${({ $isExpensesPage }) => ($isExpensesPage ? 'image/icon/add-circle.svg' : 'image/icon/arrow-left.svg')});
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
         /* padding-right: 10px; */
         left: -25px;
-        top: 5px;
+        top: 50%;
+        transform: translateY(-50%);
 
         width: 14px;
         height: 14px;
@@ -94,21 +95,32 @@ export const ExpensesHeaderLink = styled(Link)`
 `
 
 export const HeaderCell = styled.div`
-    flex: 1;
+    /* flex: 1; */
     color: ${borderColor};
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    box-sizing: border-box;
+    ${({ $isHidden, $isMobile }) =>
+        $isHidden &&
+        $isMobile &&
+        css`
+            display: none;
+            /* flex: 0; */
+        `};
 
     ${({ $isVisible, $isMobile }) =>
         $isVisible &&
         $isMobile &&
         css`
-            display: none;
-            flex: 0;
+            /* display: none; */
+            /* flex: 0; */
         `};
 
     ${({ $isVisible }) =>
         $isVisible &&
         css`
-            flex: 0;
+            /* flex: 0; */
         `};
 `
 
@@ -126,13 +138,14 @@ export const ExpensesItem = styled.li`
     transition: 0.3s;
     padding: 0 10px;
     border-radius: 10px;
-
+    justify-content: space-between;
+/* 
     ${({ $isMobile }) =>
         $isMobile &&
         css`
             justify-content: space-between;
             padding: 0 10px;
-        `};
+        `}; */
 
     &:hover {
         background-color: ${accentColorRgb};
@@ -146,25 +159,30 @@ export const ExpensesFormGroup = styled(FormGroup)`
 
 export const ItemCell = styled.div`
     white-space: nowrap;
-    flex: 1;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
 
+    /* flex: 1; */
+    /* 
     ${({ $isMobile, $isVisible }) =>
         $isMobile &&
         $isVisible &&
-        css`
+        css` */
             /* display: none; */
-            flex: none;
-        `};
+            /* flex: none; */
+        /* `}; */
 
-    ${({ $isVisible }) =>
+    /* ${({ $isVisible }) =>
         $isVisible &&
-        css`
+        css` */
             /* display: none; */
-            flex: 0;
-        `};
+            /* flex: 0; */
+        /* `}; */
 `
 export const ItemCellImg = styled.div`
-    flex: 1;
+    /* flex: 1; */
     display: flex;
     justify-content: flex-end;
     align-items: center;

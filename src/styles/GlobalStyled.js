@@ -22,6 +22,7 @@ export const Container = styled.div`
         css`
             background-color: ${primaryColor};
             border-radius: 0;
+            padding: 0 16px;
             padding-bottom: 10px;
             /* padding-top: 24px; */
         `}
@@ -117,16 +118,19 @@ export const ContainerTitle = styled.h3`
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    white-space: nowrap;
     text-align: center;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+
     ${({ $isMobile }) =>
         $isMobile &&
         css`
-            font-weight: 400;
             font-size: 10px;
             line-height: 12px;
-            white-space: nowrap;
-            text-align: center;
         `}
 `
 
@@ -136,9 +140,10 @@ export const SectionSubTitle = styled.h4`
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
-    white-space: nowrap;
+    white-space: pre-wrap;
     text-align: center;
     align-items: center;
+    text-overflow: ellipsis;
     color: ${borderColor};
 `
 
@@ -181,7 +186,6 @@ export const FormLabel = styled.label`
 export const FormInput = styled.input`
     position: relative;
     color: ${textColor};
-    max-width: 313px;
     height: 39px;
     padding: 12px;
     border-radius: 6px;

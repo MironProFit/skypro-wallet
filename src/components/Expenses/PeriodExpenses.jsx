@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppCoontext } from '../../contexts/AppContext'
 import { ContainerTitle, FlexContainer, SectionTitle } from '../../styles/GlobalStyled'
 import { ExpensesSection } from './Expenses.styles'
@@ -16,22 +16,20 @@ function PeriodExpenses({ $flex }) {
             <PeriodSubTitle>{startDate && endDate ? `Расходы за: ${formattedDate(startDate)} - ${formattedDate(endDate)}` : 'Выбирите период'}</PeriodSubTitle>
             <ChartContainer $isMobile={isMobile}>
                 {categoryList.map((item) => (
-                    <ChartItem>
+                    <ChartItem key={item.category}>
                         <ContainerTitle $isMobile={isMobile}>21 990 ₽</ContainerTitle>
                         <ChartColor $isMobile={isMobile} $color={item.color}></ChartColor>
                         <ChartCategory $isMobile={isMobile}>Eda</ChartCategory>
                     </ChartItem>
                 ))}
             </ChartContainer>
-            <FlexContainer>
-                {isMobile ? (
+            {isMobile && (
+                <FlexContainer>
                     <Link to={'/analysis/period'}>
                         <AddPeriod>Выбрать другой период</AddPeriod>
                     </Link>
-                ) : (
-                    <AddPeriod>Выбрать другой период</AddPeriod>
-                )}
-            </FlexContainer>
+                </FlexContainer>
+            )}
         </ExpensesSection>
     )
 }

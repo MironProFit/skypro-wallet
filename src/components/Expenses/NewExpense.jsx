@@ -40,8 +40,8 @@ function NewExpense({ $flex }) {
                         {categoryList.map((category) => {
                             const IconComponents = category.icon
                             return (
-                                <CategoryButton>
-                                    <CategoryContainer active $active={active ? 'rgba(115, 52, 234, 0.1)' : secondaryColor}>
+                                <CategoryButton key={category.category}>
+                                    <CategoryContainer $active={active ? 'rgba(115, 52, 234, 0.1)' : secondaryColor}>
                                         <CategoryImg>
                                             <IconComponents $active={active ? accentColor : textColor} />
                                         </CategoryImg>

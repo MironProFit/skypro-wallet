@@ -3,11 +3,12 @@ import styled, { css } from 'styled-components'
 import { accentColor, accentColorRgb, primaryColor, secondaryColor, textColor } from '../../styles/Mexins.style'
 
 export const HeaderContainer = styled.header`
-    height: 64px;
+    min-height: 64px;
     width: 100%;
     display: flex;
     background-color: ${primaryColor};
-    padding: 20px 0;
+    align-items: center;
+    /* padding: 20px 0; */
     margin: 0 auto;
 
     ${({ $isMobile }) =>
@@ -25,10 +26,16 @@ export const HeaderLogo = styled(Link)`
 export const HeaderNav = styled.nav`
     width: 100%;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-between;
     flex-wrap: wrap;
+    padding: 10px;
     gap: 15px;
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            justify-content: space-around;
+        `}
 `
 
 export const StyledLinkGroup = styled.div`
@@ -63,7 +70,7 @@ export const NavLinkButton = styled(Link)`
             &::after {
                 position: absolute;
                 content: '';
-                background-image: url('../../../public/image/icon/triangle-icon.png');
+                background-image: url('image/icon/triangle-icon.png');
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
@@ -76,25 +83,23 @@ export const NavLinkButton = styled(Link)`
                 width: 100%;
             }
         `}
-
-    ${({ $isMobile, $isModal }) =>
-        $isMobile &&
-        $isModal &&
+    ${({ $isLinkActive }) =>
+        $isLinkActive &&
         css`
-            &::after {
+            color: ${accentColor};
+
+            &::before {
+                color: red;
+                transition: 0.3s;
                 position: absolute;
+                bottom: -3px;
+                left: 50%;
                 content: '';
-                background-image: url('image/icon/triangle-icon.png');
-                background-position: center;
-                background-size: cover;
-                background-repeat: no-repeat;
-                width: 19px;
-                height: 19px;
-                transform: rotate(180deg) translateY(-10px);
+                width: 100%;
+                border-bottom: 1px solid ${accentColor};
+                transform: translateX(-50%);
             }
         `}
-        @media (hover: hover) {
-    }
 `
 
 export const LinkContainer = styled.div`

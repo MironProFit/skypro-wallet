@@ -75,12 +75,16 @@ const CalendarComponent = () => {
 
     return (
         <CalendarSection>
-            <CalendarTitle>
-                <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                    Мои расходы
-                </ExpensesHeaderLink>
-                {isMobile ? <PageTitle $isMobile={isMobile}>Выбор периода</PageTitle> : <PageTitle $isMobile={isMobile}>Период</PageTitle>}
-            </CalendarTitle>
+            {isMobile && (
+                <CalendarTitle>
+                    {isMobile && (
+                        <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                            Мои расходы
+                        </ExpensesHeaderLink>
+                    )}
+                </CalendarTitle>
+            )}
+            {isMobile ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : <SectionTitle $isMobile={isMobile}>Период</SectionTitle>}
 
             <CalendarWrapper ref={calendarRef}>
                 <DaysOfWeek>
@@ -116,9 +120,9 @@ const CalendarComponent = () => {
                                         <DayCell
                                             key={day}
                                             data-date={`${year}-${month}-${dateNum}`}
-                                            isToday={isToday}
-                                            isInRange={isInRange} // Передаем isInRange
-                                            isSelected={isSelected || isInRange}
+                                            $isToday={isToday}
+                                            $isInRange={isInRange} // Передаем isInRange
+                                            $isSelected={isSelected || isInRange}
                                             onClick={() => handleDateClick(dateNum, month, year)}
                                         >
                                             {dateNum}

@@ -11,5 +11,5 @@
       <feBlend mode="normal" in="SourceGraphic" in2="Shadow_2" result="Shape_3" />
     </filter>
   </defs>
-  <path d="M3.5 0L6.53109 5.25L0.46891 5.25L3.5 0Z" fill="#000000" fill-rule="evenodd" filter="url(#filter_1)" transform="matrix(-1 -0 0 -1 13 17)" />
+  <path d="M3.5 0L6.53109 5.25L0.46891 5.25L3.5 0Z" fill="#000000" fillRule="evenodd" filter="url(#filter_1)" transform="matrix(-1 -0 0 -1 13 17)" />
 </svg>

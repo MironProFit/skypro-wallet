@@ -44,25 +44,26 @@ function Header(onLogout) {
     const isLinkActive = (path) => {
         return location.pathname === path
     }
+    
 
     return (
         <HeaderContainer $isMobile={isMobile}>
             <Container>
-                <HeaderNav>
+                <HeaderNav $isMobile={isMobile}>
                     <HeaderLogo>
-                        <img src="/image/Wallet_logo.png" alt="Logo" />
+                        <img src="image/logo/logo-dark.svg" alt="Logo" />
                     </HeaderLogo>
                     {isAuth && (
                         <>
                             {!isMobile ? (
                                 <StyledLinkGroup>
                                     <LinkContainer>
-                                        <NavLinkButton $isMobile={isMobile} to={'/expenses'}>
+                                        <NavLinkButton $isMobile={isMobile} to={'/expenses'} $isLinkActive={isLinkActive('/expenses')}>
                                             Мои расходы
                                         </NavLinkButton>
                                     </LinkContainer>
                                     <LinkContainer>
-                                        <NavLinkButton $isMobile={isMobile} to={'/analysis'}>
+                                        <NavLinkButton $isMobile={isMobile} to={'/analysis'} $isLinkActive={isLinkActive('/analysis')}>
                                             Анализ расходов
                                         </NavLinkButton>
                                     </LinkContainer>
@@ -73,7 +74,6 @@ function Header(onLogout) {
                                         {linkName}
                                     </NavLinkButton>
                                     <ModalLinks $isModal={isModal}>
-                                        {/* Используем to, state и onClick для закрытия модального окна */}
                                         <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsmodal(false)}>
                                             Мои расходы
                                         </NavLinkModal>

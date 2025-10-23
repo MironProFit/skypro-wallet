@@ -28,9 +28,8 @@ export const CalendarWrapper = styled.div`
 `
 
 export const CalendarTitle = styled.div`
-
-padding-bottom: 16px;
-padding-top: 24px;
+    padding-bottom: 16px;
+    padding-top: 24px;
 `
 
 export const DaysOfWeek = styled.div`
@@ -64,27 +63,28 @@ export const MonthHeader = styled.h3`
 
 export const CalendarGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(7, 40px);
+    grid-template-columns: repeat(7, clamp(10px, 4vw, 40px));
     grid-auto-rows: 40px;
-    gap: 6px;
+    gap: clamp(1px, 4.5vw, 6px);
+    /* gap: 6px; */
 `
 
 export const DayCell = styled.div`
-    width: 40px;
-    height: 40px;
+    width: clamp(10px, 4vw, 40px);
+    height: clamp(10px, 4vw, 40px);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: ${({ isSelected, isToday, isInRange }) =>
-        isSelected
+    background-color: ${({ $isSelected, $isToday, $isInRange }) =>
+        $isSelected
             ? accentColorRgb
-            : isToday && isInRange
+            : $isToday && $isInRange
             ? 'orange' // Цвет для сегодняшнего дня, если он в диапазоне
-            : isToday
+            : $isToday
             ? thumbColor
             : secondaryColor}; // Цвет для сегодняшнего дня, если он не в диапазоне
-    color: ${({ isToday }) => (isToday ? primaryColor : textColor)};
+    color: ${({ $isToday }) => ($isToday ? primaryColor : textColor)};
     cursor: pointer;
 
     &:hover {

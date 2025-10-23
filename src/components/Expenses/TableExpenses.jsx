@@ -9,6 +9,7 @@ function ExpensesTable({ $flex }) {
     const { isMobile } = useAppCoontext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
+    const [isHidden, setIsHidden] = useState(true)
 
     useEffect(() => {
         setIsVisible(isMobile ? true : false)
@@ -31,7 +32,7 @@ function ExpensesTable({ $flex }) {
                     <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
                         Сумма
                     </HeaderCell>
-                    <HeaderCell $isMobile={isMobile} $isVisible={isVisible}></HeaderCell>
+                    <HeaderCell $isMobile={isMobile} $isHidden={isHidden}></HeaderCell>
                 </ExpensesHeader>
 
                 <ExpensesList>
