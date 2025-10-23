@@ -3,7 +3,6 @@ import { accentColorRgb, borderColor, primaryColor, secondaryColor, textColor, t
 import { Section } from '../../styles/GlobalStyled'
 
 export const CalendarSection = styled(Section)`
-    /* min-width: 380px; */
     flex: 1;
 `
 

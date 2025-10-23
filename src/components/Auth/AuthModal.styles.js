@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { Container, FormGroup, FormInput, PageText, PrimaryButton, Section, SectionTitle } from '../../styles/GlobalStyled'
 import { Link } from 'react-router-dom'
 import { NavLinkButton } from '../Header/Header.styles'
-import { accentColor, borderColor } from '../../styles/Mexins.style'
+import { accentColor, borderColor, primaryColor, secondaryColor } from '../../styles/Mexins.style'
 
 export const AuthContainer = styled(Container)`
     display: flex;
@@ -12,6 +12,11 @@ export const AuthContainer = styled(Container)`
 export const AuthSection = styled(Section)`
     width: 379px;
     /* height: 334px; */
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            width: unset;
+        `}
 `
 
 export const ModalWrapper = styled.div`
@@ -23,8 +28,13 @@ export const ModalWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    background-color: ${({ $isMobile }) => ($isMobile ? primaryColor : secondaryColor)};
 `
-export const AuthTitle = styled(SectionTitle)``
+export const AuthTitle = styled(SectionTitle)`
+    display: flex;
+    justify-content: center;
+`
 
 export const AuthFormGroup = styled(FormGroup)`
     /* margin-bottom: 24px; */
@@ -44,7 +54,7 @@ export const SubmitButton = styled(PrimaryButton)`
 `
 
 export const InputGroup = styled.div`
-    /* margin-bottom: 24px; */
+    width: 313px;
 `
 export const PromtGroup = styled.div`
     display: flex;

@@ -60,7 +60,6 @@ function NewExpense({ $flex }) {
 
                 <ExpensesFormGroup>
                     <FormLabel htmlFor="formPrice">Сумма</FormLabel>
-                    {/* Используем обёртку и новый инпут */}
                     <FormInputSumWrapper>
                         <RubleIcon>₽</RubleIcon> {/* Компонент символа */}
                         <FormInputSum $isMobile={isMobile} id="formPrice" type="number" placeholder="Введите сумму" /> {/* Обновлённый инпут */}

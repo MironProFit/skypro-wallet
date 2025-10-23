@@ -17,11 +17,13 @@ import {
     TextInput,
 } from './AuthModal.styles'
 import { useEffect, useState } from 'react'
+import { useAppCoontext } from '../../contexts/AppContext'
 
 function AuthModal() {
     const [isPage, setIsPage] = useState('login')
     const location = useLocation()
     const navigate = useNavigate()
+    const { isMobile } = useAppCoontext()
 
     useEffect(() => {
         console.log(location.pathname)
@@ -36,9 +38,9 @@ function AuthModal() {
     }, [])
 
     return (
-        <ModalWrapper>
+        <ModalWrapper $isMobile={isMobile}>
             <AuthContainer>
-                <AuthSection>
+                <AuthSection $isMobile={isMobile}>
                     <AuthFormGroup>
                         <AuthTitle>{isPage === 'login' ? 'Вход' : 'Регистрация'}</AuthTitle>
                         <InputGroup>

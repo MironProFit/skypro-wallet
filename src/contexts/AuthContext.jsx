@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         setIsAuth(true)
     }, [])
+    
     return (
         <AuthContext.Provider
             value={{

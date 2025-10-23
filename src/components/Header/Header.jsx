@@ -1,57 +1,40 @@
 import { useEffect, useState } from 'react'
 import { useAppCoontext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
-import { Container } from '../../styles/GlobalStyled'
 import { useLocation, useNavigate } from 'react-router-dom' // useNavigate уже импортирован
+import { HeaderContainer, HeaderLogo, HeaderNav, HeaderWrapper, LinkContainer, ModalLinks, NavLinkButton, NavLinkModal, StyledLinkGroup } from './Header.styles'
 
-import { HeaderContainer, HeaderLogo, HeaderNav, LinkContainer, ModalLinks, NavLinkButton, NavLinkModal, StyledLinkGroup } from './Header.styles'
+import logoDark from '../../assets/image/logo/logo-dark.svg'
 
 function Header(onLogout) {
     const { isAuth } = useAuthContext()
     const { isMobile } = useAppCoontext()
-    const [isModal, setIsmodal] = useState(false)
+    const [isModal, setIsModal] = useState(false)
     const location = useLocation()
     const [linkName, setLinkName] = useState('Мои расходы') // Начальное значение
     const navigate = useNavigate()
 
     // useEffect для обновления linkName при изменении location.pathname
     useEffect(() => {
-        let newName = 'Мои расходы'
-        switch (location.pathname) {
-            case '/expenses':
-                newName = 'Мои расходы'
-                break
-            case '/expenses/new':
-                newName = 'Новый расход'
-                break
-            case '/analysis':
-                newName = 'Анализ расходов'
-                break
-            case '/analysis/period':
-                newName = 'Анализ расходов'
-                break
-            default:
-                newName = 'Мои расходы'
-        }
-        setLinkName(newName)
+        const pathMap = { '/expenses': 'Мои расходы', '/expenses/new': 'Новый расход', '/analysis': 'Анализ расходов', '/analysis/period': 'Анализ расходов' }
+        setLinkName(pathMap[location.pathname] || 'Мои расходы')
     }, [location.pathname])
 
     const handleModalLinks = (e) => {
         e.preventDefault()
-        setIsmodal((prev) => !prev)
+        setIsModal((prev) => !prev)
     }
 
     const isLinkActive = (path) => {
         return location.pathname === path
     }
-    
 
     return (
-        <HeaderContainer $isMobile={isMobile}>
-            <Container>
+        <HeaderWrapper $isMobile={isMobile}>
+            <HeaderContainer $isMobile={isMobile}>
                 <HeaderNav $isMobile={isMobile}>
                     <HeaderLogo>
-                        <img src="image/logo/logo-dark.svg" alt="Logo" />
+                        <img src={logoDark} alt="Logo" />
                     </HeaderLogo>
                     {isAuth && (
                         <>
@@ -83,7 +66,7 @@ function Header(onLogout) {
                                             $isModal={isModal}
                                             $isMobile={isMobile}
                                             $isLinkActive={isLinkActive('/expenses/new')}
-                                            onClick={() => setIsmodal(false)}
+                                            onClick={() => setIsModal(false)}
                                         >
                                             Новый расход
                                         </NavLinkModal>
@@ -93,7 +76,7 @@ function Header(onLogout) {
                                             $isModal={isModal}
                                             $isMobile={isMobile}
                                             $isLinkActive={isLinkActive('/analysis') || isLinkActive('/analysis/period')}
-                                            onClick={() => setIsmodal(false)}
+                                            onClick={() => setIsModal(false)}
                                         >
                                             Анализ расходов
                                         </NavLinkModal>
@@ -107,8 +90,8 @@ function Header(onLogout) {
                         </>
                     )}
                 </HeaderNav>
-            </Container>
-        </HeaderContainer>
+            </HeaderContainer>
+        </HeaderWrapper>
     )
 }
 

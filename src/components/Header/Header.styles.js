@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 import { accentColor, accentColorRgb, primaryColor, secondaryColor, textColor } from '../../styles/Mexins.style'
+import { Container } from '../../styles/GlobalStyled'
 
-export const HeaderContainer = styled.header`
+export const HeaderWrapper = styled.header`
     min-height: 64px;
     width: 100%;
     display: flex;
@@ -16,6 +17,10 @@ export const HeaderContainer = styled.header`
         css`
             background-color: ${secondaryColor};
         `}
+`
+
+export const HeaderContainer = styled(Container)`
+    background-color: unset;
 `
 
 export const HeaderLogo = styled(Link)`
@@ -70,7 +75,7 @@ export const NavLinkButton = styled(Link)`
             &::after {
                 position: absolute;
                 content: '';
-                background-image: url('image/icon/triangle-icon.png');
+                background-image: url('image/icon/triangle-icon.svg');
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
@@ -98,6 +103,13 @@ export const NavLinkButton = styled(Link)`
                 width: 100%;
                 border-bottom: 1px solid ${accentColor};
                 transform: translateX(-50%);
+            }
+        `}
+         ${({ $isModal }) =>
+        $isModal &&
+        css`
+            &::after {
+                transform: rotate(180deg) translateY(-50%);
             }
         `}
 `
