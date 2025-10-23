@@ -73,7 +73,6 @@ export const ExpensesHeaderLink = styled(Link)`
         background-repeat: no-repeat;
         background-size: cover;
         background-position: center;
-        /* padding-right: 10px; */
         left: -25px;
         top: 50%;
         transform: translateY(-50%);
@@ -95,32 +94,17 @@ export const ExpensesHeaderLink = styled(Link)`
 `
 
 export const HeaderCell = styled.div`
-    /* flex: 1; */
     color: ${borderColor};
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     box-sizing: border-box;
+
     ${({ $isHidden, $isMobile }) =>
         $isHidden &&
         $isMobile &&
         css`
             display: none;
-            /* flex: 0; */
-        `};
-
-    ${({ $isVisible, $isMobile }) =>
-        $isVisible &&
-        $isMobile &&
-        css`
-            /* display: none; */
-            /* flex: 0; */
-        `};
-
-    ${({ $isVisible }) =>
-        $isVisible &&
-        css`
-            /* flex: 0; */
         `};
 `
 
@@ -139,18 +123,10 @@ export const ExpensesItem = styled.li`
     padding: 0 10px;
     border-radius: 10px;
     justify-content: space-between;
-/* 
-    ${({ $isMobile }) =>
-        $isMobile &&
-        css`
-            justify-content: space-between;
-            padding: 0 10px;
-        `}; */
 
     &:hover {
         background-color: ${accentColorRgb};
     }
-    /* flex-direction: row; */
 `
 
 export const ExpensesFormGroup = styled(FormGroup)`
@@ -163,26 +139,8 @@ export const ItemCell = styled.div`
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
-
-    /* flex: 1; */
-    /* 
-    ${({ $isMobile, $isVisible }) =>
-        $isMobile &&
-        $isVisible &&
-        css` */
-            /* display: none; */
-            /* flex: none; */
-        /* `}; */
-
-    /* ${({ $isVisible }) =>
-        $isVisible &&
-        css` */
-            /* display: none; */
-            /* flex: 0; */
-        /* `}; */
 `
 export const ItemCellImg = styled.div`
-    /* flex: 1; */
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -207,14 +165,7 @@ export const ItemCellImg = styled.div`
     }
 `
 
-export const CategoryButton = styled.div`
-    /* background-color: green; */
-    /* height: 31px;
-    border-radius: 30px;
-    color: ${textColor};
-    display: flex; */
-    /* flex-direction: row; */
-`
+export const CategoryButton = styled.div``
 export const CategoryContainer = styled.div`
     cursor: pointer;
     gap: 12px;
@@ -250,7 +201,7 @@ export const CategoryDesc = styled.p`
 export const AddButton = styled(PrimaryButton)``
 
 export const FormInputSum = styled(FormInput)`
-    padding-right: 25px; /* Подберите значение под размер символа и отступ */
+    padding-right: 25px;
     width: 100%;
     box-sizing: border-box;
     &::-webkit-inner-spin-button,

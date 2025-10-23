@@ -16,7 +16,7 @@ const CalendarComponent = () => {
     const [displayedYear, setDisplayedYear] = useState(currentDate.getFullYear())
     const [displayedMonth, setDisplayedMonth] = useState(currentDate.getMonth())
     const calendarRef = useRef(null)
-    const [today, setToday] = useState(currentDate) // Устанавливаем текущую дату
+    const [today, setToday] = useState(currentDate) 
 
     const monthsToShow = []
     for (let i = -3; i <= 3; i++) {
