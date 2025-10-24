@@ -18,7 +18,6 @@ function PeriodPage() {
     }, [location.pathname, isMobile])
 
     const handleConfirmSelectedPeriod = () => {
-        console.log('кнопка нажата')
         alert('Выбор подтвержден')
         navigate('/analysis')
     }

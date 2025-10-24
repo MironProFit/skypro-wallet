@@ -2,8 +2,12 @@ import { useAppContext } from '../../contexts/AppContext'
 import { Container, PageTitle } from '../../styles/GlobalStyled'
 import NewExpense from '../../components/Expenses/NewExpense'
 import { Navigate, useLocation } from 'react-router-dom' // Для перенаправления с ПК
-import { ExpensesHeaderLink, ExpensesHeaderTitle } from '../../components/Expenses/Expenses.styles'
+import { ExpensesHeaderLink, ExpensesHeaderTitle, LinkIcon, LinkWrapper } from '../../components/Expenses/Expenses.styles'
 import { useEffect, useState } from 'react'
+
+//img icon
+import plusIcon from '../../assets/image/icon/add-circle.svg'
+import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 
 function NewExpensePage() {
     const { isMobile } = useAppContext()
@@ -23,9 +27,13 @@ function NewExpensePage() {
     return (
         <Container $isMobile={isMobile}>
             <ExpensesHeaderTitle $isMobile={isMobile} $isExpensesPage={isExpensesPage}>
-                <ExpensesHeaderLink to={'/expenses'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                    Мои расходы
-                </ExpensesHeaderLink>
+                <LinkWrapper to={'/expenses'} style={{ order: 2 }}>
+                    <LinkIcon src={leftArrIcon} alt="+"></LinkIcon>
+                    <ExpensesHeaderLink $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                        Мои расходы
+                    </ExpensesHeaderLink>
+                </LinkWrapper>
+
                 <PageTitle $isMobile={isMobile}>Новый расход</PageTitle>
             </ExpensesHeaderTitle>
 

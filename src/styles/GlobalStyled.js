@@ -23,7 +23,7 @@ export const Container = styled.div`
             background-color: ${primaryColor};
             border-radius: 0;
             padding: 0 16px;
-            padding-bottom: 10px;
+            /* padding-bottom: 10px; */
         `}
 `
 export const ContainerGroup = styled.div`
@@ -237,5 +237,5 @@ export const FlexContainer = styled.div`
     transform: translateX(-50%);
     background-color: ${primaryColor};
     padding: 24px 16px;
-    box-shadow: 0px -20px 20px 20px #f5f2f2c9;
+    box-shadow: 0px -20px 20px 20px #f5f2f287;
 `

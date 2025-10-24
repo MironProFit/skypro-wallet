@@ -11,7 +11,6 @@ import NewExpensePage from '../pages/NewExpensePage/NewExpensePage'
 import AnalysisPage from '../pages/AnalysisPage/AnalysisPage'
 
 function AppRoutes() {
-    const { isMobile } = useAppContext()
     const router = createBrowserRouter([
         {
             path: '/',

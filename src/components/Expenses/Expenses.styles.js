@@ -62,11 +62,11 @@ export const ExpensesHeaderTitle = styled.div`
             align-items: inherit;
         `}
 `
-export const ExpensesHeaderLink = styled(Link)`
+export const ExpensesHeaderLink = styled.div`
     cursor: pointer;
     position: relative;
 
-    &::before {
+    /* &::before {
         position: absolute;
         content: '';
         background-image: url(${({ $isExpensesPage }) => ($isExpensesPage ? 'image/icon/add-circle.svg' : 'image/icon/arrow-left.svg')});
@@ -79,8 +79,8 @@ export const ExpensesHeaderLink = styled(Link)`
 
         width: 14px;
         height: 14px;
-    }
-    ${({ $isExpensesPage }) =>
+    } */
+    /* ${({ $isExpensesPage }) =>
         !$isExpensesPage &&
         css`
             left: 20px;
@@ -90,7 +90,17 @@ export const ExpensesHeaderLink = styled(Link)`
             &::before {
                 left: -20px;
             }
-        `}
+        `} */
+`
+export const LinkWrapper = styled(Link)`
+    display: flex;
+    align-items: center;
+    gap: 11px;
+`
+
+export const LinkIcon = styled.img`
+    width: 20px;
+    height: 20px;
 `
 
 export const HeaderCell = styled.div`

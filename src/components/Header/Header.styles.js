@@ -34,7 +34,7 @@ export const HeaderNav = styled.nav`
     /* align-items: center; */
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 10px;
+    /* padding: 10px; */
     gap: 15px;
     ${({ $isMobile }) =>
         $isMobile &&

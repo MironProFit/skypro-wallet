@@ -2,8 +2,9 @@ import { useRef, useState, useEffect } from 'react'
 import { useAppContext } from '../../contexts/AppContext'
 import { SectionTitle } from '../../styles/GlobalStyled'
 import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle, MonthWrapper } from '../../components/Calendar/Calendar.styles'
-import { ExpensesHeaderLink } from '../Expenses/Expenses.styles'
+import { ExpensesHeaderLink, LinkIcon, LinkWrapper } from '../Expenses/Expenses.styles'
 import { useLocation } from 'react-router-dom'
+import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 
 // Helper function to get days in a month
 const getDaysInMonth = (month, year) => {
@@ -80,9 +81,12 @@ const CalendarComponent = () => {
         <CalendarSection $isMobile={isMobile}>
             <CalendarTitle>
                 {isMobile && (
-                    <ExpensesHeaderLink to={'/analysis'} $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                        Мои расходы
-                    </ExpensesHeaderLink>
+                    <LinkWrapper to={'/expenses'} style={{ order: 2 }}>
+                        <LinkIcon src={leftArrIcon} alt="+"></LinkIcon>
+                        <ExpensesHeaderLink $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                            Мои расходы
+                        </ExpensesHeaderLink>
+                    </LinkWrapper>
                 )}
             </CalendarTitle>
 
