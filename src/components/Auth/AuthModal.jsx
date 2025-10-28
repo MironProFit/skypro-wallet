@@ -23,7 +23,8 @@ import {
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
-import { loginUser } from '../services/autth/login'
+
+import { useFetch } from '../hooks/useFetch'
 
 function AuthModal() {
     const [isPage, setIsPage] = useState('login')
@@ -32,11 +33,11 @@ function AuthModal() {
         email: '',
         password: '',
     })
-    const [error, setError] = useState('')
+    const { fetchData, loading, error } = useFetch()
     const location = useLocation()
     const navigate = useNavigate()
     const { isMobile, isLoading, setIsLoading, loadingMessage, setLoadingMessage } = useAppContext()
-    const { errorMessage, setErrorMessage } = useAuthContext()
+    const { toastNotification, setToastNotification, showToast, setIsAuth, isAuth, setUserData, userData, token, setToken } = useAuthContext()
 
     // Настройка форм
     const {
@@ -76,12 +77,22 @@ function AuthModal() {
         setIsLoading(false)
     }, [])
 
-    const onSubmit = (data) => {
-        // useFetch(data)
-        console.log('Форма валидна, можно отправлять данные:', data)
+    const onSubmit = async (data) => {
+        try {
+            const url = isPage === 'login' ? 'user/login' : 'user'
+            const response = await fetchData({ url, data })
+            const userData = response.user
+
+            setToken(userData.token)
+
+            
+        } catch (err) {
+            setToastNotification(err)
+            // Обработка ошибок
+            console.error('Ошибка при отправке:', err)
+        }
     }
-    console.log(!!errorsLogin.email)
-    console.log(loginEmail)
+
     return (
         <ModalWrapper $isMobile={isMobile}>
             <AuthContainer>

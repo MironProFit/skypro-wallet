@@ -4,11 +4,11 @@ import Layout from '../pages/Layout/Layout'
 import AuthModal from '../components/Auth/AuthModal'
 
 import NotFound from '../components/NotFound/NotFound'
-import { useAppContext } from '../contexts/AppContext'
 import ExpensesPage from '../pages/Expenses/ExpensesPage'
 import PeriodPage from '../pages/PeriodPage/PeriodPage'
 import NewExpensePage from '../pages/NewExpensePage/NewExpensePage'
 import AnalysisPage from '../pages/AnalysisPage/AnalysisPage'
+import Toastify from '../components/Toasty/Toastify'
 
 function AppRoutes() {
     const router = createBrowserRouter([
@@ -32,7 +32,12 @@ function AppRoutes() {
             ],
         },
     ])
-    return <RouterProvider router={router} />
+    return (
+        <>
+            <RouterProvider router={router} />
+            <Toastify />
+        </>
+    )
 }
 
 export default AppRoutes

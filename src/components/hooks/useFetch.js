@@ -1,19 +1,30 @@
 import { useState, useCallback } from 'react'
-import axios from 'axios'
+import { useAuthContext } from '../../contexts/AuthContext'
+import { loginUser } from '../../services/autth/login'
+import { registerUser } from '../../services/autth/register'
 
-function useFetch() {
+export function useFetch() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const { urlApi, setToastNotification, showToast } = useAuthContext()
 
-    const fetchData = useCallback(async ({ url, method = 'GET', data = null, headers = {} }) => {
+    const fetchData = useCallback(async ({ url, data }) => {
         setLoading(true)
-        setError(null)
+        setToastNotification(null)
         try {
-            const response = await axios({ url, method, data, headers })
+            const fullUrl = urlApi + url
+
+            const response =
+                url === 'user/login'
+                    ? await loginUser({ url: fullUrl, login: data.email, password: data.password })
+                    : await registerUser({ url: fullUrl, login: data.email, name: data.name, password: data.password })
+
             return response.data
-        } catch (err) {
-            setError(err)
-            throw err // чтобы можно было обработать дальше
+        } catch (error) {
+            const errMsg = error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Ошибка входа'
+            console.error('Ошибка входа:', errMsg)
+            showToast(`Ошибка запроса: ${errMsg}`, 'error')
+            throw error
         } finally {
             setLoading(false)
         }
