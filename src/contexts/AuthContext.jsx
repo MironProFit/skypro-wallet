@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'true')
+    const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'false')
 
     const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '')
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
@@ -16,6 +16,12 @@ export const AuthProvider = ({ children }) => {
         const stored = localStorage.getItem('userData')
         return stored ? JSON.parse(stored) : { expenses: [] }
     })
+
+    useEffect(() => {
+        if (token) {
+            localStorage.setItem('token', token)
+        }
+    }, [token])
 
     useEffect(() => {
         setIsAuth(true)

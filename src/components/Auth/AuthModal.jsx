@@ -25,6 +25,7 @@ import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
 
 import { useFetch } from '../hooks/useFetch'
+import { is } from 'date-fns/locale'
 
 function AuthModal() {
     const [isPage, setIsPage] = useState('login')
@@ -79,15 +80,22 @@ function AuthModal() {
 
     const onSubmit = async (data) => {
         try {
-            const url = isPage === 'login' ? 'user/login' : 'user'
-            const response = await fetchData({ url, data })
-            const userData = response.user
+            const urlAuth = isPage === 'login' ? 'user/login' : 'user'
 
-            setToken(userData.token)
+            const authResponse = await fetchData({ url: urlAuth, data })
+            const newToken = authResponse.user?.token
+            setToken(authResponse.user?.token)
 
-            
+            if (newToken) {
+                setIsAuth(true)
+                navigate('/')
+                const urlData = newToken ? 'transactions' : null
+                const transactionsResponse = await fetchData({ url: urlData, data })
+                const transactionsData = transactionsResponse
+            }
         } catch (err) {
             setToastNotification(err)
+
             // Обработка ошибок
             console.error('Ошибка при отправке:', err)
         }
