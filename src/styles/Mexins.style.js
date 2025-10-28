@@ -5,8 +5,8 @@ export const accentColor = '#7334EA'
 export const accentColorRgb = ' rgba(115, 52, 234, 0.2)'
 export const textColor = 'black'
 
-export const successColor = '#F1EBFD'
-export const warningColor = '#7334EA'
+export const successColor = '#f1ebfd'
+export const warningColor = '#ffebeb'
 
 export const errorColor = '#F84D4D'
 

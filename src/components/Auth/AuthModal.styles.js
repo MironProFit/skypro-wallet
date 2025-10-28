@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components'
 import { Container, FormGroup, FormInput, PageText, PrimaryButton, Section, SectionTitle } from '../../styles/GlobalStyled'
 import { Link } from 'react-router-dom'
 import { NavLinkButton } from '../Header/Header.styles'
-import { accentColor, borderColor, primaryColor, secondaryColor } from '../../styles/Mexins.style'
+import { accentColor, borderColor, errorColor, primaryColor, secondaryColor, successColor, textColor, warningColor } from '../../styles/Mexins.style'
 
 export const AuthContainer = styled(Container)`
     display: flex;
@@ -43,17 +43,40 @@ export const AuthFormGroup = styled(FormGroup)`
 export const TextInput = styled(FormInput)`
     width: 100%;
     margin-bottom: 12px;
-    position: relative;
+    background: ${({ $hasError, $isEmpty }) => {
+        if ($hasError) return warningColor
+        if ($isEmpty === undefined || $isEmpty) return primaryColor
+        return successColor
+    }};
+    color: ${textColor};
+
+    &:focus {
+        outline: none;
+        border: 1px solid ${({ $hasError }) => ($hasError ? errorColor : accentColor)};
+    }
 `
 
 export const PasswordInput = styled(FormInput)`
+    transition: 0.3s;
     width: 100%;
+    margin-bottom: 12px;
+    background: ${({ $hasError, $isEmpty }) => {
+        if ($hasError) return warningColor
+        if ($isEmpty === undefined || $isEmpty) return primaryColor
+        return successColor
+    }};
+    color: ${textColor};
+
+    &:focus {
+        outline: none;
+        border: 1px solid ${({ $hasError }) => ($hasError ? errorColor : accentColor)};
+    }
 `
 export const SubmitButton = styled(PrimaryButton)`
     margin-bottom: 24px;
 `
 
-export const InputGroup = styled.div`
+export const InputGroup = styled.form`
     width: 313px;
 `
 export const PromtGroup = styled.div`

@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
     min-height: 100vh;
     overflow: auto;
     background-color: ${primaryColor};
+    transition: 0.3s;
 `
 
 export const Container = styled.div`
@@ -88,11 +89,14 @@ export const Section = styled.section`
             border-radius: 0;
         `};
 
-    @media (max-width: 751px) {
-        box-shadow: none;
-        padding: 0;
-        border-radius: 0;
-    }
+    ${({ $isLoading }) =>
+        $isLoading &&
+        css`
+            border-radius: 30px;
+            background: #ffffff;
+            box-shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
+            padding: 32px;
+        `};
 `
 
 export const SectionTitle = styled.h2`
@@ -159,6 +163,7 @@ export const PrimaryButton = styled.button`
     border: 1px solid ${accentColor};
     border-radius: 6px;
     color: #ffffff;
+    transition: 0.3s;
 
     &:disabled {
         cursor: unset;
