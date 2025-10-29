@@ -3,9 +3,9 @@ import { ContainerTitle, PrimaryButton, SectionSubTitle } from '../../styles/Glo
 import { primaryColor } from '../../styles/Mexins.style'
 
 export const ChartContainer = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+
     gap: clamp(6px, 3%, 32px);
     height: 100%;
 
@@ -18,6 +18,7 @@ export const ChartContainer = styled.div`
 
 export const ChartItem = styled.div`
     display: flex;
+    justify-content: flex-end;
     flex-direction: column;
     align-items: center;
     flex: 1 1 auto;
@@ -27,14 +28,30 @@ export const PeriodSubTitle = styled(SectionSubTitle)`
     margin-bottom: 21px;
 `
 
-export const ChartColor = styled.div`
-    margin: 12px 0;
-    background-color: ${({ $color }) => $color};
-    border-radius: 12px;
+export const ChartWrapColor = styled.div`
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
     height: 300px;
-
     flex-grow: 1;
     flex-shrink: 1;
+    width: 100%;
+    margin: 12px 0;
+`
+
+export const ChartColor = styled.div`
+    /* display: flex;
+    align-items: flex-end;
+    height: 100%;
+    height: 300px; */
+    /* flex-grow: 1;
+    flex-shrink: 1; */
+    width: 100%;
+    margin: 12px 0;
+
+    background-color: ${({ $color }) => $color};
+    border-radius: 12px;
+
     width: 100%;
 
     /* width: 52px; */
