@@ -86,12 +86,13 @@ function AuthModal() {
             const newToken = authResponse.user?.token
             setToken(authResponse.user?.token)
 
-            if (newToken) {
-                setIsAuth(true)
-                navigate('/')
+            navigate('/')
+
+            if (isAuth) {
                 const urlData = newToken ? 'transactions' : null
-                const transactionsResponse = await fetchData({ url: urlData, data })
-                const transactionsData = transactionsResponse
+                const transactionsResponse = await fetchData({ url: urlData, data, newToken: newToken })
+
+                setUserData(transactionsResponse)
             }
         } catch (err) {
             setToastNotification(err)

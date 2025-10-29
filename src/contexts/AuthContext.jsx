@@ -5,8 +5,7 @@ import { toast } from 'react-toastify'
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'false')
-
+    // const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'false')
     const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '')
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
     const [urlApi, setUrlApi] = useState('https://wedev-api.sky.pro/api/')
@@ -16,16 +15,28 @@ export const AuthProvider = ({ children }) => {
         const stored = localStorage.getItem('userData')
         return stored ? JSON.parse(stored) : { expenses: [] }
     })
+    const isAuth = Boolean(token)
 
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token)
         }
     }, [token])
+    useEffect(() => {
+        if (isAuth) {
+            localStorage.setItem('isAuth', isAuth)
+        } else {
+            localStorage.removeItem('token')
+        }
+    }, [isAuth])
 
     useEffect(() => {
-        setIsAuth(true)
-    }, [])
+        if (userData) {
+            localStorage.setItem('userData', JSON.stringify(userData))
+        } else {
+            localStorage.removeItem('userData')
+        }
+    }, [userData])
 
     const showToast = (message, type = 'info') => {
         switch (type) {
@@ -51,7 +62,6 @@ export const AuthProvider = ({ children }) => {
         <AuthContext.Provider
             value={{
                 isAuth,
-                setIsAuth,
 
                 userName,
                 setUserName,

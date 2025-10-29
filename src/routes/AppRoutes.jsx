@@ -9,12 +9,33 @@ import PeriodPage from '../pages/PeriodPage/PeriodPage'
 import NewExpensePage from '../pages/NewExpensePage/NewExpensePage'
 import AnalysisPage from '../pages/AnalysisPage/AnalysisPage'
 import Toastify from '../components/Toasty/Toastify'
+import ConfirmExit from '../components/Confirm/ConfirmExit/ConfirmExit'
+import { useState } from 'react'
+import { useAuthContext } from '../contexts/AuthContext'
 
 function AppRoutes() {
+    const [showConfirmExit, setShowConfirmExit] = useState(false)
+    const { setToken, setUserName } = useAuthContext()
+
+    const handleLogoutClick = () => {
+        setShowConfirmExit(true)
+    }
+
+    const handleConfirmExit = () => {
+        // Очистка данных авторизации
+        setToken('')
+        setUserName('')
+        // Модальное закрываем
+        setShowConfirmExit(false)
+    }
+
+    const handleCloseModal = () => {
+        setShowConfirmExit(false)
+    }
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Layout />,
+            element: <Layout onLogout={handleLogoutClick} />,
             children: [
                 {
                     element: <PrivatRoutes />,
@@ -36,6 +57,7 @@ function AppRoutes() {
         <>
             <RouterProvider router={router} />
             <Toastify />
+            {showConfirmExit && <ConfirmExit $showConfirmExit={showConfirmExit} onClose={handleCloseModal} onConfirm={handleConfirmExit} />}
         </>
     )
 }

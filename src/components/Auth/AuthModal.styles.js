@@ -31,6 +31,27 @@ export const ModalWrapper = styled.div`
 
     background-color: ${({ $isMobile }) => ($isMobile ? primaryColor : secondaryColor)};
 `
+
+export const ModalOverlay = styled.div`
+    position: fixed; /* фиксируем относительно окна браузера */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный фон */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* чтобы был поверх всего */
+    pointer-events: auto; /* перехватывать клики */
+`
+
+export const ModalContent = styled(Section)``
+export const ModalButtons = styled.div`
+    display: flex;
+    gap: 30px;
+`
+
 export const AuthTitle = styled(SectionTitle)`
     display: flex;
     justify-content: center;

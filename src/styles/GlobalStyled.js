@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { accentColor, borderColor, primaryColor, secondaryColor, textColor } from './Mexins.style'
+import { accentColor, accentColorHover, borderColor, primaryColor, textColor } from './Mexins.style'
 
 export const Wrapper = styled.div`
     max-width: 100%;
@@ -174,6 +174,11 @@ export const PrimaryButton = styled.button`
     &:active {
         background-color: ${accentColor};
         opacity: 0.8;
+    }
+    &:hover {
+        background: ${accentColorHover};
+        border: 1px solid ${accentColorHover};
+        /* color: ${textColor}; */
     }
 `
 

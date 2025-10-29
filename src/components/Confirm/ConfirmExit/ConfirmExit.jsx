@@ -1,18 +1,22 @@
-import { useLocation } from 'react-router-dom'
-import { Container, ContainerGroup, Section, SectionTitle, Wrapper } from '../../../styles/GlobalStyled'
-import { ModalWrapper } from '../../Auth/AuthModal.styles'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Container, ContainerGroup, PrimaryButton, Section, SectionTitle, Wrapper } from '../../../styles/GlobalStyled'
+import { ModalButtons, ModalContent, ModalOverlay } from '../../Auth/AuthModal.styles'
+import { useAppContext } from '../../../contexts/AppContext'
 
-function ConfirmExit() {
+function ConfirmExit({ onClose, onConfirm, $showConfirmExit }) {
+    const { isMobile } = useAppContext()
+    console.log('переход на страницу ')
+
     return (
-        <ModalWrapper>
-            <Section>
+        <ModalOverlay $isMobile={isMobile}>
+            <ModalContent $showConfirmExit={$showConfirmExit}>
                 <SectionTitle>Подтверждение выхода</SectionTitle>
-                <ContainerGroup>
-                    <button>Да</button>
-                    <button>Нет</button>
-                </ContainerGroup>
-            </Section>
-        </ModalWrapper>
+                <ModalButtons>
+                    <PrimaryButton onClick={onConfirm}>Да</PrimaryButton>
+                    <PrimaryButton onClick={onClose}>Нет</PrimaryButton>
+                </ModalButtons>
+            </ModalContent>
+        </ModalOverlay>
     )
 }
 

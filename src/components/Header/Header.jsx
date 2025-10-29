@@ -6,8 +6,8 @@ import { HeaderContainer, HeaderLogo, HeaderNav, HeaderWrapper, LinkContainer, M
 
 import logoDark from '../../assets/image/logo/logo-dark.svg'
 
-function Header(onLogout) {
-    const { isAuth } = useAuthContext()
+function Header({ onLogout }) {
+    const { isAuth, setIsAuth, setToken, setUserName, token } = useAuthContext()
     const { isMobile } = useAppContext()
     const [isModal, setIsModal] = useState(false)
     const location = useLocation()
@@ -29,6 +29,13 @@ function Header(onLogout) {
         return location.pathname === path
     }
 
+    // const confirmLogout = () => {
+    //     // setIsAuth(false)
+    //     // setToken('')
+    //     // setUserName('')
+    //     navigate('/logout', { replace: true })
+    // }
+
     return (
         <HeaderWrapper $isMobile={isMobile}>
             <HeaderContainer $isMobile={isMobile}>
@@ -36,7 +43,7 @@ function Header(onLogout) {
                     <HeaderLogo>
                         <img src={logoDark} alt="Logo" />
                     </HeaderLogo>
-                    {isAuth && (
+                    {isAuth && token && (
                         <>
                             {!isMobile ? (
                                 <StyledLinkGroup>
@@ -57,7 +64,7 @@ function Header(onLogout) {
                                         {linkName}
                                     </NavLinkButton>
                                     <ModalLinks $isModal={isModal}>
-                                        <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsmodal(false)}>
+                                        <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsModal(false)}>
                                             Мои расходы
                                         </NavLinkModal>
                                         <NavLinkModal
@@ -85,7 +92,14 @@ function Header(onLogout) {
                             )}
 
                             <LinkContainer>
-                                <NavLinkButton onClick={onLogout}>Выйти</NavLinkButton>
+                                <NavLinkButton
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        onLogout()
+                                    }}
+                                >
+                                    Выйти
+                                </NavLinkButton>
                             </LinkContainer>
                         </>
                     )}
