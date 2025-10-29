@@ -5,7 +5,6 @@ import { useAppContext } from '../../../contexts/AppContext'
 
 function ConfirmExit({ onClose, onConfirm, $showConfirmExit }) {
     const { isMobile } = useAppContext()
-    console.log('переход на страницу ')
 
     return (
         <ModalOverlay $isMobile={isMobile}>

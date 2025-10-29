@@ -3,10 +3,12 @@ import { FlexContainer, PrimaryButton, Section, SectionTitle } from '../../style
 import CartSVG from '../icons/CategoryIcons/CartSVG'
 
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
-import { useAppContext } from '../../contexts/AppContext'
+import { useAuthContext } from '../../contexts/AuthContext'
+import { formattedDate } from '../../utils/date-fns'
+import { categoryList } from '../../data/CategoryList'
 
 function ExpensesTable({ $flex }) {
-    const { isMobile } = useAppContext()
+    const { isMobile, userData } = useAuthContext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
     const [isHidden, setIsHidden] = useState(true)
@@ -36,25 +38,23 @@ function ExpensesTable({ $flex }) {
                 </ExpensesHeader>
 
                 <ExpensesList>
-                    <ExpensesItem $isMobile={isMobile}>
-                        <ItemCell $isVisible={isVisible}>Магазин</ItemCell>
-                        <ItemCell $isVisible={isVisible}>Продукты</ItemCell>
-                        <ItemCell $isVisible={isVisible}>02.10.2025</ItemCell>
-                        <ItemCell $isVisible={isVisible}>1500 &#8381;</ItemCell>
-                        <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
-                            <CartSVG />
-                        </ItemCellImg>
-                    </ExpensesItem>
-
-                    <ExpensesItem $isMobile={isMobile}>
-                        <ItemCell $isVisible={isVisible}>Магазин</ItemCell>
-                        <ItemCell $isVisible={isVisible}>Продукты</ItemCell>
-                        <ItemCell $isVisible={isVisible}>02.10.2025</ItemCell>
-                        <ItemCell $isVisible={isVisible}>1500 &#8381;</ItemCell>
-                        <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
-                            <CartSVG />
-                        </ItemCellImg>
-                    </ExpensesItem>
+                    {Array.isArray(userData) && userData.length > 0 ? (
+                        userData.map((item, index) => {
+                            return (
+                                <ExpensesItem key={item._id || index} $isMobile={isMobile}>
+                                    <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
+                                    <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
+                                    <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
+                                    <ItemCell $isVisible={isVisible}>{item.sum} &#8381;</ItemCell>
+                                    <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
+                                        <CartSVG />
+                                    </ItemCellImg>
+                                </ExpensesItem>
+                            )
+                        })
+                    ) : (
+                        <ExpensesItem>Нет расходов</ExpensesItem>
+                    )}
                 </ExpensesList>
 
                 {isMobile && (

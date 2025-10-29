@@ -10,7 +10,6 @@ export function useFetch() {
     const { urlApi, setToastNotification, showToast, token } = useAuthContext()
 
     const fetchData = useCallback(async ({ url, data, method, newToken }) => {
-        console.log(url, data, method)
         setLoading(true)
         setToastNotification(null)
 
@@ -19,7 +18,6 @@ export function useFetch() {
         if (url === 'user' || url === 'user/login') {
             try {
                 const fullUrl = urlApi + url
-                console.log({ url: fullUrl, login: data.email, password: data.password })
 
                 const response =
                     url === 'user/login'
@@ -40,14 +38,11 @@ export function useFetch() {
         // Транзакции
 
         if (url === 'transactions') {
-            // return console.log('запуск запроса транзакций')
             try {
                 const fullUrl = urlApi + url
-                console.log({ url: fullUrl, newToken })
 
                 const response = await transaction({ url: fullUrl, newToken })
 
-                console.log(response.data)
                 return response.data
             } catch (error) {
                 const errMsg = error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Ошибка входа'

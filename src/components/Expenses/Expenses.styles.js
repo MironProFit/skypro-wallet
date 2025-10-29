@@ -17,7 +17,9 @@ export const ExpensesSection = styled(Section)`
 `
 
 export const ExpensesHeader = styled.div`
-    display: flex;
+    /* display: flex; */
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 1fr 1fr;
     gap: 14px;
 
     ${({ $isMobile }) =>
@@ -125,17 +127,29 @@ export const ExpensesList = styled.ul`
 `
 
 export const ExpensesItem = styled.li`
-    display: flex;
+    /* display: flex; */
+    height: 24px;
+    display: grid;
+    grid-template-columns: 3fr 2fr 2fr 1fr 1fr;
     gap: 14px;
     background-color: transparent;
     cursor: pointer;
     transition: 0.3s;
-    padding: 0 10px;
-    border-radius: 10px;
+    /* padding: 0 10px; */
     justify-content: space-between;
 
+    // Добавляем отступы для ховера
+    padding: 0 50px;
+    margin: 0 -50px;
+
     &:hover {
+        color: ${accentColor};
         background-color: ${accentColorRgb};
+    }
+    &:hover svg {
+        path {
+            fill: ${accentColor};
+        }
     }
 `
 
@@ -154,7 +168,7 @@ export const ItemCellImg = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    cursor: default;
+    /* cursor: default; */
 
     ${({ $isMobile }) =>
         $isMobile &&
@@ -164,6 +178,7 @@ export const ItemCellImg = styled.div`
 
     & svg {
         path {
+            cursor: pointer;
             fill: ${borderColor};
             transition: 0.3s;
         }
