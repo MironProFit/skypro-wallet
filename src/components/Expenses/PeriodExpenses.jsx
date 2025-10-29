@@ -7,16 +7,13 @@ import { AddPeriod, ChartCategory, ChartColor, ChartContainer, ChartItem, ChartW
 import { categoryList } from '../../data/CategoryList'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
+import { formatNum } from '../../utils/formatNum'
 
 function PeriodExpenses({ $flex }) {
     const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()
     const { userData } = useAuthContext()
     const [totalSum, setTotalSum] = useState()
     console.log(totalSum)
-    const formatter = new Intl.NumberFormat('ru-RU', {
-        style: 'decimal',
-        minimumFractionDigits: 0,
-    })
 
     useEffect(() => {
         const sumAll = userData.reduce((acc, d) => acc + d.sum, 0)
@@ -25,7 +22,7 @@ function PeriodExpenses({ $flex }) {
 
     return (
         <ExpensesSection $flex={$flex}>
-            <SectionTitle $isMobile={isMobile}>{formatter.format(totalSum)} ₽</SectionTitle>
+            <SectionTitle $isMobile={isMobile}>{formatNum(totalSum)} ₽</SectionTitle>
             <PeriodSubTitle>{startDate && endDate ? `Расходы за: ${formattedDate(startDate)} - ${formattedDate(endDate)}` : 'Выбирите период'}</PeriodSubTitle>
             <ChartContainer $isMobile={isMobile}>
                 {categoryList.map((category) => {
@@ -39,7 +36,7 @@ function PeriodExpenses({ $flex }) {
 
                     return (
                         <ChartItem key={category.category} $>
-                            <ContainerTitle $isMobile={isMobile}>{formatter.format(sumValue)} ₽</ContainerTitle>
+                            <ContainerTitle $isMobile={isMobile}>{formatNum(sumValue)} ₽</ContainerTitle>
 
                             <ChartColor $isMobile={isMobile} $color={category.color} style={{ height: `${adjustedHeightPercent}%` }}></ChartColor>
 

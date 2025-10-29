@@ -6,6 +6,7 @@ import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, HeaderCell
 import { useAuthContext } from '../../contexts/AuthContext'
 import { formattedDate } from '../../utils/date-fns'
 import { categoryList } from '../../data/CategoryList'
+import { formatNum } from '../../utils/formatNum'
 
 function ExpensesTable({ $flex }) {
     const { isMobile, userData } = useAuthContext()
@@ -45,7 +46,9 @@ function ExpensesTable({ $flex }) {
                                     <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
-                                    <ItemCell $isVisible={isVisible}>{item.sum} &#8381;</ItemCell>
+                                    <ItemCell style={{ justifyContent: 'flex-end' }} $isVisible={isVisible}>
+                                        {formatNum(item.sum)} &#8381;
+                                    </ItemCell>
                                     <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
                                         <CartSVG />
                                     </ItemCellImg>

@@ -158,6 +158,7 @@ export const ExpensesFormGroup = styled(FormGroup)`
 `
 
 export const ItemCell = styled.div`
+display: flex;
     white-space: nowrap;
     text-overflow: ellipsis;
     box-sizing: border-box;
