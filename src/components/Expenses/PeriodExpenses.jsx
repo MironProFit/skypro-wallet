@@ -13,7 +13,6 @@ function PeriodExpenses({ $flex }) {
     const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()
     const { userData } = useAuthContext()
     const [totalSum, setTotalSum] = useState()
-    console.log(totalSum)
 
     useEffect(() => {
         const sumAll = userData.reduce((acc, d) => acc + d.sum, 0)

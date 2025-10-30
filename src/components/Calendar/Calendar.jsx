@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { useAppContext } from '../../contexts/AppContext'
 import { SectionTitle } from '../../styles/GlobalStyled'
 import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle, MonthWrapper } from '../../components/Calendar/Calendar.styles'
@@ -12,7 +12,7 @@ const getDaysInMonth = (month, year) => {
 }
 
 // Main Calendar Component
-const CalendarComponent = () => {
+const CalendarComponent = ({ $isFilter }) => {
     const { startDate, setStartDate, endDate, setEndDate } = useAppContext()
     const currentDate = new Date()
     const [displayedYear, setDisplayedYear] = useState(currentDate.getFullYear())
@@ -21,10 +21,18 @@ const CalendarComponent = () => {
     const [today, setToday] = useState(currentDate)
     const location = useLocation()
 
-    const monthsToShow = []
-    for (let i = -3; i <= 3; i++) {
-        monthsToShow.push(new Date(displayedYear, displayedMonth + i))
-    }
+    // const monthsToShow = []
+    // for (let i = -3; i <= 3; i++) {
+    //     monthsToShow.push(new Date(displayedYear, displayedMonth + i))
+    // }
+
+    const monthsToShow = useMemo(() => {
+        const months = []
+        for (let i = -3; i <= 3; i++) {
+            months.push(new Date(displayedYear, displayedMonth + i))
+        }
+        return months
+    }, [displayedYear, displayedMonth])
 
     // Handle date selection
     const handleDateClick = (day, month, year) => {
@@ -78,22 +86,26 @@ const CalendarComponent = () => {
     }, [location])
 
     return (
-        <CalendarSection $isMobile={isMobile}>
-            <CalendarTitle>
-                {isMobile && (
-                    <LinkWrapper to={'/expenses'} style={{ order: 2 }}>
-                        <LinkIcon src={leftArrIcon} alt="+"></LinkIcon>
-                        <ExpensesHeaderLink $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                            Мои расходы
-                        </ExpensesHeaderLink>
-                    </LinkWrapper>
-                )}
-            </CalendarTitle>
+        <CalendarSection $isFilter={$isFilter} $isMobile={isMobile}>
+            {!$isFilter && isMobile && (
+                <>
+                    <CalendarTitle>
+                        {isMobile && (
+                            <LinkWrapper to={'/expenses'} style={{ order: 2, display: isMobile ? 'flex' : 'none' }}>
+                                <LinkIcon src={leftArrIcon} alt="+"></LinkIcon>
+                                <ExpensesHeaderLink $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
+                                    Мои расходы
+                                </ExpensesHeaderLink>
+                            </LinkWrapper>
+                        )}
+                    </CalendarTitle>
 
-            {isMobile ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : <SectionTitle $isMobile={isMobile}>Период</SectionTitle>}
+                    {isMobile ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : <SectionTitle $isMobile={isMobile}>Период</SectionTitle>}
+                </>
+            )}
 
-            <CalendarWrapper ref={calendarRef}>
-                <DaysOfWeek $isMobile={isMobile}>
+            <CalendarWrapper $isFilter={$isFilter} ref={calendarRef}>
+                <DaysOfWeek $isFilter={$isFilter} $isMobile={isMobile}>
                     {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (
                         <DayName key={day}>{day}</DayName>
                     ))}
@@ -111,7 +123,7 @@ const CalendarComponent = () => {
                                 <MonthHeader>
                                     {date.toLocaleString('default', { month: 'long' }).charAt(0).toUpperCase() + date.toLocaleString('default', { month: 'long' }).slice(1)} {year}
                                 </MonthHeader>
-                                <CalendarGrid $isMobile={isMobile}>
+                                <CalendarGrid $isFilter={$isFilter} $isMobile={isMobile}>
                                     {Array.from({ length: effectiveFirstDay }).map((_, i) => (
                                         <div key={i} style={{ width: '40px', height: '40px' }}></div>
                                     ))}
@@ -125,6 +137,7 @@ const CalendarComponent = () => {
 
                                         return (
                                             <DayCell
+                                                $isFilter={$isFilter}
                                                 $isMobile={isMobile}
                                                 key={`${year}-${month}-${dateNum}`}
                                                 data-date={`${year}-${month}-${dateNum}`}

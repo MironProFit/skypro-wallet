@@ -4,6 +4,13 @@ import { Section } from '../../styles/GlobalStyled'
 
 export const CalendarSection = styled(Section)`
     flex: 1;
+    ${({ $isFilter }) =>
+        $isFilter &&
+        css`
+            padding: 0;
+            background: none;
+            box-shadow: none;
+        `}
 `
 
 // Styled-components
@@ -30,6 +37,12 @@ export const CalendarWrapper = styled.div`
         css`
             width: 450px;
         `}
+
+    ${({ $isFilter }) =>
+        $isFilter &&
+        css`
+            max-height: 250px;
+        `}
 `
 
 export const CalendarTitle = styled.div`
@@ -46,12 +59,22 @@ export const DaysOfWeek = styled.div`
     position: sticky;
     top: 0;
     z-index: 1;
+
     ${({ $isMobile }) =>
         $isMobile &&
         css`
             display: grid;
             justify-content: center;
             grid-template-columns: repeat(7, clamp(10px, 11vw, 46px));
+        `}
+
+    ${({ $isFilter }) =>
+        $isFilter &&
+        css`
+            display: grid;
+            justify-content: center;
+            gap: 13px;
+            grid-template-columns: repeat(7, 21px);
         `}
 `
 
@@ -83,17 +106,28 @@ export const CalendarGrid = styled.div`
     grid-template-columns: repeat(7, clamp(10px, 4vw, 40px));
     grid-auto-rows: 40px;
     gap: clamp(1px, 4.5vw, 6px);
-    /* gap: 6px; */
+
     ${({ $isMobile }) =>
         $isMobile &&
         css`
             grid-template-columns: repeat(7, clamp(10px, 9vw, 40px));
+        `}
+
+    ${({ $isFilter }) =>
+        $isFilter &&
+        css`
+            gap: 12px;
+            column-gap: 13px;
+            row-gap: 3px;
+            grid-template-columns: repeat(7, 21px);
         `}
 `
 
 export const DayCell = styled.div`
     width: clamp(10px, 4vw, 40px);
     height: clamp(10px, 4vw, 40px);
+    /* max-width: 40px;
+    max-height: 40px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,5 +146,13 @@ export const DayCell = styled.div`
         css`
             width: clamp(10px, 9vw, 40px);
             height: clamp(10px, 9vw, 40px);
+            /* max-width: 40px;
+            max-height: 40px; */
+        `}
+    ${({ $isFilter }) =>
+        $isFilter &&
+        css`
+            width: 30px;
+            height: 30px;
         `}
 `

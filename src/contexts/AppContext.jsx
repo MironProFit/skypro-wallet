@@ -8,7 +8,6 @@ export const AppProvider = ({ children }) => {
     const [windowWidth, setWindowWidth] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const DEFAULT_MESSAGE_LOADING = 'данных'
-
     const [loadingMessage, setLoadingMessage] = useState(DEFAULT_MESSAGE_LOADING)
 
     useEffect(() => {
@@ -17,7 +16,15 @@ export const AppProvider = ({ children }) => {
         }
         handleResize()
         window.addEventListener('resize', handleResize)
-        windowWidth < 751 ? setIsMobile(true) : setIsMobile(false)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    useEffect(() => {
+        if (windowWidth < 751) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
     }, [windowWidth])
 
     return (

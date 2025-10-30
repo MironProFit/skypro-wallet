@@ -14,3 +14,5 @@ export const errorColor = '#F84D4D'
 
 export const borderColor = '#999999'
 export const thumbColor = '#D9D9D9'
+
+export const shadowColor = '#00000040'

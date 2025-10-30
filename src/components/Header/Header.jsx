@@ -7,7 +7,7 @@ import { HeaderContainer, HeaderLogo, HeaderNav, HeaderWrapper, LinkContainer, M
 import logoDark from '../../assets/image/logo/logo-dark.svg'
 
 function Header({ onLogout }) {
-    const { isAuth, setIsAuth, setToken, setUserName, token } = useAuthContext()
+    const { token } = useAuthContext()
     const { isMobile } = useAppContext()
     const [isModal, setIsModal] = useState(false)
     const location = useLocation()
@@ -30,9 +30,9 @@ function Header({ onLogout }) {
     }
 
     // const confirmLogout = () => {
-    //     // setIsAuth(false)
-    //     // setToken('')
-    //     // setUserName('')
+    //     setIsAuth(false)
+    //     setToken('')
+    //     setUserName('')
     //     navigate('/logout', { replace: true })
     // }
 
@@ -43,7 +43,7 @@ function Header({ onLogout }) {
                     <HeaderLogo>
                         <img src={logoDark} alt="Logo" />
                     </HeaderLogo>
-                    {isAuth && token && (
+                    {token && (
                         <>
                             {!isMobile ? (
                                 <StyledLinkGroup>

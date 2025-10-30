@@ -8,9 +8,11 @@ import { formattedDate } from '../../utils/date-fns'
 import { categoryList } from '../../data/CategoryList'
 import { formatNum } from '../../utils/formatNum'
 import FilterModal from '../FilterModal/FilterModal'
+import { useAppContext } from '../../contexts/AppContext'
 
 function ExpensesTable({ $flex }) {
-    const { isMobile, userData } = useAuthContext()
+    const { userData } = useAuthContext()
+    const { isMobile } = useAppContext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
     const [isHidden, setIsHidden] = useState(true)
@@ -29,17 +31,14 @@ function ExpensesTable({ $flex }) {
     }
 
     const closeFilterModal = () => {
-        console.log('функция закрытия')
         setFilterType(null)
 
         setIsOpenFilterModal(false)
     }
-    useEffect(() => {
-        console.log(filterType)
-    }, [filterType])
 
     useEffect(() => {
         setIsVisible(isMobile ? true : false)
+        console.log(isMobile)
     }, [isMobile])
 
     return (
@@ -76,7 +75,6 @@ function ExpensesTable({ $flex }) {
 
                     <HeaderCell $isMobile={isMobile} $isHidden={isHidden}></HeaderCell>
                 </ExpensesHeader>
-
                 <ExpensesList>
                     {Array.isArray(userData) && userData.length > 0 ? (
                         userData.map((item, index) => {
@@ -85,7 +83,7 @@ function ExpensesTable({ $flex }) {
                                     <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
-                                    <ItemCell style={{ justifyContent: 'flex-end' }} $isVisible={isVisible}>
+                                    <ItemCell style={{ justifyContent: 'flex-end', overflow: 'visible' }} $isVisible={isVisible}>
                                         {formatNum(item.sum)} &#8381;
                                     </ItemCell>
                                     <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
@@ -95,7 +93,10 @@ function ExpensesTable({ $flex }) {
                             )
                         })
                     ) : (
-                        <ExpensesItem>Нет расходов</ExpensesItem>
+                        <>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>Нет расходов</div>
+                            <button>Обновить данные</button>
+                        </>
                     )}
                 </ExpensesList>
 

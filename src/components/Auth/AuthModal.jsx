@@ -88,7 +88,7 @@ function AuthModal() {
 
             navigate('/')
 
-            if (isAuth) {
+            if (newToken) {
                 const urlData = newToken ? 'transactions' : null
                 const transactionsResponse = await fetchData({ url: urlData, data, newToken: newToken })
 
