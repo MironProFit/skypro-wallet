@@ -21,12 +21,7 @@ export const ExpensesHeader = styled.div`
     display: grid;
     grid-template-columns: 3fr 2fr 2fr 1fr 1fr;
     gap: 14px;
-
-    ${({ $isMobile }) =>
-        $isMobile &&
-        css`
-            justify-content: space-around;
-        `}
+    transition: 0.3s;
 
     justify-content: space-between;
     position: relative;
@@ -41,6 +36,12 @@ export const ExpensesHeader = styled.div`
         background-color: ${borderColor};
         bottom: -6px;
     }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            justify-content: space-around;
+        `}
 `
 export const ExpensesHeaderTitle = styled.div`
     display: flex;
@@ -106,10 +107,11 @@ export const LinkIcon = styled.img`
 `
 
 export const HeaderCell = styled.div`
+    position: relative;
     color: ${borderColor};
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow: hidden;
+    /* overflow: hidden; */
     box-sizing: border-box;
 
     ${({ $isHidden, $isMobile }) =>
@@ -118,7 +120,32 @@ export const HeaderCell = styled.div`
         css`
             display: none;
         `};
+
+    ${({ $filter }) =>
+        $filter &&
+        css`
+            cursor: pointer;
+            &::after {
+                content: '▼';
+
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 10px;
+                color: inherit;
+                padding-left: 5px;
+            }
+        `}
+
+    ${({ $active }) =>
+        $active &&
+        css`
+            &::after {
+                transform: rotate(180deg) translateY(50%) translateX(-50%);
+            }
+        `}
 `
+export const FilterContainer = styled.div``
 
 export const ExpensesList = styled.ul`
     display: flex;
@@ -158,7 +185,7 @@ export const ExpensesFormGroup = styled(FormGroup)`
 `
 
 export const ItemCell = styled.div`
-display: flex;
+    display: flex;
     white-space: nowrap;
     text-overflow: ellipsis;
     box-sizing: border-box;
