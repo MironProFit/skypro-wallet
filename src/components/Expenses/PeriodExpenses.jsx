@@ -19,8 +19,12 @@ function PeriodExpenses({ $flex }) {
         setTotalSum(sumAll)
     }, [userData])
 
+    useEffect(() => {
+        console.log(isMobile)
+    }, [isMobile])
+
     return (
-        <ExpensesSection $flex={$flex}>
+        <ExpensesSection $isMobile={isMobile} $flex={$flex}>
             <SectionTitle $isMobile={isMobile}>{formatNum(totalSum)} ₽</SectionTitle>
             <PeriodSubTitle>{startDate && endDate ? `Расходы за: ${formattedDate(startDate)} - ${formattedDate(endDate)}` : 'Выбирите период'}</PeriodSubTitle>
             <ChartContainer $isMobile={isMobile}>

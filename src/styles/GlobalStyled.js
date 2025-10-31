@@ -3,15 +3,20 @@ import styled, { css } from 'styled-components'
 import { accentColor, accentColorHover, borderColor, primaryColor, textColor } from './Mexins.style'
 
 export const Wrapper = styled.div`
-    max-width: 100%;
+    /* max-width: 100%; */
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     overflow: auto;
     background-color: ${primaryColor};
     transition: 0.3s;
+    display: flex;
+    flex-direction: column;
 `
 
 export const Container = styled.div`
+    display: flex;
+
+    flex-direction: column;
     max-width: 1260px;
     width: 100%;
     margin: 0 auto;
@@ -24,19 +29,25 @@ export const Container = styled.div`
             background-color: ${primaryColor};
             border-radius: 0;
             padding: 0 16px;
+            height: calc(100% - 180px);
+
             /* padding-bottom: 10px; */
         `}
 `
 export const ContainerGroup = styled.div`
     display: flex;
+    max-height: 100%;
     flex-direction: row;
     gap: 34px;
     & > * {
         flex: 1;
     }
-    @media (max-width: 750px) {
-        flex-direction: column;
-    }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            flex-direction: column;
+        `}
 `
 
 export const PageText = styled.p`
@@ -57,6 +68,7 @@ export const PageTitle = styled.h1`
     white-space: nowrap;
     margin-top: 36px;
     margin-bottom: 32px;
+    order: none;
 
     ${({ $isMobile }) =>
         $isMobile &&
@@ -64,12 +76,11 @@ export const PageTitle = styled.h1`
             font-size: 24px;
             padding: 0;
             margin: 0;
-        `}
-    ${({ $isExpensesPage }) =>
+        `}/* ${({ $isExpensesPage }) =>
         !$isExpensesPage &&
         css`
             order: 2;
-        `}
+        `} */
 `
 
 export const Section = styled.section`

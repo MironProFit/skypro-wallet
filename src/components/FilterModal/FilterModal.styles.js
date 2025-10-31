@@ -25,6 +25,7 @@ import { primaryColor, shadowColor, successColor } from '../../styles/Mexins.sty
 // `
 
 export const FilterWrapper = styled.div`
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
     display: flex;

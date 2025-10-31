@@ -78,6 +78,10 @@ const CalendarComponent = ({ $isFilter }) => {
         }
     }, [displayedYear, displayedMonth, today])
 
+    useEffect(() => {
+        console.log($isFilter)
+    }, [$isFilter])
+
     const { isMobile } = useAppContext()
     const [isExpensesPage, setIsExpensesPage] = useState()
 
@@ -87,7 +91,7 @@ const CalendarComponent = ({ $isFilter }) => {
 
     return (
         <CalendarSection $isFilter={$isFilter} $isMobile={isMobile}>
-            {!$isFilter && isMobile && (
+            {!$isFilter && !isMobile && (
                 <>
                     <CalendarTitle>
                         {isMobile && (
@@ -99,17 +103,17 @@ const CalendarComponent = ({ $isFilter }) => {
                             </LinkWrapper>
                         )}
                     </CalendarTitle>
-
-                    {isMobile ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : <SectionTitle $isMobile={isMobile}>Период</SectionTitle>}
                 </>
             )}
+            {isMobile && !$isFilter ? <SectionTitle $isMobile={isMobile}>Выбор периода</SectionTitle> : !$isFilter ? <SectionTitle $isMobile={isMobile}>Период</SectionTitle> : ''}
+
+            <DaysOfWeek $isFilter={$isFilter} $isMobile={isMobile}>
+                {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (
+                    <DayName key={day}>{day}</DayName>
+                ))}
+            </DaysOfWeek>
 
             <CalendarWrapper $isFilter={$isFilter} ref={calendarRef}>
-                <DaysOfWeek $isFilter={$isFilter} $isMobile={isMobile}>
-                    {['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'].map((day) => (
-                        <DayName key={day}>{day}</DayName>
-                    ))}
-                </DaysOfWeek>
                 {monthsToShow.map((date) => {
                     const month = date.getMonth()
                     const year = date.getFullYear()

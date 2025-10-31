@@ -19,7 +19,7 @@ export const ExpensesSection = styled(Section)`
 export const ExpensesHeader = styled.div`
     /* display: flex; */
     display: grid;
-    grid-template-columns: 3fr 2fr 2fr 1fr 1fr;
+    grid-template-columns: 3fr 2fr 2fr 1fr 0.2fr;
     gap: 14px;
     transition: 0.3s;
 
@@ -107,6 +107,7 @@ export const LinkIcon = styled.img`
 `
 
 export const HeaderCell = styled.div`
+    /* width: 100px; */
     position: relative;
     color: ${borderColor};
     white-space: nowrap;
@@ -157,7 +158,7 @@ export const ExpensesItem = styled.li`
     /* display: flex; */
     height: 24px;
     display: grid;
-    grid-template-columns: 3fr 2fr 2fr 1fr 1fr;
+    grid-template-columns: 3fr 2fr 2fr 1fr 0.2fr;
     gap: 14px;
     background-color: transparent;
     cursor: pointer;
