@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function addTransaction({ url, data, method, token, id }) {
+export async function filerTransaction({ url, data, method, token, id }) {
 
     const res = await axios[method](url, data, {
         headers: {

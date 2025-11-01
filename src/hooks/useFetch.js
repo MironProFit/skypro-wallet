@@ -50,13 +50,13 @@ export function useFetch() {
                     const response = await addTransaction({ url: fullUrl, data, method, token })
                     return response.data
                 } else {
-                    const response = await transaction({ url: fullUrl, token: token ? token : newToken })
+                    const response = await transaction({ url: fullUrl, method, token: token ? token : newToken })
                     return response.data
                 }
             } catch (error) {
                 const errMsg = error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Ошибка входа'
                 console.error('Ошибка входа:', errMsg)
-                
+
                 showToast(`Ошибка запроса: ${errMsg}`, 'error')
                 throw error
             } finally {

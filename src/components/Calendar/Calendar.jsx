@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { useAppContext } from '../../contexts/AppContext'
 import { SectionTitle } from '../../styles/GlobalStyled'
 import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle, MonthWrapper } from '../../components/Calendar/Calendar.styles'
 import { ExpensesHeaderLink, LinkIcon, LinkWrapper } from '../Expenses/Expenses.styles'
 import { useLocation } from 'react-router-dom'
 import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
+import { useAuthContext } from '../../contexts/AuthContext'
+import { useAppContext } from '../../contexts/AppContext'
 
 // Helper function to get days in a month
 const getDaysInMonth = (month, year) => {
@@ -20,11 +21,6 @@ const CalendarComponent = ({ $isFilter }) => {
     const calendarRef = useRef(null)
     const [today, setToday] = useState(currentDate)
     const location = useLocation()
-
-    // const monthsToShow = []
-    // for (let i = -3; i <= 3; i++) {
-    //     monthsToShow.push(new Date(displayedYear, displayedMonth + i))
-    // }
 
     const monthsToShow = useMemo(() => {
         const months = []
@@ -56,12 +52,19 @@ const CalendarComponent = ({ $isFilter }) => {
         return startDate && endDate ? currentDay >= startDate && currentDay <= endDate : startDate && currentDay.getTime() === startDate.getTime()
     }
 
-    // Set the default period to today on initial render
     useEffect(() => {
         const now = new Date()
         setStartDate(now)
         setEndDate(now)
     }, [])
+
+    // useEffect(() => {
+    //     // if (!startDate || !endDate) {
+    //     const now = new Date()
+    //     setStartDate(now)
+    //     setEndDate(now)
+    //     // }
+    // }, [startDate, endDate, setStartDate, setEndDate])
 
     // Scroll to today in the calendar view
     useEffect(() => {
@@ -77,8 +80,6 @@ const CalendarComponent = ({ $isFilter }) => {
             }
         }
     }, [displayedYear, displayedMonth, today])
-
-
 
     const { isMobile } = useAppContext()
     const [isExpensesPage, setIsExpensesPage] = useState()

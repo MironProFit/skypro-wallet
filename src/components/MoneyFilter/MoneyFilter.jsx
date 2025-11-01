@@ -1,16 +1,37 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField'
+import { useAppContext } from '../../contexts/AppContext'
 
 function MoneyFilter() {
-    const [value, setValue] = React.useState([1000, 6000])
-    const [minInput, setMinInput] = React.useState(1500)
-    const [maxInput, setMaxInput] = React.useState(6000)
+    const { activeDistaffMoney, setActiveDistaffMoney } = useAppContext()
+    const [minInput, setMinInput] = useState('')
+    const [maxInput, setMaxInput] = useState('')
+    const [value, setValue] = useState(() => {
+        if (activeDistaffMoney && activeDistaffMoney.length > 0) {
+            return [activeDistaffMoney[0] === 0 ? 1000 : activeDistaffMoney[0], 6000]
+        }
+        return [0, 6000]
+    })
+
+    useEffect(() => {
+        if (activeDistaffMoney && activeDistaffMoney.length >= 2) {
+            setValue([activeDistaffMoney[0] === 0 ? 1000 : activeDistaffMoney[0], activeDistaffMoney[1]])
+        }
+    }, [activeDistaffMoney])
+
+    useEffect(() => {
+        if (activeDistaffMoney && activeDistaffMoney.length >= 2) {
+            setMinInput(activeDistaffMoney[0])
+            setMaxInput(activeDistaffMoney[1])
+        }
+    }, [activeDistaffMoney])
 
     const handleSliderChange = (event, newValue) => {
         setValue(newValue)
         setMinInput(newValue[0])
         setMaxInput(newValue[1])
+        setActiveDistaffMoney(newValue)
     }
 
     const handleMinInputChange = (event) => {

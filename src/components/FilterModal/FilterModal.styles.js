@@ -25,16 +25,18 @@ import { primaryColor, shadowColor, successColor } from '../../styles/Mexins.sty
 // `
 
 export const FilterWrapper = styled.div`
-    overflow: hidden;
+    position: fixed;
+    top: 25%;
+    /* overflow: hidden; */
     opacity: 0;
     visibility: hidden;
     display: flex;
-    position: absolute; /* или fixed, по необходимости */
+
     background: ${primaryColor};
     width: 80%; /* ширина для всплывающего окна */
     max-width: 300px; /* максимум ширины */
     padding: 20px;
-    top: 50px; /* позиция по вертикали */
+    /* top: 50px; */
     right: 50%; /* по горизонтали, смещение */
     transform: translateX(50%); /* чтобы центрировать по горизонтали */
     border-radius: 15px;

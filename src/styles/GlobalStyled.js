@@ -176,21 +176,21 @@ export const PrimaryButton = styled.button`
     color: #ffffff;
     transition: 0.3s;
 
+    &:active {
+        background-color: ${accentColor};
+        opacity: 0.8;
+    }
+
     &:hover {
         background: ${accentColorHover};
         border: 1px solid ${accentColorHover};
-        /* color: ${textColor}; */
+        /* color: ${textColor}; */ 
     }
 
     &:disabled {
         cursor: unset;
         background-color: ${borderColor};
         border: 1px solid ${borderColor};
-    }
-
-    &:active {
-        background-color: ${accentColor};
-        opacity: 0.8;
     }
 `
 

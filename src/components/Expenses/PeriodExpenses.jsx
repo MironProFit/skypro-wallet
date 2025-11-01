@@ -19,8 +19,6 @@ function PeriodExpenses({ $flex }) {
         setTotalSum(sumAll)
     }, [userData])
 
-
-
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
             <SectionTitle $isMobile={isMobile}>{formatNum(totalSum)} ₽</SectionTitle>

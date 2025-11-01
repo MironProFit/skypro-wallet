@@ -9,6 +9,17 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
     const [urlApi, setUrlApi] = useState('https://wedev-api.sky.pro/api/')
     const [toastNotification, setToastNotification] = useState(null)
+    //     const [activeCategories, setActiveCategories] = useState([])
+    //     const [activeDistaffMoney, setActiveDistaffMoney] = useState([])
+    //     const [isFilterUserData, setIsFilterUserData] = useState(false)
+    //     const [startDate, setStartDate] = useState(null)
+    //     const [endDate, setEndDate] = useState(null)
+
+    //          const [startDate, setStartDate] = useState(null);
+    //   const [endDate, setEndDate] = useState(null);
+    //   const [activeCategories, setActiveCategories] = useState([]);
+    //   const [activeDistaffMoney, setActiveDistaffMoney] = useState([0, 100000]); // или как у тебя
+    //   const [isFilterUserData, setIsFilterUserData] = useState(false);
 
     const [userData, setUserData] = useState(() => {
         const stored = localStorage.getItem('userData')
@@ -17,6 +28,21 @@ export const AuthProvider = ({ children }) => {
                 return JSON.parse(stored)
             } catch (e) {
                 console.error('Ошибка парсинга userData:', e)
+                return []
+            }
+        }
+        return []
+    })
+
+   
+
+    const [filterUserData, setfilterUserData] = useState(() => {
+        const stored = localStorage.getItem('filterUserData')
+        if (stored) {
+            try {
+                return JSON.parse(stored)
+            } catch (e) {
+                console.error('Ошибка парсинга filterUserData:', e)
                 return []
             }
         }
@@ -75,6 +101,9 @@ export const AuthProvider = ({ children }) => {
                 toastNotification,
                 setToastNotification,
                 showToast,
+
+                filterUserData,
+                setfilterUserData,
             }}
         >
             {children}

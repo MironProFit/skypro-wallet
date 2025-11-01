@@ -13,6 +13,7 @@ import { useFetch } from '../../hooks/useFetch'
 
 function ExpensesTable({ $flex }) {
     const { userData, urlApi, token, setToastNotification, setUserData } = useAuthContext()
+    const [ , set] = useState()
     const { isMobile } = useAppContext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
@@ -24,10 +25,8 @@ function ExpensesTable({ $flex }) {
 
     const openFilterModal = (type) => {
         if (filterType === type) {
-            // Если клик по тому же типу, что и сейчас активный, закрываем модалку
             setFilterType(null)
         } else {
-            // Иначе открываем модалку для выбранного типа
             setFilterType(type)
         }
         setIsOpenFilterModal(true)
@@ -35,9 +34,9 @@ function ExpensesTable({ $flex }) {
 
     const closeFilterModal = () => {
         setFilterType(null)
-
         setIsOpenFilterModal(false)
     }
+    useEffect(() => {}, [])
 
     useEffect(() => {
         setIsVisible(isMobile ? true : false)
@@ -53,7 +52,6 @@ function ExpensesTable({ $flex }) {
                 const response = await fetchData({ url: 'transactions', method: 'delete', newToken: token, id: choiseItem })
                 const transactionsResponse = await fetchData({ url: 'transactions', newToken: token })
                 setUserData(transactionsResponse)
-                
             } catch (error) {
                 const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
 
