@@ -176,6 +176,12 @@ export const PrimaryButton = styled.button`
     color: #ffffff;
     transition: 0.3s;
 
+    &:hover {
+        background: ${accentColorHover};
+        border: 1px solid ${accentColorHover};
+        /* color: ${textColor}; */
+    }
+
     &:disabled {
         cursor: unset;
         background-color: ${borderColor};
@@ -186,15 +192,10 @@ export const PrimaryButton = styled.button`
         background-color: ${accentColor};
         opacity: 0.8;
     }
-    &:hover {
-        background: ${accentColorHover};
-        border: 1px solid ${accentColorHover};
-        /* color: ${textColor}; */
-    }
 `
 
 //Form
-export const FormWrapper = styled.div``
+export const FormWrapper = styled.form``
 export const FormGroup = styled.div`
     /* margin-bottom: 24px; */
     display: flex;

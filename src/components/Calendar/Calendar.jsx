@@ -78,9 +78,7 @@ const CalendarComponent = ({ $isFilter }) => {
         }
     }, [displayedYear, displayedMonth, today])
 
-    useEffect(() => {
-        console.log($isFilter)
-    }, [$isFilter])
+
 
     const { isMobile } = useAppContext()
     const [isExpensesPage, setIsExpensesPage] = useState()

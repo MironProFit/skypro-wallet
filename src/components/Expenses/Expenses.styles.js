@@ -171,7 +171,6 @@ export const ExpensesItem = styled.li`
     margin: 0 -50px;
 
     &:hover {
-        color: ${accentColor};
         background-color: ${accentColorRgb};
     }
     &:hover svg {
@@ -179,6 +178,12 @@ export const ExpensesItem = styled.li`
             fill: ${accentColor};
         }
     }
+    ${({ $choiseItem }) =>
+        $choiseItem &&
+        css`
+            background-color: ${accentColorRgb};
+            color: ${accentColor};
+        `}
 `
 
 export const ExpensesFormGroup = styled(FormGroup)`
@@ -232,9 +237,15 @@ export const CategoryContainer = styled.div`
     padding-left: 20px;
     padding-right: 20px;
     transition: 0.3s;
+
     &:hover {
         background: ${accentColorRgb};
     }
+    /* ${({ $active }) =>
+        $active &&
+        css`
+            background: red;
+        `} */
 `
 export const CategoryImg = styled.div`
     display: flex;

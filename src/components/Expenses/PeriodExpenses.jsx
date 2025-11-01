@@ -19,9 +19,7 @@ function PeriodExpenses({ $flex }) {
         setTotalSum(sumAll)
     }, [userData])
 
-    useEffect(() => {
-        console.log(isMobile)
-    }, [isMobile])
+
 
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>

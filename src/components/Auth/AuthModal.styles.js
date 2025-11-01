@@ -7,6 +7,7 @@ import { accentColor, borderColor, errorColor, primaryColor, secondaryColor, suc
 export const AuthContainer = styled(Container)`
     display: flex;
     justify-content: center;
+    align-items: center;
 `
 
 export const AuthSection = styled(Section)`

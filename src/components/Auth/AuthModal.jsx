@@ -23,9 +23,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
-
-import { useFetch } from '../hooks/useFetch'
-import { is } from 'date-fns/locale'
+import { useFetch } from '../../hooks/useFetch'
 
 function AuthModal() {
     const [isPage, setIsPage] = useState('login')
@@ -82,9 +80,9 @@ function AuthModal() {
         try {
             const urlAuth = isPage === 'login' ? 'user/login' : 'user'
 
-            const authResponse = await fetchData({ url: urlAuth, data })
-            const newToken = authResponse.user?.token
-            setToken(authResponse.user?.token)
+            const response = await fetchData({ url: urlAuth, data })
+            const newToken = response.user?.token
+            setToken(response.user?.token)
 
             navigate('/')
 

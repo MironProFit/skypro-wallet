@@ -9,15 +9,18 @@ import { categoryList } from '../../data/CategoryList'
 import { formatNum } from '../../utils/formatNum'
 import FilterModal from '../FilterModal/FilterModal'
 import { useAppContext } from '../../contexts/AppContext'
+import { useFetch } from '../../hooks/useFetch'
 
 function ExpensesTable({ $flex }) {
-    const { userData } = useAuthContext()
+    const { userData, urlApi, token, setToastNotification, setUserData } = useAuthContext()
     const { isMobile } = useAppContext()
     const [color, setColor] = useState(true)
     const [isVisible, setIsVisible] = useState()
     const [isHidden, setIsHidden] = useState(true)
     const [filterType, setFilterType] = useState(null)
     const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
+    const [choiseItem, setChoiseItem] = useState('')
+    const { fetchData, loading, error } = useFetch()
 
     const openFilterModal = (type) => {
         if (filterType === type) {
@@ -38,8 +41,38 @@ function ExpensesTable({ $flex }) {
 
     useEffect(() => {
         setIsVisible(isMobile ? true : false)
-        console.log(isMobile)
     }, [isMobile])
+
+    const handleChoiseItem = (index) => {
+        setChoiseItem(index)
+    }
+
+    const onDeleteItem = async () => {
+        if (choiseItem) {
+            try {
+                const response = await fetchData({ url: 'transactions', method: 'delete', newToken: token, id: choiseItem })
+                const transactionsResponse = await fetchData({ url: 'transactions', newToken: token })
+                setUserData(transactionsResponse)
+                
+            } catch (error) {
+                const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
+
+                setToastNotification(errorMessage)
+
+                if (errorMessage === 'Данная транзакция уже удалена') {
+                    try {
+                        const transactionsResponse = await fetchData({ url: 'transactions', newToken: token })
+                        setUserData(transactionsResponse)
+                    } catch (retryError) {
+                        // Обработка ошибки при повторном вызове, если необходимо
+                        console.error('Ошибка при повторном получении транзакций:', retryError)
+                    }
+                }
+
+                console.error('Ошибка при отправке:', error)
+            }
+        }
+    }
 
     return (
         <>
@@ -79,14 +112,14 @@ function ExpensesTable({ $flex }) {
                     {Array.isArray(userData) && userData.length > 0 ? (
                         userData.map((item, index) => {
                             return (
-                                <ExpensesItem key={item._id || index} $isMobile={isMobile}>
+                                <ExpensesItem $choiseItem={item._id === choiseItem && choiseItem} onClick={() => handleChoiseItem(item._id)} key={item._id || index} $isMobile={isMobile}>
                                     <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
                                     <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
                                     <ItemCell style={{ justifyContent: 'flex-end', overflow: 'visible' }} $isVisible={isVisible}>
                                         {formatNum(item.sum)} &#8381;
                                     </ItemCell>
-                                    <ItemCellImg $isVisible={isVisible} $isMobile={isMobile}>
+                                    <ItemCellImg onClick={() => onDeleteItem()} $isVisible={isVisible} $isMobile={isMobile}>
                                         <CartSVG />
                                     </ItemCellImg>
                                 </ExpensesItem>
@@ -95,14 +128,15 @@ function ExpensesTable({ $flex }) {
                     ) : (
                         <>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>Нет расходов</div>
-                            <button>Обновить данные</button>
                         </>
                     )}
                 </ExpensesList>
 
                 {isMobile && (
                     <FlexContainer>
-                        <PrimaryButton>Удалить расход</PrimaryButton>
+                        <PrimaryButton disabled={!choiseItem} onClick={() => onDeleteItem()}>
+                            Удалить расход
+                        </PrimaryButton>
                     </FlexContainer>
                 )}
             </ExpensesSection>

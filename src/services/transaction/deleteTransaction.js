@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function transaction({ url, method = 'get', token }) {
+export async function deleteTransaction({ url, method = 'delete', token, id }) {
     const res = await axios[method](url, {
         headers: {
             'Content-Type': 'raw',
