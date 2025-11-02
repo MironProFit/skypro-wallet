@@ -9,14 +9,13 @@ export const AppProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
     const DEFAULT_MESSAGE_LOADING = 'данных'
     const [loadingMessage, setLoadingMessage] = useState(DEFAULT_MESSAGE_LOADING)
+    const [isEditMode, setIsEditMode] = useState(false)
 
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [activeCategories, setActiveCategories] = useState([])
     const [activeDistaffMoney, setActiveDistaffMoney] = useState([]) // или как у тебя
     const [isFilterUserData, setIsFilterUserData] = useState(false)
-
-
 
     useEffect(() => {
         const handleResize = () => {
@@ -86,6 +85,9 @@ export const AppProvider = ({ children }) => {
 
                 isFilterUserData,
                 setIsFilterUserData,
+
+                isEditMode,
+                setIsEditMode,
             }}
         >
             {children}

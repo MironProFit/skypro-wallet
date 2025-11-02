@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { accentColor, accentColorRgb, borderColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
+import { accentColor, accentColorRgb, borderColor, editColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
 import { FormGroup, FormInput, PrimaryButton, Section } from '../../styles/GlobalStyled'
 import { Link } from 'react-router-dom'
 
@@ -198,25 +198,27 @@ export const ItemCell = styled.div`
     white-space: nowrap;
     overflow: hidden;
 `
+
+
 export const ItemCellImg = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* cursor: default; */
+    cursor: pointer;
 
     ${({ $isMobile }) =>
         $isMobile &&
         css`
-            display: none;
+            display: ${$isVisible ? 'flex' : 'none'};
         `}
 
     & svg {
         path {
-            cursor: pointer;
-            fill: ${borderColor};
-            transition: 0.3s;
+            fill: ${({ $isEditModeActive, theme }) => ($isEditModeActive ? editColor : borderColor)}; /* или любой цвет активного состояния */
+            transition: fill 0.2s;
         }
     }
+
     &:hover svg {
         path {
             fill: ${textColor};

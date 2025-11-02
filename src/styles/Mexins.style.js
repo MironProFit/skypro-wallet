@@ -11,6 +11,7 @@ export const successColor = '#f1ebfd'
 export const warningColor = '#ffebeb'
 
 export const errorColor = '#F84D4D'
+export const editColor = '#F84D4D'
 
 export const borderColor = '#999999'
 export const thumbColor = '#D9D9D9'

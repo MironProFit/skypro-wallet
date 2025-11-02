@@ -1,6 +1,172 @@
+// import { useEffect, useState } from 'react'
+// import { FlexContainer, PrimaryButton, SectionTitle } from '../../styles/GlobalStyled'
+// import CartSVG from '../icons/CategoryIcons/CartSVG'
+// import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, FilterContainer, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
+// import { useAuthContext } from '../../contexts/AuthContext'
+// import { formattedDate } from '../../utils/date-fns'
+// import { categoryList } from '../../data/CategoryList'
+// import { formatNum } from '../../utils/formatNum'
+// import FilterModal from '../FilterModal/FilterModal'
+// import { useAppContext } from '../../contexts/AppContext'
+// import { useFetch } from '../../hooks/useFetch'
+// import EditSVG from '../icons/CategoryIcons/EditSVG'
+
+// function ExpensesTable({ $flex }) {
+//     const { userData, token, setToastNotification, setUserData } = useAuthContext()
+//     const { activeCategories, startDate, endDate, activeDistaffMoney, isMobile, isEditMode, setIsEditMode } = useAppContext()
+
+//     const [isVisible, setIsVisible] = useState(false)
+//     const [filterType, setFilterType] = useState(null)
+//     const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
+//     const [selectedItem, setSelectedItem] = useState(null) // выбранная транзакция
+//     const { fetchData } = useFetch()
+
+//     // Определяем, включена ли фильтрация
+//     const isFilterActive = activeCategories.length > 0 || (startDate && endDate) || activeDistaffMoney.length === 2
+
+//     const filteredData = userData.filter((item) => {
+//         if (!isFilterActive) return true
+
+//         const itemDate = new Date(item.date)
+//         if (startDate && itemDate < new Date(startDate)) return false
+//         if (endDate && itemDate > new Date(endDate)) return false
+//         if (activeCategories.length > 0 && !activeCategories.includes(item.category)) return false
+//         if (activeDistaffMoney.length === 2) {
+//             const [minSum, maxSum] = activeDistaffMoney
+//             if (item.sum < minSum || item.sum > maxSum) return false
+//         }
+//         return true
+//     })
+
+//     useEffect(() => {
+//         setIsVisible(isMobile)
+//     }, [isMobile])
+
+//     const openFilterModal = (type) => {
+//         setFilterType(filterType === type ? null : type)
+//         setIsOpenFilterModal(true)
+//     }
+
+//     const closeFilterModal = () => {
+//         setFilterType(null)
+//         setIsOpenFilterModal(false)
+//     }
+
+//     // Обработка выбора элемента (только на мобилке)
+
+//     const handleSelectItem = (id) => {}
+
+//     const handleEditMode = (id) => {
+//         setIsEditMode((prev) => (prev === id ? null : id))
+//     }
+
+//     // useEffect(() => {
+//     //     console.log(isEditMode)
+//     // }, [isEditMode])
+
+//     // Удаление: на мобилке — через кнопку, на десктопе — сразу
+//     const handleDelete = async (itemToDelete) => {
+//         if (!itemToDelete) return
+
+//         try {
+//             await fetchData({ url: 'transactions', method: 'delete', token, id: itemToDelete._id })
+//             const updatedData = await fetchData({ url: 'transactions', token })
+//             setUserData(updatedData)
+//             if (isMobile) setSelectedItem(null)
+//         } catch (error) {
+//             const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
+//             setToastNotification(errorMessage)
+//             console.error('Ошибка удаления:', error)
+//         }
+//     }
+
+//     return (
+//         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
+//             {!isMobile && <SectionTitle>Таблица расходов</SectionTitle>}
+
+//             <ExpensesHeader $isMobile={isMobile}>
+//                 <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
+//                     Описание
+//                 </HeaderCell>
+//                 <FilterContainer>
+//                     <HeaderCell $active={filterType === 'category'} $filter onClick={() => openFilterModal('category')} $isMobile={isMobile} $isVisible={isVisible}>
+//                         Категория
+//                     </HeaderCell>
+//                     <FilterModal $active={filterType === 'category'} type="category" onClose={closeFilterModal} />
+//                 </FilterContainer>
+//                 <FilterContainer>
+//                     <HeaderCell $active={filterType === 'date'} $filter onClick={() => openFilterModal('date')} $isMobile={isMobile} $isVisible={isVisible}>
+//                         Дата
+//                     </HeaderCell>
+//                     <FilterModal $active={filterType === 'date'} type="date" onClose={closeFilterModal} />
+//                 </FilterContainer>
+//                 <FilterContainer>
+//                     <HeaderCell $active={filterType === 'sum'} $filter onClick={() => openFilterModal('sum')} $isMobile={isMobile} $isVisible={isVisible}>
+//                         Сумма
+//                     </HeaderCell>
+//                     <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />
+//                 </FilterContainer>
+//                 <HeaderCell $isMobile={isMobile}></HeaderCell>
+//             </ExpensesHeader>
+
+//             <ExpensesList>
+//                 {filteredData.length > 0 ? (
+//                     filteredData.map((item) => (
+//                         <ExpensesItem key={item._id} $choiseItem={isMobile && selectedItem?._id === item._id} onClick={() => handleSelectItem(item)} $isMobile={isMobile}>
+//                             <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
+//                             <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
+//                             <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
+//                             <ItemCell style={{ justifyContent: 'flex-end' }} $isVisible={isVisible}>
+//                                 {formatNum(item.sum)} ₽
+//                             </ItemCell>
+//                             {!isMobile && (
+//                                 <div style={{ display: 'flex', gap: '10px' }}>
+//                                     <ItemCellImg
+//                                         onClick={(e) => {
+//                                             e.stopPropagation()
+//                                             handleDelete(item)
+//                                         }}
+//                                         $isVisible={isVisible}
+//                                         $isMobile={isMobile}
+//                                     >
+//                                         <CartSVG />
+//                                     </ItemCellImg>
+
+//                                     <ItemCellImg
+//                                         $editModeActive={selectedItem === item._id}
+//                                         onClick={() => {
+//                                             handleEditMode(item._id)
+//                                         }}
+//                                         $isVisible={isVisible}
+//                                         $isMobile={isMobile}
+//                                     >
+//                                         <EditSVG />
+//                                     </ItemCellImg>
+//                                 </div>
+//                             )}
+//                         </ExpensesItem>
+//                     ))
+//                 ) : (
+//                     <div style={{ textAlign: 'center', padding: '20px' }}>Нет расходов</div>
+//                 )}
+//             </ExpensesList>
+
+//             {/* Кнопка удаления ТОЛЬКО на мобильных */}
+//             {isMobile && selectedItem && (
+//                 <FlexContainer>
+//                     <PrimaryButton onClick={() => handleDelete(selectedItem)}>Удалить расход</PrimaryButton>
+//                 </FlexContainer>
+//             )}
+//         </ExpensesSection>
+//     )
+// }
+
+// export default ExpensesTable
+
 import { useEffect, useState } from 'react'
 import { FlexContainer, PrimaryButton, SectionTitle } from '../../styles/GlobalStyled'
 import CartSVG from '../icons/CategoryIcons/CartSVG'
+import EditSVG from '../icons/CategoryIcons/EditSVG'
 import { ExpensesHeader, ExpensesItem, ExpensesList, ExpensesSection, FilterContainer, HeaderCell, ItemCell, ItemCellImg } from './Expenses.styles'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { formattedDate } from '../../utils/date-fns'
@@ -12,37 +178,26 @@ import { useFetch } from '../../hooks/useFetch'
 
 function ExpensesTable({ $flex }) {
     const { userData, token, setToastNotification, setUserData } = useAuthContext()
-    const { activeCategories, startDate, endDate, activeDistaffMoney } = useAppContext()
-    const { isMobile } = useAppContext()
+    const { activeCategories, startDate, endDate, activeDistaffMoney, isMobile, isEditMode, setIsEditMode } = useAppContext()
 
     const [isVisible, setIsVisible] = useState(false)
-    const [isHidden, setIsHidden] = useState(true)
     const [filterType, setFilterType] = useState(null)
     const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
-    const [choiseItem, setChoiseItem] = useState('')
+    const [selectedItem, setSelectedItem] = useState(null)
     const { fetchData } = useFetch()
 
-    // Определяем, включена ли фильтрация
     const isFilterActive = activeCategories.length > 0 || (startDate && endDate) || activeDistaffMoney.length === 2
 
-    // ✅ Фильтрация — ТОЛЬКО внутри функции
     const filteredData = userData.filter((item) => {
         if (!isFilterActive) return true
-
-        // Фильтр по дате
         const itemDate = new Date(item.date)
         if (startDate && itemDate < new Date(startDate)) return false
         if (endDate && itemDate > new Date(endDate)) return false
-
-        // Фильтр по категориям
         if (activeCategories.length > 0 && !activeCategories.includes(item.category)) return false
-
-        // Фильтр по сумме
         if (activeDistaffMoney.length === 2) {
             const [minSum, maxSum] = activeDistaffMoney
             if (item.sum < minSum || item.sum > maxSum) return false
         }
-
         return true
     })
 
@@ -60,17 +215,31 @@ function ExpensesTable({ $flex }) {
         setIsOpenFilterModal(false)
     }
 
-    const handleChoiseItem = (id) => {
-        setChoiseItem(id)
+    // Выбор элемента (для мобилки — удаление, для всех — редактирование)
+    const handleSelectItem = (item) => {
+        if (isMobile) {
+            setSelectedItem(selectedItem?._id === item._id ? null : item)
+        }
     }
 
-    const onDeleteItem = async () => {
-        if (!choiseItem) return
+    // Переключение режима редактирования
+    const toggleEditMode = (id) => {
+        setIsEditMode(isEditMode === id ? null : id)
+    }
+
+    useEffect(() => {
+        console.log(isEditMode)
+    }, [isEditMode])
+
+    const handleDelete = async (itemToDelete) => {
+        if (!itemToDelete) return
         try {
-            await fetchData({ url: 'transactions', method: 'delete', token, id: choiseItem })
+            await fetchData({ url: 'transactions', method: 'delete', token, id: itemToDelete._id })
             const updatedData = await fetchData({ url: 'transactions', token })
             setUserData(updatedData)
-            setChoiseItem('')
+            if (isMobile) setSelectedItem(null)
+            // Выход из режима редактирования при удалении
+            if (isEditMode === itemToDelete._id) setIsEditMode(null)
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
             setToastNotification(errorMessage)
@@ -86,51 +255,77 @@ function ExpensesTable({ $flex }) {
                 <HeaderCell $isMobile={isMobile} $isVisible={isVisible}>
                     Описание
                 </HeaderCell>
-
                 <FilterContainer>
                     <HeaderCell $active={filterType === 'category'} $filter onClick={() => openFilterModal('category')} $isMobile={isMobile} $isVisible={isVisible}>
                         Категория
                     </HeaderCell>
                     <FilterModal $active={filterType === 'category'} type="category" onClose={closeFilterModal} />
                 </FilterContainer>
-
                 <FilterContainer>
                     <HeaderCell $active={filterType === 'date'} $filter onClick={() => openFilterModal('date')} $isMobile={isMobile} $isVisible={isVisible}>
                         Дата
                     </HeaderCell>
                     <FilterModal $active={filterType === 'date'} type="date" onClose={closeFilterModal} />
                 </FilterContainer>
-
                 <FilterContainer>
                     <HeaderCell $active={filterType === 'sum'} $filter onClick={() => openFilterModal('sum')} $isMobile={isMobile} $isVisible={isVisible}>
                         Сумма
                     </HeaderCell>
                     <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />
                 </FilterContainer>
-
-                <HeaderCell $isMobile={isMobile} $isHidden={isHidden}></HeaderCell>
+                <HeaderCell $isMobile={isMobile}></HeaderCell>
             </ExpensesHeader>
 
             <ExpensesList>
                 {filteredData.length > 0 ? (
                     filteredData.map((item) => (
-                        <ExpensesItem key={item._id} $choiseItem={item._id === choiseItem} onClick={() => handleChoiseItem(item._id)} $isMobile={isMobile}>
+                        <ExpensesItem key={item._id} $choiseItem={isMobile && selectedItem?._id === item._id} onClick={() => handleSelectItem(item)} $isMobile={isMobile}>
                             <ItemCell $isVisible={isVisible}>{item.description}</ItemCell>
                             <ItemCell $isVisible={isVisible}>{categoryList.find((cat) => cat.category === item.category)?.name || item.category}</ItemCell>
                             <ItemCell $isVisible={isVisible}>{formattedDate(item.date)}</ItemCell>
                             <ItemCell style={{ justifyContent: 'flex-end' }} $isVisible={isVisible}>
                                 {formatNum(item.sum)} ₽
                             </ItemCell>
-                            <ItemCellImg
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    onDeleteItem()
-                                }}
-                                $isVisible={isVisible}
-                                $isMobile={isMobile}
-                            >
-                                <CartSVG />
-                            </ItemCellImg>
+
+                            {/* Десктоп: иконки удаления и редактирования */}
+                            {!isMobile && (
+                                <div style={{ display: 'flex', gap: '10px' }}>
+                                    <ItemCellImg
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            handleDelete(item)
+                                        }}
+                                        $isVisible={isVisible}
+                                    >
+                                        <CartSVG />
+                                    </ItemCellImg>
+
+                                    <ItemCellImg
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            toggleEditMode(item._id)
+                                        }}
+                                        $isVisible={isVisible}
+                                        $isEditModeActive={isEditMode === item._id} // ← передаём активность
+                                    >
+                                        <EditSVG />
+                                    </ItemCellImg>
+                                </div>
+                            )}
+
+                            {/* Мобильная версия: иконка редактирования всегда видна */}
+                            {isMobile && (
+                                <ItemCellImg
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        toggleEditMode(item._id)
+                                    }}
+                                    $isVisible={isVisible}
+                                    $isEditModeActive={isEditMode === item._id}
+                                >
+                                    <EditSVG />
+                                </ItemCellImg>
+                            )}
                         </ExpensesItem>
                     ))
                 ) : (
@@ -138,9 +333,10 @@ function ExpensesTable({ $flex }) {
                 )}
             </ExpensesList>
 
-            {isMobile && choiseItem && (
+            {/* Кнопка удаления на мобилке */}
+            {isMobile && selectedItem && (
                 <FlexContainer>
-                    <PrimaryButton onClick={onDeleteItem}>Удалить расход</PrimaryButton>
+                    <PrimaryButton onClick={() => handleDelete(selectedItem)}>Удалить расход</PrimaryButton>
                 </FlexContainer>
             )}
         </ExpensesSection>
