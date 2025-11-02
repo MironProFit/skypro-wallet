@@ -1,4 +1,3 @@
-
 import { useAppContext } from '../../contexts/AppContext'
 import { categoryList } from '../../data/CategoryList'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
@@ -7,7 +6,6 @@ import { CategoryWrap, CategoryButton, CategoryContainer, CategoryImg, CategoryD
 function Category({ mode = 'multi', onCategory, selectedCategory }) {
     const { activeCategories, setActiveCategories } = useAppContext()
 
-    // Определяем, активна ли категория
     const checkActive = (category) => {
         if (mode === 'single') {
             return selectedCategory === category
@@ -17,10 +15,8 @@ function Category({ mode = 'multi', onCategory, selectedCategory }) {
 
     const handleCategoryClick = (category) => {
         if (mode === 'single') {
-            // В single-режиме просто передаём выбранную категорию наверх
             onCategory(category)
         } else {
-            // В multi-режиме управляем через контекст
             setActiveCategories((prev) => {
                 const current = Array.isArray(prev) ? prev : []
                 if (current.includes(category)) {
@@ -30,7 +26,7 @@ function Category({ mode = 'multi', onCategory, selectedCategory }) {
                 }
             })
         }
-        onCategory?.(category) // опциональный вызов родителя
+        onCategory?.(category)
     }
 
     return (

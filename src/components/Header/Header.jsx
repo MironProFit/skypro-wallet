@@ -38,73 +38,73 @@ function Header({ onLogout }) {
 
     return (
         <HeaderWrapper $isMobile={isMobile}>
-            {/* <HeaderContainer $isMobile={isMobile}> */}
-            <HeaderNav $isMobile={isMobile}>
-                <HeaderLogo>
-                    <img src={logoDark} alt="Logo" />
-                </HeaderLogo>
-                {token && (
-                    <>
-                        {!isMobile ? (
-                            <StyledLinkGroup>
+            <HeaderContainer $isMobile={isMobile}>
+                <HeaderNav $isMobile={isMobile}>
+                    <HeaderLogo>
+                        <img src={logoDark} alt="Logo" />
+                    </HeaderLogo>
+                    {token && (
+                        <>
+                            {!isMobile ? (
+                                <StyledLinkGroup>
+                                    <LinkContainer>
+                                        <NavLinkButton $isMobile={isMobile} to={'/expenses'} $isLinkActive={isLinkActive('/expenses')}>
+                                            Мои расходы
+                                        </NavLinkButton>
+                                    </LinkContainer>
+                                    <LinkContainer>
+                                        <NavLinkButton $isMobile={isMobile} to={'/analysis'} $isLinkActive={isLinkActive('/analysis')}>
+                                            Анализ расходов
+                                        </NavLinkButton>
+                                    </LinkContainer>
+                                </StyledLinkGroup>
+                            ) : (
                                 <LinkContainer>
-                                    <NavLinkButton $isMobile={isMobile} to={'/expenses'} $isLinkActive={isLinkActive('/expenses')}>
-                                        Мои расходы
+                                    <NavLinkButton $isModal={isModal} onClick={handleModalLinks} $isMobile={isMobile}>
+                                        {linkName}
                                     </NavLinkButton>
+                                    <ModalLinks $isModal={isModal}>
+                                        <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsModal(false)}>
+                                            Мои расходы
+                                        </NavLinkModal>
+                                        <NavLinkModal
+                                            to={'/expenses/new'}
+                                            state={{ isModal: false }}
+                                            $isModal={isModal}
+                                            $isMobile={isMobile}
+                                            $isLinkActive={isLinkActive('/expenses/new')}
+                                            onClick={() => setIsModal(false)}
+                                        >
+                                            Новый расход
+                                        </NavLinkModal>
+                                        <NavLinkModal
+                                            to={'/analysis'}
+                                            state={{ isModal: false }}
+                                            $isModal={isModal}
+                                            $isMobile={isMobile}
+                                            $isLinkActive={isLinkActive('/analysis') || isLinkActive('/analysis/period')}
+                                            onClick={() => setIsModal(false)}
+                                        >
+                                            Анализ расходов
+                                        </NavLinkModal>
+                                    </ModalLinks>
                                 </LinkContainer>
-                                <LinkContainer>
-                                    <NavLinkButton $isMobile={isMobile} to={'/analysis'} $isLinkActive={isLinkActive('/analysis')}>
-                                        Анализ расходов
-                                    </NavLinkButton>
-                                </LinkContainer>
-                            </StyledLinkGroup>
-                        ) : (
-                            <LinkContainer>
-                                <NavLinkButton $isModal={isModal} onClick={handleModalLinks} $isMobile={isMobile}>
-                                    {linkName}
-                                </NavLinkButton>
-                                <ModalLinks $isModal={isModal}>
-                                    <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsModal(false)}>
-                                        Мои расходы
-                                    </NavLinkModal>
-                                    <NavLinkModal
-                                        to={'/expenses/new'}
-                                        state={{ isModal: false }}
-                                        $isModal={isModal}
-                                        $isMobile={isMobile}
-                                        $isLinkActive={isLinkActive('/expenses/new')}
-                                        onClick={() => setIsModal(false)}
-                                    >
-                                        Новый расход
-                                    </NavLinkModal>
-                                    <NavLinkModal
-                                        to={'/analysis'}
-                                        state={{ isModal: false }}
-                                        $isModal={isModal}
-                                        $isMobile={isMobile}
-                                        $isLinkActive={isLinkActive('/analysis') || isLinkActive('/analysis/period')}
-                                        onClick={() => setIsModal(false)}
-                                    >
-                                        Анализ расходов
-                                    </NavLinkModal>
-                                </ModalLinks>
-                            </LinkContainer>
-                        )}
+                            )}
 
-                        <LinkContainer>
-                            <NavLinkButton
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    onLogout()
-                                }}
-                            >
-                                Выйти
-                            </NavLinkButton>
-                        </LinkContainer>
-                    </>
-                )}
-            </HeaderNav>
-            {/* </HeaderContainer> */}
+                            <LinkContainer>
+                                <NavLinkButton
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        onLogout()
+                                    }}
+                                >
+                                    Выйти
+                                </NavLinkButton>
+                            </LinkContainer>
+                        </>
+                    )}
+                </HeaderNav>
+            </HeaderContainer>
         </HeaderWrapper>
     )
 }

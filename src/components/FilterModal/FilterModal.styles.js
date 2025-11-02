@@ -42,7 +42,7 @@ export const FilterWrapper = styled.div`
     border-radius: 15px;
     box-shadow: 0px 0px 20px ${shadowColor};
     z-index: 999; /* чтобы было поверх других элементов */
-    transition: 0.3s;
+    transition: 0.5s;
 
     ${({ $active }) =>
         $active &&

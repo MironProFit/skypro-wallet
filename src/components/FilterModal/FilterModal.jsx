@@ -34,7 +34,7 @@ function FilterModal({ type, onClose, $active }) {
         setActiveCategories([])
         setStartDate(null)
         setEndDate(null)
-        setActiveDistaffMoney([0, 100000]) // или как у тебя по умолчанию
+        setActiveDistaffMoney([]) // или как у тебя по умолчанию
     }
 
     const handleResetFilters = () => {
@@ -49,7 +49,7 @@ function FilterModal({ type, onClose, $active }) {
     }
 
     const checkFilterLocal = () => {
-        console.log({ activeCategories, activeDistaffMoney, startDate, endDate })
+        console.log(activeCategories, activeDistaffMoney, startDate, endDate)
         onClose()
     }
 

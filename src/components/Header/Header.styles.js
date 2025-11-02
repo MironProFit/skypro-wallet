@@ -21,6 +21,7 @@ export const HeaderWrapper = styled.header`
 
 export const HeaderContainer = styled(Container)`
     background-color: unset;
+    height: auto;
 `
 
 export const HeaderLogo = styled(Link)`

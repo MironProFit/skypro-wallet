@@ -1,7 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useAuthContext } from './AuthContext'
 const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
+    const { userData } = useAuthContext()
     const [isMobile, setIsMobile] = useState(false)
     const [windowWidth, setWindowWidth] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -11,8 +13,10 @@ export const AppProvider = ({ children }) => {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [activeCategories, setActiveCategories] = useState([])
-    const [activeDistaffMoney, setActiveDistaffMoney] = useState([1000, 5000]) // или как у тебя
+    const [activeDistaffMoney, setActiveDistaffMoney] = useState([]) // или как у тебя
     const [isFilterUserData, setIsFilterUserData] = useState(false)
+
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -30,6 +34,12 @@ export const AppProvider = ({ children }) => {
             setIsMobile(false)
         }
     }, [windowWidth])
+    useEffect(() => {
+        if (startDate && endDate && startDate.getTime() === endDate.getTime()) {
+            setStartDate(null)
+            setEndDate(null)
+        }
+    }, [startDate, endDate])
 
     // useEffect(() => {
     //     const hasCategoryFilter = Array.isArray(activeCategories) && activeCategories.length > 0
