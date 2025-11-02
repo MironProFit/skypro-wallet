@@ -52,13 +52,21 @@ function FilterModal({ type, onClose, $active }) {
         console.log(activeCategories, activeDistaffMoney, startDate, endDate)
         onClose()
     }
+    const checkFilterLocalApi = async () => {
+        console.log(type)
+        // try {
+
+        //     const response = await fetchData({})
+        // } catch (error) {}
+
+        onClose()
+    }
 
     return (
         <FilterWrapper $active={$active} $isOpenFilter>
             <FilterArea>
                 {type === 'category' && (
                     <>
-                        {/* ✅ multi-режим для фильтрации */}
                         <Category mode="multi" onCategory={onCategory} />
                         <PrimaryButton onClick={handleResetFilters} disabled={!hasActiveFilters()}>
                             Сбросить фильтр
@@ -85,6 +93,8 @@ function FilterModal({ type, onClose, $active }) {
                 <PrimaryButton disabled={!hasActiveFilters()} onClick={checkFilterLocal}>
                     Выбрать
                 </PrimaryButton>
+
+                <PrimaryButton onClick={checkFilterLocalApi}>Получить из API</PrimaryButton>
 
                 <PrimaryButton onClick={handleCloseModalFilter}>Закрыть</PrimaryButton>
             </FilterArea>

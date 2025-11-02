@@ -59,6 +59,7 @@ export const ChartColor = styled.div`
     ${({ $isMobile }) =>
         $isMobile &&
         css`
+            /* min-height: 20px; */
             min-width: 20px;
         `}
 `

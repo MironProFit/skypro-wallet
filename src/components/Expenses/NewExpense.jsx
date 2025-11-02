@@ -1,113 +1,159 @@
-import { useEffect, useState } from 'react'
+
+import { useEffect, useState, useMemo } from 'react'
 import { SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper, FlexContainer } from '../../styles/GlobalStyled'
 import { AddButton, ExpensesFormGroup, ExpensesSection, FormInputSum, FormInputSumWrapper, RubleIcon } from './Expenses.styles'
 import { categoryList } from '../../data/CategoryList'
 import { useAppContext } from '../../contexts/AppContext'
-import Category from '../Category/Category' // ← исправил опечатку в имени
+import Category from '../Category/Category'
 import { useFetch } from '../../hooks/useFetch'
 import { useAuthContext } from '../../contexts/AuthContext'
-import { formattedDateForApi } from '../../utils/date-fns'
 import { ErrorText } from '../Auth/AuthModal.styles'
 
 function NewExpense({ $flex }) {
-    const { isMobile } = useAppContext()
-    const { setToastNotification, token, setUserData } = useAuthContext()
+    const { isMobile, isEditMode, setIsEditMode } = useAppContext()
+    const { setToastNotification, token, setUserData, userData } = useAuthContext()
     const { fetchData } = useFetch()
-    const [isDisabled, setIsDisabled] = useState(true)
-    const [expenses, setExpenses] = useState({
+
+    const [formData, setFormData] = useState({
         description: '',
         sum: '',
         category: '',
         date: '',
     })
+
     const [isDescriptionTouched, setIsDescriptionTouched] = useState(false)
 
+    // Сохраняем исходные данные для сравнения
+    const originalData = useMemo(() => {
+        if (!isEditMode) return null
+        const transaction = userData.find((item) => item._id === isEditMode)
+        return transaction
+            ? {
+                  description: transaction.description,
+                  sum: transaction.sum,
+                  category: transaction.category,
+                  date: transaction.date.split('T')[0],
+              }
+            : null
+    }, [isEditMode, userData])
+
+    // Проверяем, были ли изменения
+    const hasChanges = useMemo(() => {
+        if (!originalData) return true // при создании — всегда "есть изменения"
+        return formData.description !== originalData.description || formData.sum !== originalData.sum || formData.category !== originalData.category || formData.date !== originalData.date
+    }, [formData, originalData])
+
+    // Загрузка данных при редактировании
     useEffect(() => {
-        const allFieldsFilled = expenses.description.length >= 3 && expenses.sum > 0 && expenses.category !== '' && expenses.date !== ''
-        setIsDisabled(!allFieldsFilled)
-    }, [expenses])
+        if (isEditMode) {
+            const transaction = userData.find((item) => item._id === isEditMode)
+            if (transaction) {
+                setFormData({
+                    description: transaction.description,
+                    sum: transaction.sum,
+                    category: transaction.category,
+                    date: transaction.date.split('T')[0],
+                })
+                setIsDescriptionTouched(false)
+            }
+        } else {
+            setFormData({ description: '', sum: '', category: '', date: '' })
+            setIsDescriptionTouched(false)
+        }
+    }, [isEditMode, userData])
 
-    const onDescription = (value) => {
+    // Валидность формы
+    const isFormValid = formData.description.length >= 3 && formData.sum > 0 && formData.category !== '' && formData.date !== ''
+
+    // Обработчики
+    const handleDescription = (value) => {
         if (!isDescriptionTouched) setIsDescriptionTouched(true)
-        setExpenses((prev) => ({ ...prev, description: value }))
+        setFormData((prev) => ({ ...prev, description: value }))
     }
 
-    const onCategory = (category) => {
-        setExpenses((prev) => ({ ...prev, category }))
+    const handleCategory = (category) => {
+        setFormData((prev) => ({ ...prev, category }))
     }
 
-    const onDate = (value) => {
-        const newDate = formattedDateForApi(value)
-        setExpenses((prev) => ({ ...prev, date: newDate }))
+    const handleDate = (value) => {
+        setFormData((prev) => ({ ...prev, date: value }))
     }
 
-    const onSum = (value) => {
+    const handleSum = (value) => {
         const numValue = value.trim() === '' ? 0 : Number(value)
-        setExpenses((prev) => ({ ...prev, sum: numValue }))
+        setFormData((prev) => ({ ...prev, sum: numValue }))
     }
 
-    const onSubmitForm = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await fetchData({
-                url: 'transactions',
-                data: expenses,
-                method: 'post',
-                token,
-            })
-            if (response) {
-                setExpenses({ description: '', sum: '', category: '', date: '' })
-                setIsDescriptionTouched(false)
+            let response
+            if (isEditMode) {
+                response = await fetchData({
+                    url: `transactions/${isEditMode}`,
+                    data: formData,
+                    method: 'patch',
+                    token,
+                })
+            } else {
+                response = await fetchData({
+                    url: 'transactions',
+                    data: formData,
+                    method: 'post',
+                    token,
+                })
+            }
 
-                const transactionsResponse = await fetchData({ url: 'transactions', token })
-                setUserData(transactionsResponse)
+            if (response) {
+                const updatedData = await fetchData({ url: 'transactions', token })
+                setUserData(updatedData)
+                if (isEditMode) setIsEditMode(null)
             }
         } catch (error) {
             setToastNotification(error)
-            console.error('Ошибка при отправке:', error)
+            console.error('Ошибка:', error)
         }
     }
 
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
-            {!isMobile && <SectionTitle style={{ marginBottom: '32px' }}>Новый расход</SectionTitle>}
+            {!isMobile && <SectionTitle style={{ marginBottom: '32px' }}>{isEditMode ? 'Редактирование расхода' : 'Новый расход'}</SectionTitle>}
 
-            <FormWrapper onSubmit={onSubmitForm}>
+            <FormWrapper onSubmit={handleSubmit}>
                 <ExpensesFormGroup>
                     <FormLabel htmlFor="formDesc">Описание</FormLabel>
-                    <FormInput $isMobile={isMobile} id="formDesc" type="text" value={expenses.description} placeholder="Введите что-то" onChange={(e) => onDescription(e.target.value)} />
-                    {isDescriptionTouched && expenses.description.length < 4 && <ErrorText>Минимум 4 символа.</ErrorText>}
+                    <FormInput $isMobile={isMobile} id="formDesc" type="text" value={formData.description} placeholder="Введите что-то" onChange={(e) => handleDescription(e.target.value)} />
+                    {isDescriptionTouched && formData.description.length < 4 && <ErrorText>Минимум 4 символа.</ErrorText>}
                 </ExpensesFormGroup>
 
                 <ExpensesFormGroup>
                     <FormLabel>Категория</FormLabel>
-                    {/* ✅ Передаём selectedCategory для single-режима */}
-                    <Category mode="single" selectedCategory={expenses.category} onCategory={onCategory} />
+                    <Category mode="single" selectedCategory={formData.category} onCategory={handleCategory} />
                 </ExpensesFormGroup>
 
                 <ExpensesFormGroup>
                     <FormLabel htmlFor="formDate">Дата</FormLabel>
-                    <FormInput $isMobile={isMobile} $icon id="formDate" type="date" value={expenses.date} onChange={(e) => onDate(e.target.value)} />
+                    <FormInput $isMobile={isMobile} $icon id="formDate" type="date" value={formData.date} onChange={(e) => handleDate(e.target.value)} />
                 </ExpensesFormGroup>
 
                 <ExpensesFormGroup>
                     <FormLabel htmlFor="formPrice">Сумма</FormLabel>
                     <FormInputSumWrapper>
                         <RubleIcon>₽</RubleIcon>
-                        <FormInputSum $isMobile={isMobile} id="formPrice" type="number" placeholder="Введите сумму" value={expenses.sum || ''} onChange={(e) => onSum(e.target.value)} />
+                        <FormInputSum $isMobile={isMobile} id="formPrice" type="number" placeholder="Введите сумму" value={formData.sum || ''} onChange={(e) => handleSum(e.target.value)} />
                     </FormInputSumWrapper>
                 </ExpensesFormGroup>
 
                 {isMobile ? (
                     <FlexContainer>
-                        <AddButton type="submit" disabled={isDisabled}>
-                            Добавить новый расход
+                        <AddButton type="submit" disabled={!isFormValid || (isEditMode && !hasChanges)}>
+                            {isEditMode ? 'Сохранить изменения' : 'Добавить расход'}
                         </AddButton>
                     </FlexContainer>
                 ) : (
                     <FormBtn>
-                        <AddButton type="submit" disabled={isDisabled}>
-                            Добавить новый расход
+                        <AddButton type="submit" disabled={!isFormValid || (isEditMode && !hasChanges)}>
+                            {isEditMode ? 'Сохранить изменения' : 'Добавить расход'}
                         </AddButton>
                     </FormBtn>
                 )}

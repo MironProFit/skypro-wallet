@@ -29,7 +29,7 @@ export const ExpensesHeader = styled.div`
     &::before {
         position: absolute;
         content: '';
-        width: 200%;
+        width: 100%;
         height: 1px;
         left: 50%;
         transform: translateX(-50%);
@@ -183,6 +183,13 @@ export const ExpensesItem = styled.li`
         css`
             background-color: ${accentColorRgb};
             color: ${accentColor};
+            color: red;
+        `}
+    ${({ $editItem }) =>
+        $editItem &&
+        css`
+            background-color: ${accentColorRgb};
+            color: ${accentColor};
         `}
 `
 
@@ -199,31 +206,35 @@ export const ItemCell = styled.div`
     overflow: hidden;
 `
 
-
 export const ItemCellImg = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
     cursor: pointer;
-
-    ${({ $isMobile }) =>
-        $isMobile &&
-        css`
-            display: ${$isVisible ? 'flex' : 'none'};
-        `}
+    transition: 0.3s;
 
     & svg {
+        transform: scale(${({ $isEditModeActive }) => ($isEditModeActive ? 1.5 : 1)});
         path {
             fill: ${({ $isEditModeActive, theme }) => ($isEditModeActive ? editColor : borderColor)}; /* или любой цвет активного состояния */
             transition: fill 0.2s;
         }
     }
 
-    &:hover svg {
-        path {
-            fill: ${textColor};
+    &:hover {
+        transform: scale(1.5);
+        svg {
+            path {
+                fill: ${textColor};
+            }
         }
     }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            display: ${$isVisible ? 'flex' : 'none'};
+        `}
 `
 
 export const CategoryButton = styled.div``

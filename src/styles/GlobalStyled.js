@@ -75,12 +75,12 @@ export const PageTitle = styled.h1`
         css`
             font-size: 24px;
             padding: 0;
-            margin: 0;
-        `}/* ${({ $isExpensesPage }) =>
-        !$isExpensesPage &&
-        css`
-            order: 2;
-        `} */
+            margin-top: 24px;
+            margin-bottom: 23px;
+            padding-left: 27px;
+
+            /* margin: 0; */
+        `}
 `
 
 export const Section = styled.section`
@@ -124,6 +124,7 @@ export const SectionTitle = styled.h2`
     ${({ $isMobile }) =>
         $isMobile &&
         css`
+            /* margin-left: 27px; */
             font-size: 20px;
         `}
 `
@@ -184,7 +185,7 @@ export const PrimaryButton = styled.button`
     &:hover {
         background: ${accentColorHover};
         border: 1px solid ${accentColorHover};
-        /* color: ${textColor}; */ 
+        /* color: ${textColor}; */
     }
 
     &:disabled {

@@ -64,6 +64,11 @@ export const CalendarTitle = styled.div`
         css`
             display: block;
         `}
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            display: block;
+        `}
 `
 
 export const DaysOfWeek = styled.div`
@@ -168,8 +173,8 @@ export const DayCell = styled.div`
     ${({ $isMobile }) =>
         $isMobile &&
         css`
-            width: clamp(10px, 9vw, 40px);
-            height: clamp(10px, 9vw, 40px);
+            width: clamp(10px, 9vw, 44px);
+            height: clamp(10px, 9vw, 44px);
         `}
 
     ${({ $isFilter }) =>

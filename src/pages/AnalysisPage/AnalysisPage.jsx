@@ -10,9 +10,7 @@ function AnalysisPage() {
         // --- Мобильная версия ---
         return (
             <Container $isMobile={isMobile}>
-                <PageTitle style={{ paddingTop: '24px' }} $isMobile={isMobile}>
-                    Анализ расходов
-                </PageTitle>
+                <PageTitle $isMobile={isMobile}>Анализ расходов</PageTitle>
                 <PeriodExpenses />
             </Container>
         )
@@ -21,8 +19,8 @@ function AnalysisPage() {
         return (
             <Container $isMobile={isMobile}>
                 <PageTitle $isMobile={isMobile}>Анализ расходов</PageTitle>
-                <ContainerGroup style={{maxHeight: '650px'}} $isMobile={isMobile}>
-                    <CalendarComponent  $flex={1} />
+                <ContainerGroup style={{ maxHeight: '650px' }} $isMobile={isMobile}>
+                    <CalendarComponent $flex={1} />
                     <PeriodExpenses $flex={2} />
                 </ContainerGroup>
             </Container>

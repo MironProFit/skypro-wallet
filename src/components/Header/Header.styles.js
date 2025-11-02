@@ -144,6 +144,8 @@ export const NavLinkModal = styled(Link)`
     cursor: pointer;
     padding: 7px 14px;
     border-radius: 24px;
+    font-style: normal;
+    font-weight: 400;
     background-color: ${secondaryColor};
     ${({ $isLinkActive }) =>
         $isLinkActive &&

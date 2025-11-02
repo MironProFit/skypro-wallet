@@ -46,6 +46,10 @@ export function useFetch() {
                     const response = await deleteTransaction({ url: fullUrl, method, token: token ? token : newToken, id })
                     return response.data
                 }
+                if (method === 'patch') {
+                    const response = await addTransaction({ url: fullUrl, data, method, token })
+                    return response.data
+                }
                 if (method === 'post') {
                     const response = await addTransaction({ url: fullUrl, data, method, token })
                     return response.data

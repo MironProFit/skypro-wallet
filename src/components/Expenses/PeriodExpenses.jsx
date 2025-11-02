@@ -19,6 +19,7 @@ function PeriodExpenses({ $flex }) {
         setTotalSum(sumAll)
     }, [userData])
 
+   
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
             <SectionTitle $isMobile={isMobile}>{formatNum(totalSum)} ₽</SectionTitle>
@@ -31,13 +32,14 @@ function PeriodExpenses({ $flex }) {
                     const sumValue = data ? data.sum : 0
                     const maxSum = Math.max(...userData.map((d) => d.sum), 1)
                     const heightPercent = (sumValue / maxSum) * 100
-                    const adjustedHeightPercent = heightPercent === 0 ? 2 : heightPercent
+                    const adjustedHeightPercent = heightPercent === 0 ? '10px' : heightPercent
+                    const barHeight = heightPercent > 0 ? `calc(${heightPercent}% + 10px)` : '10px'
 
                     return (
                         <ChartItem key={category.category} $>
                             <ContainerTitle $isMobile={isMobile}>{formatNum(sumValue)} ₽</ContainerTitle>
 
-                            <ChartColor $isMobile={isMobile} $color={category.color} style={{ height: `${adjustedHeightPercent}%` }}></ChartColor>
+                            <ChartColor $isMobile={isMobile} $color={category.color} style={{ height: barHeight }}></ChartColor>
 
                             <ChartCategory $isMobile={isMobile}>{category.name}</ChartCategory>
                         </ChartItem>
@@ -47,7 +49,7 @@ function PeriodExpenses({ $flex }) {
             {isMobile && (
                 <FlexContainer>
                     <Link to={'/analysis/period'}>
-                        <AddPeriod>Выбрать другой период</AddPeriod>
+                        <AddPeriod >Выбрать другой период</AddPeriod>
                     </Link>
                 </FlexContainer>
             )}

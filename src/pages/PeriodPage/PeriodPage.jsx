@@ -5,9 +5,11 @@ import { FlexContainer } from '../../styles/GlobalStyled'
 import { AddPeriod } from '../../components/Expenses/PeriodExpenses.styles'
 import { useEffect } from 'react'
 import { PeriodContainer, PeriodWrapper } from './PeriodPage.styles'
+import { useAuthContext } from '../../contexts/AuthContext'
 
 function PeriodPage() {
-    const { isMobile } = useAppContext()
+    const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()
+
     const navigate = useNavigate()
     const location = useLocation()
 
@@ -18,7 +20,6 @@ function PeriodPage() {
     }, [location.pathname, isMobile])
 
     const handleConfirmSelectedPeriod = () => {
-        alert('Выбор подтвержден')
         navigate('/analysis')
     }
 
@@ -29,7 +30,9 @@ function PeriodPage() {
                     <CalendarComponent />
                     {isMobile && (
                         <FlexContainer>
-                            <AddPeriod onClick={handleConfirmSelectedPeriod}>Выбрать другой период</AddPeriod>
+                            <AddPeriod disabled={startDate === endDate} onClick={handleConfirmSelectedPeriod}>
+                                Выбрать другой период
+                            </AddPeriod>
                         </FlexContainer>
                     )}
                 </PeriodContainer>

@@ -74,6 +74,7 @@ export const AppProvider = ({ children }) => {
 
                 startDate,
                 setStartDate,
+                
                 endDate,
                 setEndDate,
 
