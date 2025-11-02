@@ -214,15 +214,15 @@ export const ItemCellImg = styled.div`
     transition: 0.3s;
 
     & svg {
-        transform: scale(${({ $isEditModeActive }) => ($isEditModeActive ? 1.5 : 1)});
+        transform: scale(${({ $isEditModeActive }) => ($isEditModeActive ? 1.2 : 1)});
         path {
             fill: ${({ $isEditModeActive, theme }) => ($isEditModeActive ? editColor : borderColor)}; /* или любой цвет активного состояния */
-            transition: fill 0.2s;
+            transition: fill 0.3s;
         }
     }
 
     &:hover {
-        transform: scale(1.5);
+        transform: scale(1.2);
         svg {
             path {
                 fill: ${textColor};

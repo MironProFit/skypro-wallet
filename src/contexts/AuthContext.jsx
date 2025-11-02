@@ -23,19 +23,6 @@ export const AuthProvider = ({ children }) => {
         return []
     })
 
-    // const [filterUserData, setfilterUserData] = useState(() => {
-    //     const stored = localStorage.getItem('filterUserData')
-    //     if (stored) {
-    //         try {
-    //             return JSON.parse(stored)
-    //         } catch (e) {
-    //             console.error('Ошибка парсинга filterUserData:', e)
-    //             return []
-    //         }
-    //     }
-    //     return []
-    // })
-
     useEffect(() => {
         if (token) {
             localStorage.setItem('token', token)
@@ -89,8 +76,7 @@ export const AuthProvider = ({ children }) => {
                 setToastNotification,
                 showToast,
 
-                // filterUserData,
-                // setfilterUserData,
+          
             }}
         >
             {children}

@@ -4,8 +4,8 @@ import TextField from '@mui/material/TextField'
 import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
 
-function MoneyFilter({ setActiveDistaffMoney }) {
-    const { activeDistaffMoney } = useAppContext()
+function MoneyFilter() {
+    const { activeDistaffMoney, setActiveDistaffMoney } = useAppContext()
     const { userData } = useAuthContext()
 
     const [minInput, setMinInput] = useState('')

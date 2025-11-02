@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function transaction({ url, method, token }) {
+export async function updateTransaction({ url, method, token }) {
     const res = await axios[method](url, {
         headers: {
             'Content-Type': 'raw',

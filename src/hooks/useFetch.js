@@ -5,15 +5,17 @@ import { registerUser } from '../services/autth/register'
 import { transaction } from '../services/transaction/transaction'
 import { deleteTransaction } from '../services/transaction/deleteTransaction'
 import { addTransaction } from '../services/transaction/addTransaction'
+import { updateTransaction } from '../services/transaction/updateTransaction'
 
 export function useFetch() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const { urlApi, setToastNotification, showToast } = useAuthContext()
 
-    const fetchData = useCallback(async ({ url, data, method, newToken, token, id }) => {
+    const fetchData = useCallback(async ({ url, urlParams, data, method, newToken, token, id }) => {
         setLoading(true)
         setToastNotification(null)
+        console.log({ url, data, method, newToken, token, id })
 
         //Авторизация
 
@@ -42,12 +44,13 @@ export function useFetch() {
         if (url === 'transactions') {
             try {
                 const fullUrl = urlApi + url + (id ? `/${id}` : '')
+
                 if (method === 'delete') {
                     const response = await deleteTransaction({ url: fullUrl, method, token: token ? token : newToken, id })
                     return response.data
                 }
                 if (method === 'patch') {
-                    const response = await addTransaction({ url: fullUrl, data, method, token })
+                    const response = await updateTransaction({ url: fullUrl, data, method, token })
                     return response.data
                 }
                 if (method === 'post') {
@@ -57,6 +60,8 @@ export function useFetch() {
                     const response = await transaction({ url: fullUrl, method, token: token ? token : newToken })
                     return response.data
                 }
+
+                console.log(response)
             } catch (error) {
                 const errMsg = error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Ошибка входа'
                 console.error('Ошибка входа:', errMsg)
