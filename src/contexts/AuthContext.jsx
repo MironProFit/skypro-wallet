@@ -6,7 +6,7 @@ const AuthContext = createContext()
 export const AuthProvider = ({ children }) => {
     const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '')
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
-    const [urlApi, setUrlApi] = useState('https://wedev-api.sky.pro/api/')
+    const [urlApi] = useState('https://wedev-api.sky.pro/api/')
 
     const [userData, setUserData] = useState(() => {
         const stored = localStorage.getItem('userData')
@@ -37,8 +37,6 @@ export const AuthProvider = ({ children }) => {
         }
     }, [userData])
 
- 
-
     return (
         <AuthContext.Provider
             value={{
@@ -52,8 +50,6 @@ export const AuthProvider = ({ children }) => {
                 setUserData,
 
                 urlApi,
-
-               
             }}
         >
             {children}

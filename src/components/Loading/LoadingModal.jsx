@@ -1,8 +1,8 @@
 import { useAppContext } from '../../contexts/AppContext'
-import { LoaderOverlay, LoadingContainer, LoadingMessage, LoadingPoint, LoadingTitle, StyleLetter, StylePoints } from './LoadingModal.styles'
+import { LoaderOverlay, LoadingContainer, LoadingPoint, LoadingTitle, StyleLetter, StylePoints } from './LoadingModal.styles'
 
 function LoadingModal() {
-    const { isLoading, setIsLoading, loadingMessage, setLoadingMessage } = useAppContext()
+    const { isLoading, loadingMessage } = useAppContext()
 
     const getAnimatedPoints = (text) => {
         return text.split('').map((char, index) => (
@@ -14,39 +14,6 @@ function LoadingModal() {
             </StylePoints>
         ))
     }
-    // const getAnimatedLetters = (text) => {
-    //     return text.split('').map((char, index) => (
-    //         <StyleLetter
-    //             key={index}
-    //             style={{ '--delay': `${index * 0.1}s` }} // задержка для каждой буквы
-    //         >
-    //             {char}
-    //         </StyleLetter>
-    //     ))
-    // }
-
-    // const getAnimatedLetters = (text) => {
-    //     // Разбиваем текст на массив, где каждое слово или пробел — отдельный элемент
-    //     const parts = text.split(/(\s+)/) // захватываем пробелы как отдельные элементы
-    //     const animatedPoints = parts.map((part, index) => {
-    //         if (/\s+/.test(part)) {
-    //             // Это пробелы, возвращаем их как есть или отдельный элемент
-    //             return (
-    //                 <span key={index} style={{ margin: '0 5px' }}>
-    //                     {' '}
-    //                 </span>
-    //             )
-    //         } else {
-    //             // Это слово, разбираем по буквам
-    //             return part.split('').map((char, i) => (
-    //                 <StyleLetter key={`${index}-${i}`} style={{ '--delay': `${(index + i) * 0.1}s` }}>
-    //                     {char}
-    //                 </StyleLetter>
-    //             ))
-    //         }
-    //     })
-    //     return animatedPoints
-    // }
 
     const getAnimatedLetters = (text) => {
         const characters = Array.from(text) // разбиваем строку на символы, учитывая любые символы

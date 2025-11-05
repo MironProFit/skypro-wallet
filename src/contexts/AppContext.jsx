@@ -1,11 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useAuthContext } from './AuthContext'
-import { useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
-    const { userData } = useAuthContext()
     const [isMobile, setIsMobile] = useState(false)
     const [windowWidth, setWindowWidth] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +13,7 @@ export const AppProvider = ({ children }) => {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [activeCategories, setActiveCategories] = useState([])
-    const [activeDistaffMoney, setActiveDistaffMoney] = useState([]) // или как у тебя
+    const [activeDistaffMoney, setActiveDistaffMoney] = useState([])
     const [isFilterUserData, setIsFilterUserData] = useState(false)
     const [toastNotification, setToastNotification] = useState(null)
 

@@ -1,8 +1,7 @@
-import { createBrowserRouter, Navigate, RouterProvider, useLocation } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import PrivatRoutes from './PrivatRoutes'
 import Layout from '../pages/Layout/Layout'
 import AuthModal from '../components/Auth/AuthModal'
-
 import NotFound from '../components/NotFound/NotFound'
 import ExpensesPage from '../pages/Expenses/ExpensesPage'
 import PeriodPage from '../pages/PeriodPage/PeriodPage'
@@ -10,13 +9,13 @@ import NewExpensePage from '../pages/NewExpensePage/NewExpensePage'
 import AnalysisPage from '../pages/AnalysisPage/AnalysisPage'
 import Toastify from '../components/Toasty/Toastify'
 import ConfirmExit from '../components/Confirm/ConfirmExit/ConfirmExit'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
 import { useAppContext } from '../contexts/AppContext'
 
 function AppRoutes() {
     const [showConfirmExit, setShowConfirmExit] = useState(false)
-    const { setToken, setUserName } = useAuthContext()
+    const { token, setToken, setUserName } = useAuthContext()
     const { showToast } = useAppContext()
 
     const handleLogoutClick = () => {
@@ -35,6 +34,7 @@ function AppRoutes() {
     const handleCloseModal = () => {
         setShowConfirmExit(false)
     }
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -50,8 +50,14 @@ function AppRoutes() {
                         { path: 'analysis/period', element: <PeriodPage /> },
                     ],
                 },
-                { path: 'login', element: <AuthModal /> },
-                { path: 'register', element: <AuthModal /> },
+                {
+                    path: 'login',
+                    element: token ? <Navigate to="/expenses" replace /> : <AuthModal />,
+                },
+                {
+                    path: 'register',
+                    element: token ? <Navigate to="/expenses" replace /> : <AuthModal />,
+                },
                 { path: '*', element: <NotFound /> },
             ],
         },

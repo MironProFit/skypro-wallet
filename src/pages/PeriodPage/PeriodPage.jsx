@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { PeriodContainer, PeriodWrapper } from './PeriodPage.styles'
 
 function PeriodPage() {
-    const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()
+    const { startDate, endDate, isMobile } = useAppContext()
 
     const navigate = useNavigate()
     const location = useLocation()

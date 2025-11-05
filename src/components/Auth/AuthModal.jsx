@@ -32,11 +32,11 @@ function AuthModal() {
         email: '',
         password: '',
     })
-    const { fetchData, loading, error } = useFetch()
+    const { fetchData } = useFetch()
     const location = useLocation()
     const navigate = useNavigate()
-    const { isMobile, isLoading, setIsLoading, loadingMessage, setLoadingMessage } = useAppContext()
-    const { setIsAuth, isAuth, setUserData, userData, token, setToken } = useAuthContext()
+    const { isMobile, setIsLoading } = useAppContext()
+    const { setUserData, token, setToken } = useAuthContext()
 
     // Настройка форм
     const {
@@ -82,11 +82,10 @@ function AuthModal() {
 
             const response = await fetchData({ url: urlAuth, data })
             const newToken = response.user?.token
-            setToken(response.user?.token)
 
-            navigate('/')
-
-            if (newToken) {
+            if (newToken || token) {
+                setToken(response.user?.token)
+                navigate('/expenses')
                 const urlData = newToken ? 'transactions' : null
                 const transactionsResponse = await fetchData({ url: urlData, data, newToken: newToken })
 
@@ -102,130 +101,132 @@ function AuthModal() {
 
     return (
         <ModalWrapper $isMobile={isMobile}>
-            <AuthContainer>
-                <AuthSection $isMobile={isMobile}>
-                    <AuthFormGroup>
-                        <AuthTitle>{isPage === 'login' ? 'Вход' : 'Регистрация'}</AuthTitle>
-                        {isPage === 'login' ? (
-                            <>
-                                <InputGroup onSubmit={handleSubmitLogin(onSubmit)}>
-                                    <TextInput
-                                        $hasError={!!errorsLogin.email}
-                                        $isEmpty={!loginEmail}
-                                        placeholder="Эл. почта"
-                                        type="email"
-                                        id="email"
-                                        autoComplete="username"
-                                        {...registerLogin('email', { required: 'Поле обязательно.', minLength: { value: 4, message: 'Минимум 4 символа.' } })}
-                                    />
-                                    {errorsLogin.email && (
-                                        <ErrorInfo>
-                                            <ErrorText>{errorsLogin.email?.message}</ErrorText>
-                                        </ErrorInfo>
-                                    )}
-
-                                    <PasswordInput
-                                        $hasError={!!errorsLogin.password}
-                                        $isEmpty={!loginPassword}
-                                        placeholder="Пароль"
-                                        type="password"
-                                        id="password"
-                                        {...registerLogin('password', { required: 'Поле обязательно.', minLength: { value: 8, message: 'Минимум 8 символа.' } })}
-                                    />
-
-                                    {errorsLogin.password && (
-                                        <ErrorInfo>
-                                            <ErrorText>{errorsLogin.password?.message}</ErrorText>
-                                        </ErrorInfo>
-                                    )}
-
-                                    <SubmitButton type="submit" disabled={!isValidLogin}>
-                                        Войти
-                                    </SubmitButton>
-                                </InputGroup>
-                            </>
-                        ) : (
-                            <>
-                                <InputGroup onSubmit={handleSubmitSignUp(onSubmit)}>
-                                    <TextInput
-                                        $hasError={!!errorsSignUp.name}
-                                        $isEmpty={!signUpName}
-                                        placeholder="Имя"
-                                        type="text"
-                                        id="name"
-                                        {...registerSignUp('name', { required: 'Поле обязательно.', minLength: { value: 4, message: 'Минимум 4 символа.' } })}
-                                    />
-                                    {errorsSignUp.name && (
-                                        <ErrorInfo>
-                                            <ErrorText>{errorsSignUp.name?.message}</ErrorText>
-                                        </ErrorInfo>
-                                    )}
-                                    <TextInput
-                                        $hasError={!!errorsSignUp.email}
-                                        $isEmpty={!signUpEmail}
-                                        placeholder="Эл. почта"
-                                        type="email"
-                                        id="email"
-                                        {...registerSignUp('email', { required: 'Поле обязательно.', minLength: { value: 6, message: 'Минимум 6 символа.' } })}
-                                    />
-                                    {errorsSignUp.email && (
-                                        <ErrorInfo>
-                                            <ErrorText>{errorsSignUp.email?.message}</ErrorText>
-                                        </ErrorInfo>
-                                    )}
-                                    <PasswordInput
-                                        $hasError={!!errorsSignUp.password}
-                                        $isEmpty={!signUpPassword}
-                                        placeholder="Пароль"
-                                        type="password"
-                                        id="password"
-                                        {...registerSignUp('password', { required: 'Поле обязательно.', minLength: { value: 8, message: 'Минимум 8 символа.' } })}
-                                    />
-
-                                    {errorsSignUp.password && (
-                                        <ErrorInfo>
-                                            <ErrorText>{errorsSignUp.password?.message}</ErrorText>
-                                        </ErrorInfo>
-                                    )}
-                                    <SubmitButton type="submit" disabled={!isValidSignUp}>
-                                        Регистрация
-                                    </SubmitButton>
-                                </InputGroup>
-                            </>
-                        )}
-
-                        <PromtGroup>
+            {!token && (
+                <AuthContainer>
+                    <AuthSection $isMobile={isMobile}>
+                        <AuthFormGroup>
+                            <AuthTitle>{isPage === 'login' ? 'Вход' : 'Регистрация'}</AuthTitle>
                             {isPage === 'login' ? (
                                 <>
-                                    <PromtTitle>Нужно зарегистрироваться?</PromtTitle>
-                                    <PromtLink
-                                        to="/register"
-                                        type="button"
-                                        onClick={() => {
-                                            setIsPage('register')
-                                        }}
-                                    >
-                                        <PromtText>Регистрируйтесь здесь</PromtText>
-                                    </PromtLink>
+                                    <InputGroup onSubmit={handleSubmitLogin(onSubmit)}>
+                                        <TextInput
+                                            $hasError={!!errorsLogin.email}
+                                            $isEmpty={!loginEmail}
+                                            placeholder="Эл. почта"
+                                            type="email"
+                                            id="email"
+                                            autoComplete="username"
+                                            {...registerLogin('email', { required: 'Поле обязательно.', minLength: { value: 4, message: 'Минимум 4 символа.' } })}
+                                        />
+                                        {errorsLogin.email && (
+                                            <ErrorInfo>
+                                                <ErrorText>{errorsLogin.email?.message}</ErrorText>
+                                            </ErrorInfo>
+                                        )}
+
+                                        <PasswordInput
+                                            $hasError={!!errorsLogin.password}
+                                            $isEmpty={!loginPassword}
+                                            placeholder="Пароль"
+                                            type="password"
+                                            id="password"
+                                            {...registerLogin('password', { required: 'Поле обязательно.', minLength: { value: 8, message: 'Минимум 8 символа.' } })}
+                                        />
+
+                                        {errorsLogin.password && (
+                                            <ErrorInfo>
+                                                <ErrorText>{errorsLogin.password?.message}</ErrorText>
+                                            </ErrorInfo>
+                                        )}
+
+                                        <SubmitButton type="submit" disabled={!isValidLogin}>
+                                            Войти
+                                        </SubmitButton>
+                                    </InputGroup>
                                 </>
                             ) : (
                                 <>
-                                    <PromtTitle>Уже есть аккаунт?</PromtTitle>
-                                    <PromtLink
-                                        to="/login"
-                                        type="button"
-                                        onClick={() => {
-                                            setIsPage('login')
-                                        }}
-                                    >
-                                        <PromtText>Войдите здесь</PromtText>
-                                    </PromtLink>
+                                    <InputGroup onSubmit={handleSubmitSignUp(onSubmit)}>
+                                        <TextInput
+                                            $hasError={!!errorsSignUp.name}
+                                            $isEmpty={!signUpName}
+                                            placeholder="Имя"
+                                            type="text"
+                                            id="name"
+                                            {...registerSignUp('name', { required: 'Поле обязательно.', minLength: { value: 4, message: 'Минимум 4 символа.' } })}
+                                        />
+                                        {errorsSignUp.name && (
+                                            <ErrorInfo>
+                                                <ErrorText>{errorsSignUp.name?.message}</ErrorText>
+                                            </ErrorInfo>
+                                        )}
+                                        <TextInput
+                                            $hasError={!!errorsSignUp.email}
+                                            $isEmpty={!signUpEmail}
+                                            placeholder="Эл. почта"
+                                            type="email"
+                                            id="email"
+                                            {...registerSignUp('email', { required: 'Поле обязательно.', minLength: { value: 6, message: 'Минимум 6 символа.' } })}
+                                        />
+                                        {errorsSignUp.email && (
+                                            <ErrorInfo>
+                                                <ErrorText>{errorsSignUp.email?.message}</ErrorText>
+                                            </ErrorInfo>
+                                        )}
+                                        <PasswordInput
+                                            $hasError={!!errorsSignUp.password}
+                                            $isEmpty={!signUpPassword}
+                                            placeholder="Пароль"
+                                            type="password"
+                                            id="password"
+                                            {...registerSignUp('password', { required: 'Поле обязательно.', minLength: { value: 8, message: 'Минимум 8 символа.' } })}
+                                        />
+
+                                        {errorsSignUp.password && (
+                                            <ErrorInfo>
+                                                <ErrorText>{errorsSignUp.password?.message}</ErrorText>
+                                            </ErrorInfo>
+                                        )}
+                                        <SubmitButton type="submit" disabled={!isValidSignUp}>
+                                            Регистрация
+                                        </SubmitButton>
+                                    </InputGroup>
                                 </>
                             )}
-                        </PromtGroup>
-                    </AuthFormGroup>
-                </AuthSection>
-            </AuthContainer>
+
+                            <PromtGroup>
+                                {isPage === 'login' ? (
+                                    <>
+                                        <PromtTitle>Нужно зарегистрироваться?</PromtTitle>
+                                        <PromtLink
+                                            to="/register"
+                                            type="button"
+                                            onClick={() => {
+                                                setIsPage('register')
+                                            }}
+                                        >
+                                            <PromtText>Регистрируйтесь здесь</PromtText>
+                                        </PromtLink>
+                                    </>
+                                ) : (
+                                    <>
+                                        <PromtTitle>Уже есть аккаунт?</PromtTitle>
+                                        <PromtLink
+                                            to="/login"
+                                            type="button"
+                                            onClick={() => {
+                                                setIsPage('login')
+                                            }}
+                                        >
+                                            <PromtText>Войдите здесь</PromtText>
+                                        </PromtLink>
+                                    </>
+                                )}
+                            </PromtGroup>
+                        </AuthFormGroup>
+                    </AuthSection>
+                </AuthContainer>
+            )}
         </ModalWrapper>
     )
 }

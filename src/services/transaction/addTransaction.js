@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export async function addTransaction({ url, data, method, token, id }) {
+export async function addTransaction({ url, data, method, token }) {
     const res = await axios[method](url, data, {
         headers: {
             'Content-Type': 'raw',

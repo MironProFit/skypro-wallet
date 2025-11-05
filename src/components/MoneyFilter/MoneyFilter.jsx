@@ -10,7 +10,7 @@ function MoneyFilter() {
 
     const [minInput, setMinInput] = useState('')
     const [maxInput, setMaxInput] = useState('')
-    const [value, setValue] = useState([0, 10000]) // временные значения до инициализации
+    const [value, setValue] = useState([0, 10000])
     const [maxSum, setMaxSum] = useState(10000)
 
     // Инициализация диапазона при первом получении данных

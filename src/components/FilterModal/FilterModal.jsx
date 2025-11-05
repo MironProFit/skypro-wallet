@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { FilterArea, FilterWrapper } from './FilterModal.styles'
 import Category from '../Category/Category'
 import CalendarComponent from '../Calendar/Calendar'
