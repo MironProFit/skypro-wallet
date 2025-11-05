@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { accentColor, accentColorRgb, borderColor, editColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
+import { accentColor, accentColorHover, accentColorRgb, borderColor, editColor, primaryColor, secondaryColor, successColor, textColor } from '../../styles/Mexins.style'
 import { FormGroup, FormInput, PrimaryButton, Section } from '../../styles/GlobalStyled'
 import { Link } from 'react-router-dom'
 
@@ -145,6 +145,11 @@ export const HeaderCell = styled.div`
                 transform: rotate(180deg) translateY(50%) translateX(-50%);
             }
         `}
+    ${({ $activeFilter }) =>
+        $activeFilter &&
+        css`
+            color: ${accentColorHover};
+        `}
 `
 export const FilterContainer = styled.div``
 
@@ -183,7 +188,6 @@ export const ExpensesItem = styled.li`
         css`
             background-color: ${accentColorRgb};
             color: ${accentColor};
-            color: red;
         `}
     ${({ $editItem }) =>
         $editItem &&

@@ -14,7 +14,8 @@ const LOCAL_KEYS = ['categoryFilter', 'dateFrom', 'dateTo', 'sumMin', 'sumMax']
 const API_KEYS = ['filterBy', 'sortBy', 'dateFrom', 'dateTo']
 
 function FilterModal({ type, onClose, $active }) {
-    const { activeCategories, setActiveCategories, startDate, setStartDate, endDate, setEndDate, activeDistaffMoney, setActiveDistaffMoney } = useAppContext()
+    const { activeCategories, setActiveCategories, startDate, setStartDate, endDate, setEndDate, activeDistaffMoney, setActiveDistaffMoney, toastNotification, setToastNotification, showToast } =
+        useAppContext()
 
     const { token } = useAuthContext()
     const { fetchData } = useFetch()
@@ -24,6 +25,7 @@ function FilterModal({ type, onClose, $active }) {
     const clearLocal = () => {
         const p = new URLSearchParams(searchParams)
         LOCAL_KEYS.forEach((k) => p.delete(k))
+
         return p
     }
     // Удалить API-ключи из URL
@@ -35,18 +37,23 @@ function FilterModal({ type, onClose, $active }) {
 
     // Построить URL для локального фильтра
     const buildLocal = () => {
-        const p = clearLocal()
+        // const p = clearLocal()
+        const p = new URLSearchParams(searchParams)
+
         if (type === 'category' && activeCategories.length) {
             p.set('categoryFilter', activeCategories.join(','))
+            showToast('Фильтр по категории применен (Локально)', 'warn')
         }
         if (type === 'date' && startDate && endDate && startDate !== endDate) {
             p.set('dateFrom', formattedDate(startDate))
             p.set('dateTo', formattedDate(endDate))
+            showToast('Фильтр по датам применен (Локально)', 'warn')
         }
         if (type === 'sum' && activeDistaffMoney.length === 2) {
             const [min, max] = activeDistaffMoney
             p.set('sumMin', min.toString())
             p.set('sumMax', max.toString())
+            showToast('Фильтр по сумме применен (Локально)', 'warn')
         }
         return p
     }
@@ -72,6 +79,7 @@ function FilterModal({ type, onClose, $active }) {
         setEndDate(null)
         setActiveDistaffMoney([])
         setSearchParams(new URLSearchParams(), { replace: true })
+        showToast('Все фильтры сброшены', 'warn')
         onClose()
     }
 
@@ -79,7 +87,10 @@ function FilterModal({ type, onClose, $active }) {
 
     // 1) Локальный фильтр
     const applyLocal = () => {
-        setSearchParams(buildLocal(), { replace: true })
+        setSearchParams(
+            buildLocal()
+            // , { replace: true }
+        )
         onClose()
     }
 
@@ -87,6 +98,7 @@ function FilterModal({ type, onClose, $active }) {
     const applyApiCategory = async () => {
         if (hasApi()) {
             setSearchParams(new URLSearchParams(), { replace: true })
+
             onClose()
             return
         }
@@ -98,6 +110,8 @@ function FilterModal({ type, onClose, $active }) {
             token,
         })
         setSearchParams(p, { replace: true })
+        showToast('Фильтр по категории применен (API)', 'warn')
+
         onClose()
     }
 
@@ -105,6 +119,7 @@ function FilterModal({ type, onClose, $active }) {
     const applyApiSortSum = async () => {
         if (hasApi()) {
             setSearchParams(new URLSearchParams(), { replace: true })
+
             onClose()
             return
         }
@@ -116,6 +131,8 @@ function FilterModal({ type, onClose, $active }) {
             token,
         })
         setSearchParams(p, { replace: true })
+        showToast('Фильтр по сумме применен (API)', 'warn')
+
         onClose()
     }
 
@@ -134,6 +151,7 @@ function FilterModal({ type, onClose, $active }) {
             token,
         })
         setSearchParams(p, { replace: true })
+        await showToast('Фильтр по датам применен (API)', 'warn')
         onClose()
     }
 
@@ -159,6 +177,8 @@ function FilterModal({ type, onClose, $active }) {
         p.set('dateTo', formattedDate(endDate))
         p.set('sortBy', 'date')
         setSearchParams(p, { replace: true })
+        showToast('Фильтр по периоду применен (API)', 'warn')
+
         onClose()
     }
 

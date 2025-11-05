@@ -22,6 +22,8 @@ function ExpensesTable({ $flex }) {
     const { fetchData } = useFetch()
 
     const isFilterActive = activeCategories.length > 0 || (startDate && endDate) || activeDistaffMoney.length === 2
+    const [minSum, setMinSum] = useState(activeDistaffMoney[0])
+    const [maxSum, setMaxSum] = useState(activeDistaffMoney[1])
 
     const filteredData = userData.filter((item) => {
         if (!isFilterActive) return true
@@ -30,7 +32,6 @@ function ExpensesTable({ $flex }) {
         if (endDate && itemDate > new Date(endDate)) return false
         if (activeCategories.length > 0 && !activeCategories.includes(item.category)) return false
         if (activeDistaffMoney.length === 2) {
-            const [minSum, maxSum] = activeDistaffMoney
             if (item.sum < minSum || item.sum > maxSum) return false
         }
         return true
@@ -55,6 +56,9 @@ function ExpensesTable({ $flex }) {
         if (isMobile) {
             setSelectedItem(selectedItem?._id === item._id ? null : item)
         }
+    }
+    const resetInput = () => {
+        setSelectedItem(null)
     }
 
     // Переключение режима редактирования
@@ -87,19 +91,40 @@ function ExpensesTable({ $flex }) {
                     Описание
                 </HeaderCell>
                 <FilterContainer>
-                    <HeaderCell $active={filterType === 'category'} $filter onClick={() => openFilterModal('category')} $isMobile={isMobile} $isVisible={isVisible}>
+                    <HeaderCell
+                        $activeFilter={activeCategories.length > 0}
+                        $active={filterType === 'category'}
+                        $filter
+                        onClick={() => openFilterModal('category')}
+                        $isMobile={isMobile}
+                        $isVisible={isVisible}
+                    >
                         Категория
                     </HeaderCell>
                     <FilterModal $active={filterType === 'category'} type="category" onClose={closeFilterModal} />
                 </FilterContainer>
                 <FilterContainer>
-                    <HeaderCell $active={filterType === 'date'} $filter onClick={() => openFilterModal('date')} $isMobile={isMobile} $isVisible={isVisible}>
+                    <HeaderCell
+                        $activeFilter={startDate && endDate && startDate !== endDate}
+                        $active={filterType === 'date'}
+                        $filter
+                        onClick={() => openFilterModal('date')}
+                        $isMobile={isMobile}
+                        $isVisible={isVisible}
+                    >
                         Дата
                     </HeaderCell>
                     <FilterModal $active={filterType === 'date'} type="date" onClose={closeFilterModal} />
                 </FilterContainer>
                 <FilterContainer>
-                    <HeaderCell $active={filterType === 'sum'} $filter onClick={() => openFilterModal('sum')} $isMobile={isMobile} $isVisible={isVisible}>
+                    <HeaderCell
+                        $activeFilter={minSum !== activeDistaffMoney[0] || maxSum !== activeDistaffMoney[1]}
+                        $active={filterType === 'sum'}
+                        $filter
+                        onClick={() => openFilterModal('sum')}
+                        $isMobile={isMobile}
+                        $isVisible={isVisible}
+                    >
                         Сумма
                     </HeaderCell>
                     <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />

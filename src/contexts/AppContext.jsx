@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useAuthContext } from './AuthContext'
+import { useSearchParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 const AppContext = createContext()
 
 export const AppProvider = ({ children }) => {
@@ -7,7 +9,7 @@ export const AppProvider = ({ children }) => {
     const [isMobile, setIsMobile] = useState(false)
     const [windowWidth, setWindowWidth] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
-    const DEFAULT_MESSAGE_LOADING = 'данных'
+    const DEFAULT_MESSAGE_LOADING = 'Загрузка данных'
     const [loadingMessage, setLoadingMessage] = useState(DEFAULT_MESSAGE_LOADING)
     const [isEditMode, setIsEditMode] = useState(false)
 
@@ -16,6 +18,26 @@ export const AppProvider = ({ children }) => {
     const [activeCategories, setActiveCategories] = useState([])
     const [activeDistaffMoney, setActiveDistaffMoney] = useState([]) // или как у тебя
     const [isFilterUserData, setIsFilterUserData] = useState(false)
+    const [toastNotification, setToastNotification] = useState(null)
+
+    const showToast = (message, type = 'info') => {
+        switch (type) {
+            case 'success':
+                toast.success(message)
+                break
+            case 'error':
+                toast.error(message)
+                break
+            case 'warning':
+                toast.warn(message)
+                break
+            case 'info':
+                toast.info(message || 'Что-то пошло не так')
+                break
+            default:
+                toast(message)
+        }
+    }
 
     useEffect(() => {
         const handleResize = () => {
@@ -40,23 +62,6 @@ export const AppProvider = ({ children }) => {
         }
     }, [startDate, endDate])
 
-    // useEffect(() => {
-    //     const hasCategoryFilter = Array.isArray(activeCategories) && activeCategories.length > 0
-    //     const hasMoneyFilter = activeDistaffMoney[0] !== activeDistaffMoney[1]
-    //     const hasDateFilter = startDate !== null && endDate !== null && startDate !== endDate
-
-    //     console.log(hasCategoryFilter, hasMoneyFilter, hasDateFilter)
-
-    //     if (hasCategoryFilter || hasMoneyFilter || hasDateFilter) {
-    //         setIsFilterUserData(true)
-    //     } else {
-    //         setIsFilterUserData(false)
-    //     }
-
-    //     // Обновляем фильтрованные данные
-    //     setfilterUserData(userData)
-    // }, [activeCategories, activeDistaffMoney, startDate, endDate, userData])
-
     return (
         <AppContext.Provider
             value={{
@@ -74,7 +79,7 @@ export const AppProvider = ({ children }) => {
 
                 startDate,
                 setStartDate,
-                
+
                 endDate,
                 setEndDate,
 
@@ -89,6 +94,10 @@ export const AppProvider = ({ children }) => {
 
                 isEditMode,
                 setIsEditMode,
+
+                toastNotification,
+                setToastNotification,
+                showToast,
             }}
         >
             {children}

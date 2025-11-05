@@ -5,7 +5,6 @@ import { FlexContainer } from '../../styles/GlobalStyled'
 import { AddPeriod } from '../../components/Expenses/PeriodExpenses.styles'
 import { useEffect } from 'react'
 import { PeriodContainer, PeriodWrapper } from './PeriodPage.styles'
-import { useAuthContext } from '../../contexts/AuthContext'
 
 function PeriodPage() {
     const { startDate, setStartDate, endDate, setEndDate, isMobile } = useAppContext()

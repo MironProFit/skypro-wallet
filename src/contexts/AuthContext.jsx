@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
 import { createContext } from 'react'
-import { toast } from 'react-toastify'
 
 const AuthContext = createContext()
 
@@ -8,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '')
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
     const [urlApi, setUrlApi] = useState('https://wedev-api.sky.pro/api/')
-    const [toastNotification, setToastNotification] = useState(null)
 
     const [userData, setUserData] = useState(() => {
         const stored = localStorage.getItem('userData')
@@ -39,24 +37,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, [userData])
 
-    const showToast = (message, type = 'info') => {
-        switch (type) {
-            case 'success':
-                toast.success(message)
-                break
-            case 'error':
-                toast.error(message)
-                break
-            case 'warning':
-                toast.warn(message)
-                break
-            case 'info':
-                toast.info('Что-то пошло не так')
-                break
-            default:
-                toast(message)
-        }
-    }
+ 
 
     return (
         <AuthContext.Provider
@@ -72,11 +53,7 @@ export const AuthProvider = ({ children }) => {
 
                 urlApi,
 
-                toastNotification,
-                setToastNotification,
-                showToast,
-
-          
+               
             }}
         >
             {children}

@@ -2,9 +2,10 @@ import { useRef, useState, useEffect, useMemo } from 'react'
 import { SectionTitle } from '../../styles/GlobalStyled'
 import { CalendarSection, DaysOfWeek, DayName, MonthContainer, MonthHeader, CalendarGrid, DayCell, CalendarWrapper, CalendarTitle, MonthWrapper } from '../../components/Calendar/Calendar.styles'
 import { ExpensesHeaderLink, LinkIcon, LinkWrapper } from '../Expenses/Expenses.styles'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 import { useAppContext } from '../../contexts/AppContext'
+import { formattedDate } from '../../utils/date-fns'
 
 // Helper функция для получения количества дней в месяце
 const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate()
@@ -17,6 +18,18 @@ const CalendarComponent = ({ $isFilter }) => {
     const calendarRef = useRef(null)
     const [today, setToday] = useState(currentDate)
     const location = useLocation()
+    // const params = new URLSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    useEffect(() => {
+        const newSearchParams = new URLSearchParams(searchParams)
+        if (startDate && endDate && startDate !== endDate) {
+            newSearchParams.set('dateFrom', formattedDate(startDate))
+            newSearchParams.set('dateTo', formattedDate(endDate))
+        }
+
+        setSearchParams(newSearchParams)
+    }, [startDate, endDate])
 
     // Генерация списка месяцев для отображения
     const monthsToShow = useMemo(() => {
@@ -94,7 +107,8 @@ const CalendarComponent = ({ $isFilter }) => {
 
     return (
         <CalendarSection $isFilter={$isFilter} $isMobile={isMobile}>
-            {isMobile && isFilterUserData && (
+            {isMobile && (
+                // isFilterUserData &&
                 <CalendarTitle $isMobile={isMobile}>
                     <LinkWrapper to={'/expenses'} style={{ order: 2, display: 'flex' }}>
                         <LinkIcon src={leftArrIcon} alt="left arrow" />

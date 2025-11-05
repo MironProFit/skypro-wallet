@@ -12,10 +12,12 @@ import Toastify from '../components/Toasty/Toastify'
 import ConfirmExit from '../components/Confirm/ConfirmExit/ConfirmExit'
 import { useState } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
+import { useAppContext } from '../contexts/AppContext'
 
 function AppRoutes() {
     const [showConfirmExit, setShowConfirmExit] = useState(false)
     const { setToken, setUserName } = useAuthContext()
+    const { showToast } = useAppContext()
 
     const handleLogoutClick = () => {
         setShowConfirmExit(true)
@@ -27,6 +29,7 @@ function AppRoutes() {
         setUserName('')
         // Модальное закрываем
         setShowConfirmExit(false)
+        showToast('Успешный выход из аккаунта', 'info')
     }
 
     const handleCloseModal = () => {

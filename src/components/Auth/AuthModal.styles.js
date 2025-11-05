@@ -29,7 +29,6 @@ export const ModalWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     background-color: ${({ $isMobile }) => ($isMobile ? primaryColor : secondaryColor)};
 `
 

@@ -36,7 +36,7 @@ function AuthModal() {
     const location = useLocation()
     const navigate = useNavigate()
     const { isMobile, isLoading, setIsLoading, loadingMessage, setLoadingMessage } = useAppContext()
-    const { toastNotification, setToastNotification, showToast, setIsAuth, isAuth, setUserData, userData, token, setToken } = useAuthContext()
+    const { setIsAuth, isAuth, setUserData, userData, token, setToken } = useAuthContext()
 
     // Настройка форм
     const {
