@@ -1,182 +1,113 @@
+// components/FilterModal/FilterModal.jsx
 import { FilterArea, FilterWrapper } from './FilterModal.styles'
 import Category from '../Category/Category'
 import CalendarComponent from '../Calendar/Calendar'
 import MoneyFilter from '../MoneyFilter/MoneyFilter'
 import { PrimaryButton } from '../../styles/GlobalStyled'
 import { useSearchParams } from 'react-router-dom'
-import { useAuthContext } from '../../contexts/AuthContext'
-import { useFetch } from '../../hooks/useFetch'
-import { useAppContext } from '../../contexts/AppContext'
 import { formattedDate } from '../../utils/date-fns'
-
-const LOCAL_KEYS = ['categoryFilter', 'dateFrom', 'dateTo', 'sumMin', 'sumMax']
-const API_KEYS = ['filterBy', 'sortBy', 'dateFrom', 'dateTo']
+import { useAuthContext } from '../../contexts/AuthContext'
+import { useAppContext } from '../../contexts/AppContext'
+import { useFetch } from '../../hooks/useFetch'
 
 function FilterModal({ type, onClose, $active }) {
-    const { activeCategories, setActiveCategories, startDate, setStartDate, endDate, setEndDate, activeDistaffMoney, setActiveDistaffMoney, toastNotification, setToastNotification, showToast } =
-        useAppContext()
+    const { activeCategories, setActiveCategories, startDate, setStartDate, endDate, setEndDate, activeDistaffMoney, setActiveDistaffMoney, showToast } = useAppContext()
 
-    const { token } = useAuthContext()
+    const { token, setUserData } = useAuthContext()
     const { fetchData } = useFetch()
     const [searchParams, setSearchParams] = useSearchParams()
 
-    // Удалить локальные ключи из URL
-    const clearLocal = () => {
-        const p = new URLSearchParams(searchParams)
-        LOCAL_KEYS.forEach((k) => p.delete(k))
-
-        return p
-    }
-    // Удалить API-ключи из URL
-    const clearApi = () => {
-        const p = new URLSearchParams(searchParams)
-        API_KEYS.forEach((k) => p.delete(k))
-        return p
+    // Проверка, есть ли активные фильтры
+    const hasActiveFilters = () => {
+        return activeCategories.length > 0 || (startDate && endDate) || activeDistaffMoney.length === 2
     }
 
-    // Построить URL для локального фильтра
-    const buildLocal = () => {
-        // const p = clearLocal()
-        const p = new URLSearchParams(searchParams)
-
-        if (type === 'category' && activeCategories.length) {
-            p.set('categoryFilter', activeCategories.join(','))
-            showToast('Фильтр по категории применен (Локально)', 'warn')
+    // === DATE ACTIONS ===
+    // Сортировка по дате: GET /api/transactions?sortBy=date
+    const applySortByDate = async () => {
+        if (!startDate || !endDate) {
+            showToast('Выберите даты', 'error')
+            return
         }
-        if (type === 'date' && startDate && endDate && startDate !== endDate) {
-            p.set('dateFrom', formattedDate(startDate))
-            p.set('dateTo', formattedDate(endDate))
-            showToast('Фильтр по датам применен (Локально)', 'warn')
+
+        try {
+            const urlParams = new URLSearchParams()
+            urlParams.append('sortBy', 'date')
+
+            const response = await fetchData({
+                url: 'transactions',
+                urlParams: `?${urlParams.toString()}`,
+                method: 'get',
+                token,
+            })
+
+            setUserData(response)
+
+            setSearchParams(urlParams, { replace: true })
+            showToast('Сортировка по дате применена (API)', 'success')
+        } catch (error) {
+            console.error('Ошибка сортировки по дате:', error)
+            showToast('Ошибка сортировки по дате', 'error')
         }
-        if (type === 'sum' && activeDistaffMoney.length === 2) {
-            const [min, max] = activeDistaffMoney
-            p.set('sumMin', min.toString())
-            p.set('sumMax', max.toString())
-            showToast('Фильтр по сумме применен (Локально)', 'warn')
-        }
-        return p
+
+        onClose()
     }
 
-    // Проверки наличия фильтра
-    const hasLocal = () => {
-        if (type === 'category') return activeCategories.length > 0
-        if (type === 'date') return startDate && endDate && startDate !== endDate
-        if (type === 'sum') return activeDistaffMoney.length === 2 && activeDistaffMoney[0] !== activeDistaffMoney[1]
-        return false
-    }
-    const hasApi = () => {
-        if (type === 'category') return !!searchParams.get('filterBy')
-        if (type === 'date') return searchParams.get('dateFrom') && searchParams.get('dateTo') && searchParams.get('sortBy') === 'date'
-        if (type === 'sum') return searchParams.get('sortBy') === 'sum'
-        return false
+    // Фильтр по периоду: POST /api/transactions/period
+    const applyFilterByPeriod = async () => {
+        if (!startDate || !endDate) {
+            showToast('Выберите даты', 'error')
+            return
+        }
+
+        const requestBody = {
+            start: formattedDate(startDate), // формат: YYYY-MM-DD
+            end: formattedDate(endDate),
+        }
+
+        try {
+            const response = await fetchData({
+                url: 'transactions/period',
+                method: 'post',
+                data: requestBody,
+                token,
+            })
+
+            setUserData(response)
+
+            // Для наглядности: тоже обновляем URL
+            const urlParams = new URLSearchParams()
+            urlParams.append('dateFrom', formattedDate(startDate))
+            urlParams.append('dateTo', formattedDate(endDate))
+            urlParams.append('sortBy', 'date')
+            setSearchParams(urlParams, { replace: true })
+
+            showToast('Фильтр по периоду применен (API)', 'success')
+        } catch (error) {
+            console.error('Ошибка фильтрации по периоду:', error)
+            showToast('Ошибка фильтрации по периоду', 'error')
+        }
+
+        onClose()
     }
 
-    // Сбросить всё
-    const resetAll = () => {
+    // === COMMON ACTIONS ===
+    // Сброс фильтров
+    const resetFilters = async () => {
+        try {
+            const response = await fetchData({ url: 'transactions', method: 'get', token })
+            setUserData(response)
+            setSearchParams(new URLSearchParams(), { replace: true })
+            showToast('Все фильтры сброшены', 'success')
+        } catch (error) {
+            console.error('Ошибка сброса фильтров:', error)
+            showToast('Ошибка сброса фильтров', 'error')
+        }
+
         setActiveCategories([])
         setStartDate(null)
         setEndDate(null)
         setActiveDistaffMoney([])
-        setSearchParams(new URLSearchParams(), { replace: true })
-        showToast('Все фильтры сброшены', 'warn')
-        onClose()
-    }
-
-    // ========== ACTIONS ==========
-
-    // 1) Локальный фильтр
-    const applyLocal = () => {
-        setSearchParams(
-            buildLocal()
-            // , { replace: true }
-        )
-        onClose()
-    }
-
-    // 2) API-фильтр Category
-    const applyApiCategory = async () => {
-        if (hasApi()) {
-            setSearchParams(new URLSearchParams(), { replace: true })
-
-            onClose()
-            return
-        }
-        const p = clearApi()
-        p.set('filterBy', activeCategories.join(','))
-        await fetchData({
-            url: `transactions?${p.toString()}`,
-            method: 'get',
-            token,
-        })
-        setSearchParams(p, { replace: true })
-        showToast('Фильтр по категории применен (API)', 'warn')
-
-        onClose()
-    }
-
-    // 3) API-сортировка по сумме
-    const applyApiSortSum = async () => {
-        if (hasApi()) {
-            setSearchParams(new URLSearchParams(), { replace: true })
-
-            onClose()
-            return
-        }
-        const p = clearApi()
-        p.set('sortBy', 'sum')
-        await fetchData({
-            url: `transactions?${p.toString()}`,
-            method: 'get',
-            token,
-        })
-        setSearchParams(p, { replace: true })
-        showToast('Фильтр по сумме применен (API)', 'warn')
-
-        onClose()
-    }
-
-    // 4) API-сортировка по дате (GET ?sortBy=date)
-    const applyApiSortDate = async () => {
-        if (hasApi()) {
-            setSearchParams(new URLSearchParams(), { replace: true })
-            onClose()
-            return
-        }
-        const p = clearApi()
-        p.set('sortBy', 'date')
-        await fetchData({
-            url: `transactions?${p.toString()}`,
-            method: 'get',
-            token,
-        })
-        setSearchParams(p, { replace: true })
-        await showToast('Фильтр по датам применен (API)', 'warn')
-        onClose()
-    }
-
-    // 5) API-фильтр по периоду (POST /transactions/period)
-    const applyApiPeriod = async () => {
-        if (hasApi()) {
-            setSearchParams(new URLSearchParams(), { replace: true })
-            onClose()
-            return
-        }
-        await fetchData({
-            url: 'transactions/period',
-            method: 'post',
-            token,
-            body: {
-                dateFrom: formattedDate(startDate),
-                dateTo: formattedDate(endDate),
-            },
-        })
-        // Для наглядности — тоже сохраняем в URL
-        const p = clearApi()
-        p.set('dateFrom', formattedDate(startDate))
-        p.set('dateTo', formattedDate(endDate))
-        p.set('sortBy', 'date')
-        setSearchParams(p, { replace: true })
-        showToast('Фильтр по периоду применен (API)', 'warn')
 
         onClose()
     }
@@ -184,58 +115,34 @@ function FilterModal({ type, onClose, $active }) {
     return (
         <FilterWrapper $active={$active}>
             <FilterArea>
-                {type === 'category' && <Category mode="multi" />}
-
+                {type === 'category' && <Category />}
                 {type === 'date' && <CalendarComponent $isFilter />}
-
                 {type === 'sum' && <MoneyFilter />}
 
-                <PrimaryButton onClick={resetAll} disabled={!hasLocal() && !hasApi()}>
-                    Сбросить всё
-                </PrimaryButton>
+                <PrimaryButton onClick={resetFilters}>Сбросить всё</PrimaryButton>
 
-                {/* ====== CATEGORY ====== */}
-                {type === 'category' && (
-                    <>
-                        <PrimaryButton onClick={applyLocal} disabled={!hasLocal()}>
-                            Выбрать категории (локально)
-                        </PrimaryButton>
-                        <PrimaryButton onClick={applyApiCategory} disabled={!hasLocal() && !hasApi()}>
-                            {hasApi() ? 'Сбросить API-фильтр' : 'Применить API-фильтр'}
-                        </PrimaryButton>
-                    </>
-                )}
-
-                {/* ====== DATE ====== */}
+                {/* === DATE FILTER BUTTONS === */}
                 {type === 'date' && (
                     <>
-                        {/* локально */}
-                        <PrimaryButton onClick={applyLocal} disabled={!hasLocal()}>
-                            Фильтр по периоду (локально)
+                        <PrimaryButton onClick={applySortByDate} disabled={!startDate || !endDate}>
+                            Сортировать по дате (API)
                         </PrimaryButton>
-
-                        {/* API: GET sortBy=date */}
-                        <PrimaryButton onClick={applyApiSortDate} disabled={!hasLocal() && !hasApi()}>
-                            {hasApi() ? 'Сбросить API-сортировку' : 'Сортировать по дате (API)'}
-                        </PrimaryButton>
-
-                        {/* API: POST /transactions/period */}
-                        <PrimaryButton onClick={applyApiPeriod} disabled={!hasLocal() && !hasApi()}>
-                            {hasApi() ? 'Сбросить API-фильтр' : 'Фильтр по периоду (API)'}
+                        <PrimaryButton onClick={applyFilterByPeriod} disabled={!startDate || !endDate}>
+                            Фильтр по периоду (API)
                         </PrimaryButton>
                     </>
                 )}
 
-                {/* ====== SUM ====== */}
-                {type === 'sum' && (
-                    <>
-                        <PrimaryButton onClick={applyLocal} disabled={!hasLocal()}>
-                            Фильтр по сумме (локально)
-                        </PrimaryButton>
-                        <PrimaryButton onClick={applyApiSortSum} disabled={!hasLocal() && !hasApi()}>
-                            {hasApi() ? 'Сбросить API-сортировку' : 'Сортировать по сумме (API)'}
-                        </PrimaryButton>
-                    </>
+                {/* === OTHER FILTER BUTTONS === */}
+                {type !== 'date' && (
+                    <PrimaryButton
+                        onClick={() => {
+                            /* TODO: другие фильтры */
+                        }}
+                        disabled={!hasActiveFilters()}
+                    >
+                        Применить фильтры
+                    </PrimaryButton>
                 )}
 
                 <PrimaryButton onClick={onClose}>Закрыть</PrimaryButton>

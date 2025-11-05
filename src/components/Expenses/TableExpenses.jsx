@@ -21,21 +21,8 @@ function ExpensesTable({ $flex }) {
     const [selectedItem, setSelectedItem] = useState(null)
     const { fetchData } = useFetch()
 
-    const isFilterActive = activeCategories.length > 0 || (startDate && endDate) || activeDistaffMoney.length === 2
-    const [minSum, setMinSum] = useState(activeDistaffMoney[0])
-    const [maxSum, setMaxSum] = useState(activeDistaffMoney[1])
-
-    const filteredData = userData.filter((item) => {
-        if (!isFilterActive) return true
-        const itemDate = new Date(item.date)
-        if (startDate && itemDate < new Date(startDate)) return false
-        if (endDate && itemDate > new Date(endDate)) return false
-        if (activeCategories.length > 0 && !activeCategories.includes(item.category)) return false
-        if (activeDistaffMoney.length === 2) {
-            if (item.sum < minSum || item.sum > maxSum) return false
-        }
-        return true
-    })
+    // ✅ userData уже отфильтрован API → просто отображаем
+    const displayData = Array.isArray(userData) ? userData : []
 
     useEffect(() => {
         setIsVisible(isMobile)
@@ -56,9 +43,6 @@ function ExpensesTable({ $flex }) {
         if (isMobile) {
             setSelectedItem(selectedItem?._id === item._id ? null : item)
         }
-    }
-    const resetInput = () => {
-        setSelectedItem(null)
     }
 
     // Переключение режима редактирования
@@ -118,7 +102,7 @@ function ExpensesTable({ $flex }) {
                 </FilterContainer>
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={minSum !== activeDistaffMoney[0] || maxSum !== activeDistaffMoney[1]}
+                        $activeFilter={activeDistaffMoney.length === 2}
                         $active={filterType === 'sum'}
                         $filter
                         onClick={() => openFilterModal('sum')}
@@ -133,11 +117,11 @@ function ExpensesTable({ $flex }) {
             </ExpensesHeader>
 
             <ExpensesList>
-                {filteredData.length > 0 ? (
-                    filteredData.map((item) => (
+                {displayData.length > 0 ? (
+                    displayData.map((item) => (
                         <ExpensesItem
                             $editItem={isEditMode === item._id}
-                            key={item._id}
+                            key={item._id} // ✅ Обязательно используй уникальный ключ
                             $choiseItem={isMobile && selectedItem?._id === item._id}
                             onClick={() => handleSelectItem(item)}
                             $isMobile={isMobile}

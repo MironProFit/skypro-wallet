@@ -24,7 +24,7 @@ export const CalendarSection = styled(Section)`
 
 export const CalendarWrapper = styled.div`
     width: 100%;
-    max-height: 500px;
+    max-height: 250px;
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;

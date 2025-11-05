@@ -26,7 +26,7 @@ function Category({ mode = 'multi', onCategory, selectedCategory }) {
                 }
             })
         }
-        onCategory?.(category)
+        // onCategory?.(category)
     }
 
     return (
