@@ -1,16 +1,130 @@
-# React + Vite
+# ExpenseTracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ExpenseTracker — это одностраничное React-приложение для учёта личных расходов.  
+Поддерживает регистрацию/авторизацию через модальное окно, защищённые маршруты, мобильную и десктопную версии интерфейса, добавление, просмотр и анализ трат.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Технологии
 
-## React Compiler
+-   React 18
+-   React Router v6
+-   React Context API
+-   Styled-Components
+-   Toastify
+-   Axios / fetch
+-   ESLint / Prettier
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Функционал
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Авторизация / Регистрация
+
+    - Модальное окно для ввода e-mail и пароля.
+    - Хранение JWT-токена в контексте.
+    - Редирект на `/expenses` после входа.
+
+2. Защищённые маршруты
+
+    - Доступ к `/expenses`, `/analysis` и вложенным страницам только при наличии токена.
+    - При попытке прямого перехода без токена – редирект на `/login`.
+
+3. Страница «Мои расходы» (`/expenses`)
+
+    - Десктоп: два столбца (таблица расходов + фильтры/форма).
+    - Мобильная: переключение между списком и формой по кнопке «Новый расход».
+
+4. Фильтры на странице расходов
+
+    - По дате: диапазон (начало/конец).
+    - По категории: мультивыбор из списка.
+    - По сумме: диапазон min–max.
+    - Сброс всех фильтров одним кликом.
+
+5. Добавление нового расхода (`/expenses/new`)
+
+    - Поля: сумма, категория, дата, комментарий.
+    - Валидация обязательных полей.
+    - После отправки – обновление списка.
+
+6. Анализ расходов (`/analysis`)
+
+    - Графики и сводная статистика за всё время.
+    - Быстрый фильтр по месяцу, кварталу, году.
+
+7. Детальный анализ за период (`/analysis/period`)
+
+    - Пользователь задаёт дату начала/конца.
+    - Графики, таблицы и распределение по категориям.
+
+8. Уведомления
+
+    - Успех/ошибки запросов, добавление/удаление расходов.
+
+9. Выход из аккаунта
+    - Кнопка «Выйти» в шапке.
+    - Модальное подтверждение.
+    - При подтверждении – удаление токена и редирект на `/login`.
+
+---
+
+## Фильтрация расходов
+
+На странице «Мои расходы» реализовано два уровня фильтрации:
+
+1. Локальные фильтры (client-side)
+
+    - Применяются к уже загруженному массиву расходов.
+    - Моментально отображают результат без сетевых запросов.
+    - Быстрый «черновой» отбор по дате, категории, сумме.
+    - Ограничены текущим объёмом данных и неэффективны на больших списках.
+
+2. API-фильтры (server-side)
+    - Отправляются на бекенд как query-параметры GET-запроса:  
+      `/api/expenses?startDate=2024-01-01&endDate=2024-01-31&categories=food,transport&minAmount=100&maxAmount=1000`
+    - Сервер возвращает уже отфильтрованный (и постранично разбитый) результат.
+    - Работают с полным объёмом данных, экономят трафик.
+    - Каждый «Применить» — сетевой запрос, есть небольшая задержка.
+
+---
+
+## Основные маршруты
+
+| Путь               | Компонент      | Описание                                          |
+| ------------------ | -------------- | ------------------------------------------------- |
+| `/login`           | AuthModal      | Логин / регистрация                               |
+| `/register`        | AuthModal      | То же, что и `/login`                             |
+| `/expenses`        | ExpensesPage   | Список расходов + фильтры + кнопка «Новый расход» |
+| `/expenses/new`    | NewExpensePage | Форма добавления нового расхода                   |
+| `/analysis`        | AnalysisPage   | Общая статистика и графики                        |
+| `/analysis/period` | PeriodPage     | Детальный анализ по выбранному периоду            |
+| `*`                | NotFound       | Страница 404                                      |
+
+---
+
+## Структура проекта
+
+src/
+├── api/ # HTTP-клиент и обёртки для запросов
+├── components/ # Повторно используемые UI-блоки
+│ ├── Auth/ # Логин/регистрация
+│ ├── Expenses/ # Таблица, форма, фильтры
+│ ├── Filters/ # Компоненты фильтрации
+│ ├── NotFound/ # 404-страница
+│ ├── Toasty/ # Уведомления
+│ └── Confirm/ # Модальные подтверждения
+├── contexts/ # React Context для состояния
+├── pages/ # Страницы и роуты
+│ ├── Layout/
+│ ├── ExpensesPage/
+│ ├── NewExpensePage/
+│ ├── AnalysisPage/
+│ └── PeriodPage/
+├── routes/ # Конфигурация React Router
+└── styles/ # Глобальные стили и темы
+
+## Автор
+
+Разработал: Каширин Мирон Владимирович
+Telegram: https://t.me/MPF_WebDev
