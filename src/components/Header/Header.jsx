@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../contexts/AppContext'
 import { useAuthContext } from '../../contexts/AuthContext'
-import { useLocation, useNavigate } from 'react-router-dom' // useNavigate уже импортирован
+import { useLocation, useNavigate } from 'react-router-dom'
 import { HeaderContainer, HeaderLogo, HeaderNav, HeaderWrapper, LinkContainer, ModalLinks, NavLinkButton, NavLinkModal, StyledLinkGroup } from './Header.styles'
 
 import logoDark from '../../assets/image/logo/logo-dark.svg'
 
-function Header(onLogout) {
-    const { isAuth } = useAuthContext()
+function Header({ onLogout }) {
+    const { token } = useAuthContext()
     const { isMobile } = useAppContext()
     const [isModal, setIsModal] = useState(false)
     const location = useLocation()
     const [linkName, setLinkName] = useState('Мои расходы') // Начальное значение
-    const navigate = useNavigate()
 
     // useEffect для обновления linkName при изменении location.pathname
     useEffect(() => {
@@ -28,7 +27,6 @@ function Header(onLogout) {
     const isLinkActive = (path) => {
         return location.pathname === path
     }
-
     return (
         <HeaderWrapper $isMobile={isMobile}>
             <HeaderContainer $isMobile={isMobile}>
@@ -36,7 +34,7 @@ function Header(onLogout) {
                     <HeaderLogo>
                         <img src={logoDark} alt="Logo" />
                     </HeaderLogo>
-                    {isAuth && (
+                    {token && (
                         <>
                             {!isMobile ? (
                                 <StyledLinkGroup>
@@ -57,7 +55,7 @@ function Header(onLogout) {
                                         {linkName}
                                     </NavLinkButton>
                                     <ModalLinks $isModal={isModal}>
-                                        <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsmodal(false)}>
+                                        <NavLinkModal to={'/expenses'} $isModal={isModal} $isMobile={isMobile} $isLinkActive={isLinkActive('/expenses')} onClick={() => setIsModal(false)}>
                                             Мои расходы
                                         </NavLinkModal>
                                         <NavLinkModal
@@ -85,7 +83,14 @@ function Header(onLogout) {
                             )}
 
                             <LinkContainer>
-                                <NavLinkButton onClick={onLogout}>Выйти</NavLinkButton>
+                                <NavLinkButton
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        onLogout()
+                                    }}
+                                >
+                                    Выйти
+                                </NavLinkButton>
                             </LinkContainer>
                         </>
                     )}

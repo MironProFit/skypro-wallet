@@ -6,6 +6,7 @@ function App() {
     return (
         <>
             <GlobalStyle />
+
             <Wrapper>
                 <AppRoutes />
             </Wrapper>
@@ -14,4 +15,3 @@ function App() {
 }
 
 export default App
-

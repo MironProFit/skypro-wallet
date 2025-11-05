@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export async function loginUser({ login, password }) {
-    console.log(login, password)
+
     const res = await axios.post(
         'https://wedev-api.sky.pro/api/user/login',
         { login, password },

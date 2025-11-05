@@ -2,12 +2,11 @@ import { Outlet } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import LoadingModal from '../../components/Loading/LoadingModal'
 
-function Layout() {
-    
+function Layout({ onLogout }) {
     return (
         <>
-            <Header />
-            <LoadingModal/>
+            <Header onLogout={onLogout} />
+            <LoadingModal />
             <Outlet />
         </>
     )

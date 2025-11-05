@@ -4,28 +4,42 @@ import { createContext } from 'react'
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
-    const [isAuth, setIsAuth] = useState(() => localStorage.getItem('isAuth') === 'true')
-
     const [userName, setUserName] = useState(() => localStorage.getItem('userName') || '')
     const [token, setToken] = useState(() => localStorage.getItem('token') || '')
+    const [urlApi] = useState('https://wedev-api.sky.pro/api/')
 
     const [userData, setUserData] = useState(() => {
         const stored = localStorage.getItem('userData')
-        return stored ? JSON.parse(stored) : { expenses: [] }
+        if (stored) {
+            try {
+                return JSON.parse(stored)
+            } catch (e) {
+                console.error('Ошибка парсинга userData:', e)
+                return []
+            }
+        }
+        return []
     })
 
-    const [errorMessage, setErrorMessage] = useState('')
+    useEffect(() => {
+        if (token) {
+            localStorage.setItem('token', token)
+        } else {
+            localStorage.removeItem('token')
+        }
+    }, [token])
 
     useEffect(() => {
-        setIsAuth(true)
-    }, [])
+        if (userData) {
+            localStorage.setItem('userData', JSON.stringify(userData))
+        } else {
+            localStorage.removeItem('userData')
+        }
+    }, [userData])
 
     return (
         <AuthContext.Provider
             value={{
-                isAuth,
-                setIsAuth,
-
                 userName,
                 setUserName,
 
@@ -35,8 +49,7 @@ export const AuthProvider = ({ children }) => {
                 userData,
                 setUserData,
 
-                errorMessage,
-                setErrorMessage,
+                urlApi,
             }}
         >
             {children}

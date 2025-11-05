@@ -7,6 +7,7 @@ import { accentColor, borderColor, errorColor, primaryColor, secondaryColor, suc
 export const AuthContainer = styled(Container)`
     display: flex;
     justify-content: center;
+    align-items: center;
 `
 
 export const AuthSection = styled(Section)`
@@ -28,9 +29,29 @@ export const ModalWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     background-color: ${({ $isMobile }) => ($isMobile ? primaryColor : secondaryColor)};
 `
+
+export const ModalOverlay = styled.div`
+    position: fixed; /* фиксируем относительно окна браузера */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный фон */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* чтобы был поверх всего */
+    pointer-events: auto; /* перехватывать клики */
+`
+
+export const ModalContent = styled(Section)``
+export const ModalButtons = styled.div`
+    display: flex;
+    gap: 30px;
+`
+
 export const AuthTitle = styled(SectionTitle)`
     display: flex;
     justify-content: center;

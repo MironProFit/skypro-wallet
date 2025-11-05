@@ -1,12 +1,11 @@
 import { useAppContext } from '../../contexts/AppContext'
 import { Container, PageTitle } from '../../styles/GlobalStyled'
 import NewExpense from '../../components/Expenses/NewExpense'
-import { Navigate, useLocation } from 'react-router-dom' // Для перенаправления с ПК
+import { Navigate, useLocation } from 'react-router-dom'
 import { ExpensesHeaderLink, ExpensesHeaderTitle, LinkIcon, LinkWrapper } from '../../components/Expenses/Expenses.styles'
 import { useEffect, useState } from 'react'
 
 //img icon
-import plusIcon from '../../assets/image/icon/add-circle.svg'
 import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 
 function NewExpensePage() {

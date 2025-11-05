@@ -1,17 +1,22 @@
 import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
-import { accentColor, borderColor, primaryColor, secondaryColor, textColor } from './Mexins.style'
+import { accentColor, accentColorHover, borderColor, primaryColor, textColor } from './Mexins.style'
 
 export const Wrapper = styled.div`
-    max-width: 100%;
+    /* max-width: 100%; */
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     overflow: auto;
     background-color: ${primaryColor};
     transition: 0.3s;
+    display: flex;
+    flex-direction: column;
 `
 
 export const Container = styled.div`
+    display: flex;
+
+    flex-direction: column;
     max-width: 1260px;
     width: 100%;
     margin: 0 auto;
@@ -24,19 +29,25 @@ export const Container = styled.div`
             background-color: ${primaryColor};
             border-radius: 0;
             padding: 0 16px;
+            height: calc(100% - 180px);
+
             /* padding-bottom: 10px; */
         `}
 `
 export const ContainerGroup = styled.div`
     display: flex;
+    max-height: 100%;
     flex-direction: row;
     gap: 34px;
     & > * {
         flex: 1;
     }
-    @media (max-width: 750px) {
-        flex-direction: column;
-    }
+
+    ${({ $isMobile }) =>
+        $isMobile &&
+        css`
+            flex-direction: column;
+        `}
 `
 
 export const PageText = styled.p`
@@ -57,18 +68,18 @@ export const PageTitle = styled.h1`
     white-space: nowrap;
     margin-top: 36px;
     margin-bottom: 32px;
+    order: none;
 
     ${({ $isMobile }) =>
         $isMobile &&
         css`
             font-size: 24px;
             padding: 0;
-            margin: 0;
-        `}
-    ${({ $isExpensesPage }) =>
-        !$isExpensesPage &&
-        css`
-            order: 2;
+            margin-top: 24px;
+            margin-bottom: 23px;
+            padding-left: 27px;
+
+            /* margin: 0; */
         `}
 `
 
@@ -113,6 +124,7 @@ export const SectionTitle = styled.h2`
     ${({ $isMobile }) =>
         $isMobile &&
         css`
+            /* margin-left: 27px; */
             font-size: 20px;
         `}
 `
@@ -165,20 +177,26 @@ export const PrimaryButton = styled.button`
     color: #ffffff;
     transition: 0.3s;
 
+    &:active {
+        background-color: ${accentColor};
+        opacity: 0.8;
+    }
+
+    &:hover {
+        background: ${accentColorHover};
+        border: 1px solid ${accentColorHover};
+        /* color: ${textColor}; */
+    }
+
     &:disabled {
         cursor: unset;
         background-color: ${borderColor};
         border: 1px solid ${borderColor};
     }
-
-    &:active {
-        background-color: ${accentColor};
-        opacity: 0.8;
-    }
 `
 
 //Form
-export const FormWrapper = styled.div``
+export const FormWrapper = styled.form``
 export const FormGroup = styled.div`
     /* margin-bottom: 24px; */
     display: flex;
