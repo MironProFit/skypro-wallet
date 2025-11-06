@@ -1,7 +1,7 @@
 import { useAppContext } from '../../contexts/AppContext'
 import { categoryList } from '../../data/CategoryList'
 import { accentColor, secondaryColor, textColor } from '../../styles/Mexins.style'
-import { CategoryWrap, CategoryButton, CategoryContainer, CategoryImg, CategoryDesc } from '../Expenses/Expenses.styles'
+import { CategoryButton, CategoryContainer, CategoryDesc, CategoryImg, CategoryWrap } from '../Expenses/Expenses.styles'
 
 function Category({ mode = 'multi', onCategory, selectedCategory }) {
     const { activeCategories, setActiveCategories } = useAppContext()
@@ -26,7 +26,7 @@ function Category({ mode = 'multi', onCategory, selectedCategory }) {
                 }
             })
         }
-        // onCategory?.(category)
+        onCategory?.(category) // ✅ Всегда вызываем, если передан
     }
 
     return (
@@ -35,7 +35,10 @@ function Category({ mode = 'multi', onCategory, selectedCategory }) {
                 const IconComponent = category.icon
                 const active = checkActive(category.category)
                 return (
-                    <CategoryButton key={category.category} onClick={() => handleCategoryClick(category.category)}>
+                    <CategoryButton
+                        key={category.category} // ✅ Уникальный ключ
+                        onClick={() => handleCategoryClick(category.category)}
+                    >
                         <CategoryContainer $active={active ? 'rgba(115, 52, 234, 0.1)' : secondaryColor}>
                             <CategoryImg>
                                 <IconComponent $active={active ? accentColor : textColor} />

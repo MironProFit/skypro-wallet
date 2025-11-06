@@ -1,3 +1,4 @@
+// components/Expenses/ExpensesTable.jsx
 import { useEffect, useState } from 'react'
 import { FlexContainer, PrimaryButton, SectionTitle } from '../../styles/GlobalStyled'
 import CartSVG from '../icons/CategoryIcons/CartSVG'
@@ -76,7 +77,7 @@ function ExpensesTable({ $flex }) {
                 </HeaderCell>
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={activeCategories.length > 0}
+                        $activeFilter={activeCategories.length > 0} // ✅ Активна, если категории выбраны
                         $active={filterType === 'category'}
                         $filter
                         onClick={() => openFilterModal('category')}
@@ -89,7 +90,7 @@ function ExpensesTable({ $flex }) {
                 </FilterContainer>
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={startDate && endDate && startDate !== endDate}
+                        $activeFilter={startDate && endDate && startDate !== endDate} // ✅ Активна, если даты выбраны
                         $active={filterType === 'date'}
                         $filter
                         onClick={() => openFilterModal('date')}
@@ -100,9 +101,10 @@ function ExpensesTable({ $flex }) {
                     </HeaderCell>
                     <FilterModal $active={filterType === 'date'} type="date" onClose={closeFilterModal} />
                 </FilterContainer>
+
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={activeDistaffMoney.length === 2}
+                        $activeFilter={true} 
                         $active={filterType === 'sum'}
                         $filter
                         onClick={() => openFilterModal('sum')}
@@ -113,6 +115,7 @@ function ExpensesTable({ $flex }) {
                     </HeaderCell>
                     <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />
                 </FilterContainer>
+
                 <HeaderCell $isMobile={isMobile}></HeaderCell>
             </ExpensesHeader>
 
