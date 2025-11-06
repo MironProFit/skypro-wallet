@@ -113,7 +113,9 @@ function ExpensesTable({ $flex }) {
                     >
                         Сумма
                     </HeaderCell>
-                    <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />
+                    <FilterModal
+                     $active={filterType === 'sum'}
+                      type="sum" onClose={closeFilterModal} />
                 </FilterContainer>
 
                 <HeaderCell $isMobile={isMobile}></HeaderCell>
