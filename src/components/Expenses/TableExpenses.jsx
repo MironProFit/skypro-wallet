@@ -1,5 +1,6 @@
 // components/Expenses/ExpensesTable.jsx
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FlexContainer, PrimaryButton, SectionTitle } from '../../styles/GlobalStyled'
 import CartSVG from '../icons/CategoryIcons/CartSVG'
 import EditSVG from '../icons/CategoryIcons/EditSVG'
@@ -21,6 +22,7 @@ function ExpensesTable({ $flex }) {
     const [isOpenFilterModal, setIsOpenFilterModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const { fetchData } = useFetch()
+    const navigate = useNavigate()
 
     // ✅ userData уже отфильтрован API → просто отображаем
     const displayData = Array.isArray(userData) ? userData : []
@@ -51,6 +53,10 @@ function ExpensesTable({ $flex }) {
         setIsEditMode(isEditMode === id ? null : id)
     }
 
+    useEffect(() => {
+        console.log(isEditMode)
+    }, [isEditMode])
+
     const handleDelete = async (itemToDelete) => {
         if (!itemToDelete) return
         try {
@@ -67,6 +73,17 @@ function ExpensesTable({ $flex }) {
         }
     }
 
+    // === MOBILE EDIT REDIRECT ===
+    const handleEditRedirect = (item) => {
+        setIsEditMode(item._id)
+        navigate('/expenses/edit') // или маршрут, где у тебя форма редактирования
+    }
+
+    // === ACTIVE FILTERS LOGIC ===
+    const isCategoryActive = activeCategories.length > 0
+    const isDateActive = startDate && endDate
+    const isSumActive = activeDistaffMoney.length === 2
+
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
             {!isMobile && <SectionTitle>Таблица расходов</SectionTitle>}
@@ -77,7 +94,7 @@ function ExpensesTable({ $flex }) {
                 </HeaderCell>
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={activeCategories.length > 0} // ✅ Активна, если категории выбраны
+                        $activeFilter={isCategoryActive} // ✅ Активна, если категории выбраны
                         $active={filterType === 'category'}
                         $filter
                         onClick={() => openFilterModal('category')}
@@ -90,7 +107,7 @@ function ExpensesTable({ $flex }) {
                 </FilterContainer>
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={startDate && endDate && startDate !== endDate} // ✅ Активна, если даты выбраны
+                        $activeFilter={isDateActive} // ✅ Активна, если даты выбраны
                         $active={filterType === 'date'}
                         $filter
                         onClick={() => openFilterModal('date')}
@@ -104,7 +121,7 @@ function ExpensesTable({ $flex }) {
 
                 <FilterContainer>
                     <HeaderCell
-                        $activeFilter={true} 
+                        $activeFilter={isSumActive} // ✅ Активна, если сумма выбрана
                         $active={filterType === 'sum'}
                         $filter
                         onClick={() => openFilterModal('sum')}
@@ -113,9 +130,7 @@ function ExpensesTable({ $flex }) {
                     >
                         Сумма
                     </HeaderCell>
-                    <FilterModal
-                     $active={filterType === 'sum'}
-                      type="sum" onClose={closeFilterModal} />
+                    <FilterModal $active={filterType === 'sum'} type="sum" onClose={closeFilterModal} />
                 </FilterContainer>
 
                 <HeaderCell $isMobile={isMobile}></HeaderCell>
@@ -126,7 +141,7 @@ function ExpensesTable({ $flex }) {
                     displayData.map((item) => (
                         <ExpensesItem
                             $editItem={isEditMode === item._id}
-                            key={item._id} // ✅ Обязательно используй уникальный ключ
+                            key={item._id} // ✅ Обязательно!
                             $choiseItem={isMobile && selectedItem?._id === item._id}
                             onClick={() => handleSelectItem(item)}
                             $isMobile={isMobile}
@@ -169,17 +184,15 @@ function ExpensesTable({ $flex }) {
                 )}
             </ExpensesList>
 
-            {/* Кнопка удаления на мобилке */}
-            {isMobile && (
+            {/* Кнопка удаления и редактирования на мобилке */}
+            {isMobile && selectedItem && (
                 <FlexContainer style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                     <PrimaryButton disabled={!selectedItem?._id} onClick={() => handleDelete(selectedItem)}>
                         Удалить расход
                     </PrimaryButton>
-                    {selectedItem && (
-                        <PrimaryButton disabled={!selectedItem?._id} onClick={() => handleDelete(selectedItem)}>
-                            Редактировать расход
-                        </PrimaryButton>
-                    )}
+                    <PrimaryButton disabled={!selectedItem?._id} onClick={() => handleEditRedirect(selectedItem)}>
+                        Редактировать расход
+                    </PrimaryButton>
                 </FlexContainer>
             )}
         </ExpensesSection>

@@ -1,5 +1,6 @@
-
+// components/NewExpense/NewExpense.jsx
 import { useEffect, useState, useMemo } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { SectionTitle, FormBtn, FormInput, FormLabel, FormWrapper, FlexContainer } from '../../styles/GlobalStyled'
 import { AddButton, ExpensesFormGroup, ExpensesSection, FormInputSum, FormInputSumWrapper, RubleIcon } from './Expenses.styles'
 import { categoryList } from '../../data/CategoryList'
@@ -10,9 +11,11 @@ import { useAuthContext } from '../../contexts/AuthContext'
 import { ErrorText } from '../Auth/AuthModal.styles'
 
 function NewExpense({ $flex }) {
-    const { isMobile, isEditMode, setIsEditMode } = useAppContext()
-    const { setToastNotification, token, setUserData, userData } = useAuthContext()
+    const location = useLocation() // ✅ Получаем location
+    const { isMobile, setToastNotification } = useAppContext()
+    const { token, setUserData, userData } = useAuthContext()
     const { fetchData } = useFetch()
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         description: '',
@@ -23,10 +26,14 @@ function NewExpense({ $flex }) {
 
     const [isDescriptionTouched, setIsDescriptionTouched] = useState(false)
 
-    // Сохраняем исходные данные для сравнения
+    // === Определяем ID расхода из URL или из state ===
+    const expenseIdFromState = location.state?.id || null
+    const currentExpenseId = expenseIdFromState
+
+    // === Сохраняем оригинальные данные для сравнения (опционально) ===
     const originalData = useMemo(() => {
-        if (!isEditMode) return null
-        const transaction = userData.find((item) => item._id === isEditMode)
+        if (!currentExpenseId) return null
+        const transaction = userData.find((item) => item._id === currentExpenseId)
         return transaction
             ? {
                   description: transaction.description,
@@ -35,18 +42,18 @@ function NewExpense({ $flex }) {
                   date: transaction.date.split('T')[0],
               }
             : null
-    }, [isEditMode, userData])
+    }, [currentExpenseId, userData])
 
-    // Проверяем, были ли изменения
+    // === Проверяем, были ли изменения (опционально) ===
     const hasChanges = useMemo(() => {
         if (!originalData) return true // при создании — всегда "есть изменения"
         return formData.description !== originalData.description || formData.sum !== originalData.sum || formData.category !== originalData.category || formData.date !== originalData.date
     }, [formData, originalData])
 
-    // Загрузка данных при редактировании
+    // === Загрузка данных при редактировании ===
     useEffect(() => {
-        if (isEditMode) {
-            const transaction = userData.find((item) => item._id === isEditMode)
+        if (currentExpenseId) {
+            const transaction = userData.find((item) => item._id === currentExpenseId)
             if (transaction) {
                 setFormData({
                     description: transaction.description,
@@ -60,12 +67,12 @@ function NewExpense({ $flex }) {
             setFormData({ description: '', sum: '', category: '', date: '' })
             setIsDescriptionTouched(false)
         }
-    }, [isEditMode, userData])
+    }, [currentExpenseId, userData])
 
-    // Валидность формы
+    // === Валидность формы ===
     const isFormValid = formData.description.length >= 3 && formData.sum > 0 && formData.category !== '' && formData.date !== ''
 
-    // Обработчики
+    // === Обработчики ===
     const handleDescription = (value) => {
         if (!isDescriptionTouched) setIsDescriptionTouched(true)
         setFormData((prev) => ({ ...prev, description: value }))
@@ -84,40 +91,57 @@ function NewExpense({ $flex }) {
         setFormData((prev) => ({ ...prev, sum: numValue }))
     }
 
+    // === Отправка формы ===
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             let response
-            if (isEditMode) {
+
+            if (currentExpenseId) {
+                // === РЕДАКТИРОВАНИЕ ===
                 response = await fetchData({
-                    url: `transactions/${isEditMode}`,
-                    data: formData,
+                    url: `transactions/${currentExpenseId}`,
                     method: 'patch',
+                    data: formData, // ✅ formData передаётся как data
                     token,
                 })
+
+                if (response && response.transactions) {
+                    setUserData(response.transactions)
+                } else {
+                    // Если сервер не вернул весь список — обновим вручную
+                    const updatedData = await fetchData({ url: 'transactions', token })
+                    setUserData(updatedData.transactions)
+                }
+
+                // ✅ ВСЕГДА возвращаемся на /expenses после редактирования
+                navigate('/expenses')
             } else {
+                // === СОЗДАНИЕ ===
                 response = await fetchData({
                     url: 'transactions',
-                    data: formData,
                     method: 'post',
+                    data: formData, // ✅ formData передаётся как data
                     token,
                 })
-            }
 
-            if (response) {
-                const updatedData = await fetchData({ url: 'transactions', token })
-                setUserData(updatedData)
-                if (isEditMode) setIsEditMode(null)
+                if (response && response.transactions) {
+                    const updatedData = await fetchData({ url: 'transactions', token })
+                    setUserData(updatedData.transactions)
+                }
+
+                // navigate('/expenses'); // ← раскомментируй, если хочешь возвращаться и при создании
             }
         } catch (error) {
-            setToastNotification(error)
+            const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
+            setToastNotification(errorMessage)
             console.error('Ошибка:', error)
         }
     }
 
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>
-            {!isMobile && <SectionTitle style={{ marginBottom: '32px' }}>{isEditMode ? 'Редактирование расхода' : 'Новый расход'}</SectionTitle>}
+            {!isMobile && <SectionTitle style={{ marginBottom: '32px' }}>{currentExpenseId ? 'Редактирование расхода' : 'Новый расход'}</SectionTitle>}
 
             <FormWrapper onSubmit={handleSubmit}>
                 <ExpensesFormGroup>
@@ -146,14 +170,14 @@ function NewExpense({ $flex }) {
 
                 {isMobile ? (
                     <FlexContainer>
-                        <AddButton type="submit" disabled={!isFormValid || (isEditMode && !hasChanges)}>
-                            {isEditMode ? 'Сохранить изменения' : 'Добавить расход'}
+                        <AddButton type="submit" disabled={!isFormValid || (currentExpenseId && !hasChanges)}>
+                            {currentExpenseId ? 'Сохранить изменения' : 'Добавить расход'}
                         </AddButton>
                     </FlexContainer>
                 ) : (
                     <FormBtn>
-                        <AddButton type="submit" disabled={!isFormValid || (isEditMode && !hasChanges)}>
-                            {isEditMode ? 'Сохранить изменения' : 'Добавить расход'}
+                        <AddButton type="submit" disabled={!isFormValid || (currentExpenseId && !hasChanges)}>
+                            {currentExpenseId ? 'Сохранить изменения' : 'Добавить расход'}
                         </AddButton>
                     </FormBtn>
                 )}

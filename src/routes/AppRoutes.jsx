@@ -47,6 +47,7 @@ function AppRoutes() {
                         { path: 'expenses', element: <ExpensesPage /> },
                         { path: 'analysis', element: <AnalysisPage /> },
                         { path: 'expenses/new', element: <NewExpensePage /> },
+                        { path: 'expenses/edit', element: <NewExpensePage /> },
                         { path: 'analysis/period', element: <PeriodPage /> },
                     ],
                 },
