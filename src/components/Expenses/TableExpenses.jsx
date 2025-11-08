@@ -52,7 +52,6 @@ function ExpensesTable({ $flex }) {
     const toggleEditMode = (id) => {
         setIsEditMode(isEditMode === id ? null : id)
     }
-
     useEffect(() => {
         console.log(isEditMode)
     }, [isEditMode])
@@ -76,7 +75,7 @@ function ExpensesTable({ $flex }) {
     // === MOBILE EDIT REDIRECT ===
     const handleEditRedirect = (item) => {
         setIsEditMode(item._id)
-        navigate('/expenses/edit') // или маршрут, где у тебя форма редактирования
+        navigate('/expenses/edit', { state: { id: item._id } }) // или маршрут, где у тебя форма редактирования
     }
 
     // === ACTIVE FILTERS LOGIC ===
@@ -135,7 +134,6 @@ function ExpensesTable({ $flex }) {
 
                 <HeaderCell $isMobile={isMobile}></HeaderCell>
             </ExpensesHeader>
-
             <ExpensesList>
                 {displayData.length > 0 ? (
                     displayData.map((item) => (
@@ -183,7 +181,6 @@ function ExpensesTable({ $flex }) {
                     <div style={{ textAlign: 'center', padding: '20px' }}>Нет расходов</div>
                 )}
             </ExpensesList>
-
             {/* Кнопка удаления и редактирования на мобилке */}
             {isMobile && selectedItem && (
                 <FlexContainer style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>

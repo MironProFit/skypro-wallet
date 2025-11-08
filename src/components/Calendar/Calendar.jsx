@@ -107,13 +107,13 @@ const CalendarComponent = ({ $isFilter }) => {
 
     return (
         <CalendarSection $isFilter={$isFilter} $isMobile={isMobile}>
-            {isMobile && (
+            {isMobile && !$isFilter && (
                 // isFilterUserData &&
                 <CalendarTitle $isMobile={isMobile}>
                     <LinkWrapper to={'/expenses'} style={{ order: 2, display: 'flex' }}>
                         <LinkIcon src={leftArrIcon} alt="left arrow" />
                         <ExpensesHeaderLink $isExpensesPage={isExpensesPage} $isMobile={isMobile}>
-                            Мои расходы
+                            Анализ расходов
                         </ExpensesHeaderLink>
                     </LinkWrapper>
                 </CalendarTitle>

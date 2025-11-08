@@ -12,7 +12,7 @@ export const ExpensesSection = styled(Section)`
     ${({ $isMobile }) =>
         $isMobile &&
         css`
-            overflow: visible;
+            overflow-y: auto;
         `}
 `
 

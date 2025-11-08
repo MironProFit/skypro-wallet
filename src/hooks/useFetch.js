@@ -17,9 +17,8 @@ export function useFetch() {
 
     const fetchData = useCallback(
         async ({ url, urlParams = '', data, method = 'get', token: customToken, id }) => {
-            setIsLoading(true)
+            // setIsLoading(true)
             setToastNotification(null)
-            console.log({ url, urlParams, data, method, token: customToken, id })
 
             try {
                 // === AUTHENTICATION ===
@@ -73,12 +72,13 @@ export function useFetch() {
                 if (method === 'post') {
                     const response = await addTransaction({ url: fullUrl, data, method, token: authToken })
                     await showToast('Успешное добавление транзакции', 'success')
+                    console.log(response.data)
                     return response.data
                 }
 
                 // GET
                 const response = await transaction({ url: fullUrl, method, token: authToken })
-                await showToast('Успешное получение списка транзакций', 'success')
+                // await showToast('Успешное получение списка транзакций', 'success')
                 return response.data
             } catch (error) {
                 const errMsg = error?.response?.data?.error || error?.response?.data?.message || error?.message || 'Ошибка'

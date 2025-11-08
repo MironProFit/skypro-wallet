@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 
 function NewExpensePage() {
-    const { isMobile } = useAppContext()
+    const { isMobile, isEditMode } = useAppContext()
     const location = useLocation()
     const [isExpensesPage, setIsExpensesPage] = useState()
 
@@ -33,7 +33,7 @@ function NewExpensePage() {
                     </ExpensesHeaderLink>
                 </LinkWrapper>
 
-                <PageTitle $isMobile={isMobile}>Новый расход</PageTitle>
+                <PageTitle $isMobile={isMobile}>{!isEditMode ? 'Новый расход' : 'Редактирование расхода'}</PageTitle>
             </ExpensesHeaderTitle>
 
             <NewExpense $flex={1} />
