@@ -1,6 +1,6 @@
 // components/Expenses/ExpensesTable.jsx
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { FlexContainer, PrimaryButton, SectionTitle } from '../../styles/GlobalStyled'
 import CartSVG from '../icons/CategoryIcons/CartSVG'
 import EditSVG from '../icons/CategoryIcons/EditSVG'
@@ -23,6 +23,7 @@ function ExpensesTable({ $flex }) {
     const [selectedItem, setSelectedItem] = useState(null)
     const { fetchData } = useFetch()
     const navigate = useNavigate()
+    const location = useLocation()
 
     // ✅ userData уже отфильтрован API → просто отображаем
     const displayData = Array.isArray(userData) ? userData : []
@@ -53,8 +54,8 @@ function ExpensesTable({ $flex }) {
         setIsEditMode(isEditMode === id ? null : id)
     }
     useEffect(() => {
-        console.log(isEditMode)
-    }, [isEditMode])
+        location.pathname === '/expenses' && isEditMode && setIsEditMode(null)
+    }, [location.pathname])
 
     const handleDelete = async (itemToDelete) => {
         if (!itemToDelete) return

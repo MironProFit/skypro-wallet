@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import leftArrIcon from '../../assets/image/icon/arrow-left-icon.png'
 
 function NewExpensePage() {
-    const { isMobile, isEditMode } = useAppContext()
+    const { isMobile, isEditMode, setIsEditMode } = useAppContext()
     const location = useLocation()
     const [isExpensesPage, setIsExpensesPage] = useState()
 
@@ -19,6 +19,7 @@ function NewExpensePage() {
 
     if (!isMobile) {
         // Если на ПК, перенаправляем на /expenses (где форма рядом с таблицей)
+
         return <Navigate to="/expenses" replace />
     }
 
