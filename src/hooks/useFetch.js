@@ -73,7 +73,6 @@ export function useFetch() {
                 if (method === 'post') {
                     const response = await addTransaction({ url: fullUrl, data, method, token: authToken })
                     await showToast('Успешное добавление транзакции', 'success')
-                    console.log(response.data)
                     return response.data
                 }
 

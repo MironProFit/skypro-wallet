@@ -29,9 +29,6 @@ function NewExpense({ $flex }) {
     // === Определяем ID расхода из URL или из state ===
     const expenseIdFromState = location.state?.id || isEditMode || null
     const currentExpenseId = expenseIdFromState
-    useEffect(() => {
-        console.log(currentExpenseId)
-    }, [currentExpenseId])
 
     // === Сохраняем оригинальные данные для сравнения (опционально) ===
     const originalData = useMemo(() => {
@@ -111,7 +108,6 @@ function NewExpense({ $flex }) {
 
                 if (response && response.transactions) {
                     setUserData(response.transactions)
-                    console.log(response, response.transactions)
                 } else {
                     // Если сервер не вернул весь список — обновим вручную
                     const updatedData = await fetchData({ url: 'transactions', token })
@@ -119,8 +115,8 @@ function NewExpense({ $flex }) {
                 }
 
                 // ✅ ВСЕГДА возвращаемся на /expenses после редактирования
-                navigate('/expenses')
                 setIsEditMode(null)
+                navigate('/expenses')
             } else {
                 // === СОЗДАНИЕ ===
                 response = await fetchData({
@@ -131,12 +127,10 @@ function NewExpense({ $flex }) {
                 })
 
                 if (response && response.transactions) {
-                    // const updatedData = await fetchData({ url: 'transactions', token })
-                    console.log(response.transactions)
                     setUserData(response.transactions)
+                    // window.location.href = '/expenses'
+                    navigate('/expenses')
                 }
-
-                navigate('/expenses')
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message || 'Ошибка'
@@ -144,6 +138,9 @@ function NewExpense({ $flex }) {
             console.error('Ошибка:', error)
         }
     }
+    useEffect(() => {
+        console.log(location.pathname)
+    }, [location.pathname])
 
     return (
         <ExpensesSection $isMobile={isMobile} $flex={$flex}>

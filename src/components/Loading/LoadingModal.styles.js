@@ -3,12 +3,14 @@ import { ContainerTitle, Section, SectionTitle } from '../../styles/GlobalStyled
 import { accentColor, secondaryColor, shadowColor, textColor } from '../../styles/Mexins.style'
 
 export const LoaderOverlay = styled.div`
+    transition: 0.3s;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    /* background: rgba(255, 255, 255, 0.9); */
+    background: #00000030;
+
     /* background-color: ${secondaryColor}; */
 
     display: flex;

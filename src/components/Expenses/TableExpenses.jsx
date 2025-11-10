@@ -32,6 +32,10 @@ function ExpensesTable({ $flex }) {
         setIsVisible(isMobile)
     }, [isMobile])
 
+    // useEffect(() => {
+    //     location.pathname === '/expenses'
+    // }, [location.pathname])
+
     const openFilterModal = (type) => {
         setFilterType(filterType === type ? null : type)
         setIsOpenFilterModal(true)
@@ -60,9 +64,9 @@ function ExpensesTable({ $flex }) {
     const handleDelete = async (itemToDelete) => {
         if (!itemToDelete) return
         try {
-            await fetchData({ url: 'transactions', method: 'delete', token, id: itemToDelete._id })
-            const updatedData = await fetchData({ url: 'transactions', token })
-            setUserData(updatedData)
+            const respons = await fetchData({ url: 'transactions', method: 'delete', token, id: itemToDelete._id })
+            setUserData(respons.transactions)
+
             if (isMobile) setSelectedItem(null)
             // Выход из режима редактирования при удалении
             if (isEditMode === itemToDelete._id) setIsEditMode(null)
@@ -76,7 +80,7 @@ function ExpensesTable({ $flex }) {
     // === MOBILE EDIT REDIRECT ===
     const handleEditRedirect = (item) => {
         setIsEditMode(item._id)
-        navigate('/expenses/edit', { state: { id: item._id } }) // или маршрут, где у тебя форма редактирования
+        navigate('/expenses/edit', { state: { id: item._id } })
     }
 
     // === ACTIVE FILTERS LOGIC ===
