@@ -77,10 +77,12 @@ function AuthModal() {
     }, [])
 
     const onSubmit = async (data) => {
+        // setIsLoading(true)
         try {
             const urlAuth = isPage === 'login' ? 'user/login' : 'user'
 
             const response = await fetchData({ url: urlAuth, data })
+
             const newToken = response.user?.token
 
             if (newToken || token) {
@@ -96,6 +98,8 @@ function AuthModal() {
 
             // Обработка ошибок
             console.error('Ошибка при отправке:', err)
+        // setIsLoading(false)
+
         }
     }
 

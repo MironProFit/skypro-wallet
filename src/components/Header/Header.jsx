@@ -19,6 +19,11 @@ function Header({ onLogout }) {
         setLinkName(pathMap[location.pathname] || 'Мои расходы')
     }, [location.pathname])
 
+    useEffect(() => {
+        // console.log(pathMap[location.pathname])
+        // console.log(pathMap)
+    }, [location.pathname])
+
     const handleModalLinks = (e) => {
         e.preventDefault()
         setIsModal((prev) => !prev)

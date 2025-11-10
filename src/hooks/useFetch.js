@@ -19,6 +19,7 @@ export function useFetch() {
         async ({ url, urlParams = '', data, method = 'get', token: customToken, id }) => {
             // setIsLoading(true)
             setToastNotification(null)
+            setIsLoading(true)
 
             try {
                 // === AUTHENTICATION ===

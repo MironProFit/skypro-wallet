@@ -9,7 +9,7 @@ export const LoaderOverlay = styled.div`
     width: 100vw;
     height: 100vh;
     /* background: rgba(255, 255, 255, 0.9); */
-    background-color: ${secondaryColor};
+    /* background-color: ${secondaryColor}; */
 
     display: flex;
     flex-direction: column;
